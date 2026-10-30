@@ -1,115 +1,160 @@
 # Decision register
 
-This register records the confirmed design baseline and identifies details that remain to be specified. D-01 through D-12 are confirmed. Further recommendations remain Proposed until approved by the applicable authority. Agreement status is separate from implementation and qualification progress.
+This document defines Möbiræon’s design baseline for implementation and the first live demonstration. Detailed workflows, operating parameters, and integration qualification build on these decisions.
 
-## Confirmed direction
+| ID | Decision |
+| --- | --- |
+| [D-01](#d-01-system-and-repository-name) | System and repository name |
+| [D-02](#d-02-agent-and-component-terminology) | Agent and component terminology |
+| [D-03](#d-03-hierarchy) | Project and Task hierarchy |
+| [D-04](#d-04-lifecycles) | Lifecycles and acceptance |
+| [D-05](#d-05-registry) | Agent Registry storage and editing |
+| [D-06](#d-06-execution-boundary) | Execution boundary |
+| [D-07](#d-07-forge-integration-and-initial-platform) | Forge integration and initial platform |
+| [D-08](#d-08-initial-profiles) | Initial Profiles and qualification |
+| [D-09](#d-09-operating-policy) | Operating policy |
+| [D-10](#d-10-authority) | Authority and delegation |
+| [D-11](#d-11-implementation-technology-and-topology) | Implementation technology and topology |
+| [D-12](#d-12-first-live-validation-and-release-scope) | First live validation and release scope |
 
-- Prepare and review definitions and requirements before further implementation work.
-- Keep architecture and workflow concise, and distinguish logical contracts from selected implementation technologies.
-- Support configurable agents and a stored agent collection, including the requested Codex CLI, Claude Code CLI, and Ollama execution paths.
-- Keep human review of the initial brief/specification and route later human escalation through the Orchestrator Agent.
-- Use the confirmed D-02 terminology and separate Coordinator, Scheduler, and Orchestrator Agent responsibilities logically; this does not require separate services.
-- Use Gitea as the initial local forge through a versioned, forge-neutral adapter contract; Möbiræon retains workflow and acceptance authority.
-- Implement the first release in Python with one active Coordinator/Scheduler service, supervised isolated runner processes, and SQLite on local persistent disk.
-- The confirmed system name is **Möbiræon**, with **mobiraeon** as the repository name and ASCII identifier.
+## D-01 System and repository name
 
-## Decision register
+The system name is **Möbiræon**. The repository name and ASCII identifier are **`mobiraeon`**. The [README](../README.md) describes the name’s origin.
 
-| ID | Status | Choice to resolve | Current recommendation or next clarification |
-| --- | --- | --- | --- |
-| D-01 | Confirmed | System and repository name | Keep **Möbiræon** as the system name and **mobiraeon** as the repository name and ASCII identifier. Confirmed on 2026-10-30; earlier candidates are superseded. See the [name explanation](../README.md). |
-| D-02 | Confirmed | Agent and component terminology | Agent is a logical AI actor with stable registered identity; Agent Profile is reusable versioned execution configuration; Worker supplies execution capacity; Runner Adapter invokes a runtime through a transport; Run is one bounded attempt. Coordinator, Scheduler, and Orchestrator Agent have separate logical responsibilities. See [definitions](definitions.md). Confirmed on 2026-10-30. |
-| D-03 | Confirmed | Project and work hierarchy | Use Project → Initiative → Task. Initiatives represent outcomes, Tasks produce bounded deliverables, and milestones group delivery targets. Initially decompose into linked Tasks within the Initiative, preserving origin traceability, rather than nested Task trees. See the [agreed hierarchy](#d-03-hierarchy). |
-| D-04 | Confirmed | Lifecycles | Keep Task, Run, Decision, and acceptance state separate. Review and verification normally use assignments/Runs within the Task workflow; rework starts another Run of the same Task. Completion does not establish acceptance. Exact state names and transitions remain to be agreed. See [lifecycle principles](#d-04-lifecycles). |
-| D-05 | Confirmed | Agent Registry storage and editing | Use a dedicated Git repository with JSON configuration and Markdown instructions. Published revisions are identified by exact Git commits, immutable, and retrievable. Git-based editing/review and any future editor share validation/publication; operational state and per-Run snapshots remain separate. See the [publication boundary](#d-05-registry). |
-| D-06 | Confirmed | Execution boundary | Start with one Linux control host and locally attached, isolated container Workers; authorized cloud/local model connections are independent of Worker placement. Qualify the first workflow before adding remote transports and other host operating systems. See the [execution boundary](#d-06-execution-boundary). |
-| D-07 | Confirmed | Forge integration and initial platform | Use local Gitea as the initial human-facing forge interface through the versioned, forge-neutral contract. Map Initiatives/substantive Tasks to issues, delivery targets to milestones, and code submissions to pull requests. Möbiræon retains workflow/acceptance authority and operational records. See the [agreed boundary](#d-07-forge-integration-and-initial-platform). |
-| D-08 | Confirmed | Initial profiles and qualification | Use strong reasoning Profiles for planning and consequential Decisions, medium Profiles for routine implementation, and independently configured review. Qualify one primary path first, then remaining requested integrations; concrete combinations are enabled only for qualified scope. See [profile policy](#d-08-initial-profiles). |
-| D-09 | Confirmed | Operating policy | Adopt an approved, versioned pilot operating profile with explicit limits, cumulative accounting, controlled exhaustion handling, and qualified enforcement/recovery targets. Numeric values remain to be approved. See [operating policy](#d-09-operating-policy). |
-| D-10 | Confirmed | Authority | Human approval establishes the baseline and delegation policy. Agents act within delegation, including independent review, explicitly delegated acceptance, and authorized local integration; the Coordinator enforces gates and authority. See [authority](#d-10-authority). |
-| D-11 | Confirmed | Implementation technology and topology | Use Python, one active Coordinator/Scheduler service, supervised isolated runner processes, and SQLite on local persistent disk. Retain published Profiles/instructions in Git and substantial artifacts separately. See the [confirmed baseline](#d-11-implementation-technology-and-topology). |
-| D-12 | Confirmed | First live validation and release scope | Deliver one bounded feature in a prepared demonstration repository using local Gitea, the approved Linux/container environment, and one primary qualified execution path. Exercise the full delivery loop and recovery cases within an approved pilot contract. See [pilot scope](#d-12-first-live-validation-and-release-scope). |
+## D-02 Agent and component terminology
+
+| Term | Meaning |
+| --- | --- |
+| **Agent** | A logical AI actor with a stable registered identity. |
+| **Agent Profile** | Reusable, versioned execution configuration. |
+| **Worker** | Execution capacity for Agent Runs. |
+| **Runner Adapter** | An adapter that invokes a configured runtime through a transport. |
+| **Run** | One bounded execution attempt with an immutable configuration record. |
+| **Coordinator** | The component enforcing authoritative workflow state, permissions, and acceptance gates. |
+| **Scheduler** | The component applying deterministic eligibility and dispatch rules within configured limits. |
+| **Orchestrator Agent** | The Agent responsible for planning, routing, and decision reasoning through authorized operations. |
+
+These are logical responsibilities and may share a service or process. Runtime integration, runner transport, provider, and model identities remain separate configuration properties. The [definitions](definitions.md) provide the governing vocabulary.
 
 ## D-03 Hierarchy
 
-**Confirmed on 2026-10-30.** Use **Project → Initiative → Task**. An Initiative represents an intended outcome; Tasks produce bounded deliverables. Milestones group delivery targets. Avoid nested Task trees initially: decomposition creates linked Tasks within the Initiative, with traceability to their origin.
+Use **Project → Initiative → Task**. A Project contains Initiatives; an Initiative represents an intended outcome; Tasks produce bounded deliverables. Milestones group delivery targets.
 
-Parent relationships describe scope membership; execution dependencies remain separate under F-12 and F-13.
+Initial decomposition creates linked Tasks within the Initiative, preserving traceability to their originating Task. Avoid nested Task trees in the first release.
+
+Parent relationships describe scope membership. Execution dependencies identify prerequisites independently, following F-12 and F-13.
 
 ## D-04 Lifecycles
 
-**Confirmed on 2026-10-30.** Keep Task, Run, Decision, and acceptance state separate. Review and verification normally use assignments/Runs within a Task’s workflow, rather than automatically creating more Tasks. Rework starts another Run of the same Task.
+Model Task, Run, and Decision lifecycles separately, with acceptance recorded independently of execution status.
 
-A completed Run does not establish Task acceptance; acceptance follows the Task’s contract, designated authority, and required evidence.
+Review and verification normally use assignments and Runs within a Task’s workflow. Rework starts another Run of the same logical Task.
 
-This confirms lifecycle principles, not the previously proposed state-name lists or a complete transition model. Those details remain to be agreed consistently with the approved requirements, including the separate patch-delivery and integration contracts allowed by F-21.
+A Task is accepted when its deliverable contract, designated authority, and required evidence establish acceptance. A reviewed-patch Task may finish before a separately assigned integration Task when its contract permits this. Overall code delivery requires validation of the exact combined revision under F-21.
+
+Workflow specifications define the state names, transitions, and recovery behavior.
 
 ## D-05 Registry
 
-**Confirmed on 2026-10-30.** Use a dedicated Git repository containing **JSON configuration and Markdown instructions**. Published configuration revisions are identified by exact Git commits, immutable, and retrievable. Begin with Git-based editing and review; a future editor uses the same validation and publication process. Store operational state and immutable per-Run configuration snapshots separately.
+Use a dedicated Git repository containing **JSON configuration and Markdown instructions**. Identify published configuration revisions by exact Git commits and retain them as immutable, retrievable sources.
 
-This applies F-07 and F-08. Credential values remain in the configured secret-management mechanism. This selects the catalog format and publication boundary; it does not create a repository or authorize publication. Detailed schemas, project/global catalog organization, and permitted override resolution follow the approved configuration contract.
+Begin with Git-based editing and review. Future editors use the same validation and publication process. Resolve configuration to specific revisions for each Run and retain immutable configuration snapshots in operational storage.
+
+Keep Worker availability, active Runs, and other operational state outside the Registry. Store credential values in the configured secret-management mechanism and use references in configuration.
+
+Detailed schemas, global/project catalog organization, and permitted override resolution follow the Agent configuration contract and configuration specifications.
 
 ## D-06 Execution boundary
 
-**Confirmed on 2026-10-30.** Start with **one Linux control host and locally attached, isolated container Workers**. Permit authorized cloud or local model connections independently of Worker placement. Add remote Worker transports and other host operating systems after the first workflow is qualified.
+The initial deployment uses **one Linux control host and locally attached, isolated container Workers**. Authorized cloud or local model connections are configured independently of Worker placement.
 
-Isolation must be demonstrated against N-02 through N-04, including subprocess cleanup, workspace boundaries, network access, credentials, and resource controls. Container placement alone does not establish qualification. Exact host/container versions, the container runtime and enforcement configuration, and executable compatibility require qualification evidence; this decision does not provision them.
+Qualify the first workflow before adding remote Worker transports and other host operating systems.
+
+Execution qualification covers process-tree cleanup, workspace boundaries, network access, credentials, and resource controls under N-02 through N-04. Record the supported host, container, runtime, and enforcement versions with the qualification evidence.
 
 ## D-07 Forge integration and initial platform
 
-**Confirmed on 2026-10-30; interface and mapping scope reaffirmed on the same date.** Use **local Gitea as the initial human-facing forge interface** through the confirmed versioned, forge-neutral adapter contract.
+Use **local Gitea** as the initial human-facing forge interface through a versioned, forge-neutral adapter contract.
 
-Map Initiatives and substantive Tasks to issues, delivery targets to milestones, and code submissions to pull requests. Keep authoritative workflow state, Runs, execution ownership, retry state, policy enforcement, and acceptance authority in Möbiræon. Routine review events do not require separate forge items.
+Map Initiatives and substantive Tasks to issues, delivery targets to milestones, and code submissions to pull requests. Möbiræon owns authoritative workflow state, Runs, execution ownership, retry state, policy enforcement, and acceptance. Routine review events do not require separate forge items.
 
-Adapters translate supported operations and events, declare capabilities, and preserve traceable external mappings.
+Adapters translate supported operations and events, declare capabilities, and preserve traceable mappings between internal and external records. Qualify the Gitea adapter first, then add GitLab and other forge integrations through the same contract.
 
-Qualify the Gitea adapter first. Add GitLab and other forge integrations through the same contract.
+Begin with an in-process adapter and one active operational forge per Project. Project migration and cross-forge synchronization are separate capabilities.
 
-Begin with an in-process adapter and one active operational forge per project. Project migration and cross-forge synchronization are separately scoped capabilities.
+## D-08 Initial Profiles
 
-This selects the first forge and its integration boundary while preserving Möbiræon ownership of workflow authority. The decision applies F-16, F-20, F-21, F-22, F-24, and F-25. It records an approved design choice; adapter implementation and qualification evidence remain separate.
+Use strong reasoning Profiles for clarification, architecture, specifications, and consequential Decisions. Use medium reasoning Profiles for routine implementation and configure review independently.
 
-## D-08 Initial profiles
+The requested execution paths are Codex CLI, Claude Code CLI, and an Ollama-backed coding harness. Qualify one primary path first, then the remaining integrations. Enable concrete runtime, provider, account, model, reasoning, and option combinations for their qualified scope under F-09.
 
-**Confirmed on 2026-10-30.** Use strong reasoning Profiles for clarification, architecture, specifications, and consequential Decisions; use medium Profiles for routine implementation. Configure review independently. Qualify **one primary execution path first**, then the remaining requested integrations. Interpret reasoning settings through each integration’s versioned capabilities; enable concrete combinations only for their qualified scope.
+Interpret reasoning settings through each integration’s versioned capabilities. Review may use the same model as authoring when its separate assignment and Run satisfy the independence policy. Changing the author’s role or Profile alone does not establish independence.
 
-This confirms selection intent and qualification order, not support for untested model identifiers, accounts, versions, reasoning values, or options. The same model may serve authoring and reviewing roles when the separate review assignment and Run satisfy the configured independence policy. Any fallback remains subject to F-06 and the immutable Run-record rules in F-08.
+Fallbacks follow F-06 and F-08: substitutions require explicit authorization and validation, and changes to pinned execution configuration create a new Run under the same Task.
 
 ## D-09 Operating policy
 
-**Confirmed on 2026-10-30.** Adopt an approved, versioned pilot operating profile with explicit execution, concurrency, retry, spending, recovery, and retention limits. Apply cumulative limits across retries, reassignments, and fallbacks. Exhaustion causes a controlled stop, pause, or Orchestrator Agent triage under policy; it does not automatically create a human ticket. Qualify enforcement and recovery targets before live operation.
+Use an approved, versioned pilot operating profile defining execution, concurrency, retry, spending, recovery, and retention limits. Enforce cumulative limits and accounting across retries, reassignments, and fallbacks.
 
-Numeric limits belong in a linked operating profile, with approval and qualification evidence recorded separately. This confirms the policy direction, not the previously suggested numeric values or evidence that controls have been implemented. The profile must satisfy N-01, N-02, N-05, and N-07, including treatment of estimated or unavailable usage and cost.
+On exhaustion, preserve progress and stop, pause, or return control to the Orchestrator Agent according to policy. Create a human escalation when resolution requires human authority or input.
+
+The operating profile supplies numeric limits, measurement methods, enforcement boundaries, and treatment of estimated or unavailable usage and cost. Verify enforcement, recovery, and retention behavior before live operation under N-01, N-02, N-05, and N-07.
 
 ## D-10 Authority
 
-**Confirmed on 2026-10-30.** Human approval establishes the initial baseline and delegation policy. Within that policy, Agents may resolve ordinary decisions, perform independent review, exercise explicitly delegated acceptance authority, and integrate into the designated local delivery target without additional human approval. The Coordinator enforces authority and records acceptance only when required evidence and gates are satisfied. Changes to scope, authority, infrastructure, or spending outside delegation require escalation through the Orchestrator Agent.
+Human approval establishes the initial baseline and delegation policy. Within that policy, Agents may resolve ordinary Decisions, perform independent review, exercise explicitly delegated acceptance authority, and integrate into the designated local delivery target without additional human approval.
 
-This applies S-03, S-05, S-06, F-18, F-20, F-21, and F-25. The concrete delegation policy must identify authorized actors, operations, targets, and applicable gates. This decision does not itself grant repository, infrastructure, or deployment permissions. Independent assessment and acceptance authority remain distinct responsibilities that policy may explicitly assign to the same reviewer.
+The Coordinator enforces authority and records acceptance when the required evidence and gates are satisfied. The delegation policy identifies authorized actors, operations, targets, and applicable gates. Execution configuration and project policy govern repository, infrastructure, and deployment permissions.
+
+Independent assessment and acceptance authority are distinct responsibilities. Policy may explicitly assign both to the same eligible reviewer.
+
+Changes to scope, authority, infrastructure, or spending outside delegation require escalation through the Orchestrator Agent. Only the Orchestrator Agent initiates agent-generated requests for human decisions or intervention; ordinary human review follows project policy.
 
 ## D-11 Implementation technology and topology
 
-**Confirmed on 2026-10-30.** Implement the first release in **Python**, with a single active Coordinator/Scheduler service and supervised, isolated Agent runner processes.
+Implement the first release in **Python**, with one active Coordinator/Scheduler service and supervised, isolated Agent runner processes.
 
-Use **SQLite on local persistent disk** for durable coordination state. The Coordinator controls authoritative database changes; runners submit results through authorized operations. Keep published Agent Profiles and instructions Git-versioned, and retain substantial artifacts separately with durable, versioned references.
+Use **SQLite on local persistent disk** for durable coordination state. The Coordinator controls authoritative database changes; runners submit results through authorized operations. Keep published Agent Profiles and instructions in Git and retain substantial artifacts separately with durable, versioned references.
 
-Integrate Gitea through the confirmed, versioned forge-adapter contract.
+Integrate Gitea through the forge-adapter contract.
 
-Preserve transactional state changes, durable dispatch and operation records, recoverable ownership, stale-result rejection, idempotency or reconciliation, audit history, and tested backup, restoration, and recovery.
+Preserve transactional state changes, durable dispatch and operation records, recoverable ownership, stale-result rejection, idempotency or reconciliation, and audit history. Test backup, restoration, and recovery across the database, retained artifacts, and referenced configuration revisions.
 
 Reassess PostgreSQL or other infrastructure when multi-instance operation, availability requirements, or measured workload justify it.
 
-This applies F-07, F-08, F-16, F-22, F-23, F-25, and N-02 through N-05. Recovery qualification must include retained artifacts and referenced configuration revisions alongside the database. The Python framework, packaging, exact host/runtime versions, and detailed isolation enforcement configuration remain subsequent decisions within the Linux/container boundary confirmed by D-06. Process supervision alone does not establish the isolation required by N-03 and N-04. This is an approved design baseline, not implementation or qualification evidence.
-
 ## D-12 First live validation and release scope
 
-**Confirmed on 2026-10-31.** Deliver one bounded feature in a prepared, existing demonstration repository using local Gitea, the approved Linux/container environment, and one primary qualified execution path. Cover intake, clarification, specification and baseline approval, Task planning, implementation, independent review, authorized integration, validation of the exact combined revision, and outcome acceptance. Demonstrate Decision waiting and continuation, interrupted-Run recovery, duplicate-event reconciliation, and rejection of stale results. Before execution, approve the target repository and revision, feature acceptance criteria, permitted operations, operating limits, and required evidence. Greenfield project creation and production deployment remain outside this pilot.
+Deliver one bounded feature in a prepared, existing demonstration repository using local Gitea, the Linux/container execution environment, and one primary qualified execution path.
 
-This establishes the pilot workflow and qualification scope, not the concrete target repository, feature, execution configuration, permissions, or numeric limits. A .NET demonstration repository and filtered `GET /projects` endpoint remain candidates; neither is selected by this decision. Möbiræon itself uses Python under D-11. The pilot must identify which requested integrations are included in its release and which are deferred, without implying that one qualified execution path satisfies all of F-02.
+Exercise the complete delivery workflow:
 
-## How to resolve a decision
+1. Intake and clarification.
+2. Specification and baseline approval.
+3. Task planning and implementation.
+4. Independent review and authorized integration.
+5. Validation of the exact combined revision and outcome acceptance.
 
-Record the chosen option, rationale, constraints, affected requirement IDs, and approval date. Update the definitions, requirements, architecture, or workflow at its authoritative location. Preserve the earlier decision when a later revision supersedes it.
+Demonstrate Decision waiting and continuation, interrupted-Run recovery, duplicate-event reconciliation, and rejection of stale results.
 
-D-01 through D-12 are confirmed. Detailed contracts, numeric operating-profile values, the concrete delegation policy, and the executable pilot specification remain to be completed. See the [implementation readiness review](implementation-readiness-review.md) for outstanding clarifications and their timing. Qualification evidence remains separate from decision approval.
+Before execution, approve a pilot contract identifying the repository and revision, bounded feature, acceptance criteria, permitted operations, execution configuration, operating limits, and required evidence. The release scope identifies included integrations and those deferred to later increments.
+
+Greenfield project creation and production deployment are outside this pilot.
+
+## Implementation specifications
+
+Implementation preparation supplies:
+
+- detailed workflow states, transitions, acceptance gates, and recovery procedures;
+- Registry schemas, catalog organization, and override-resolution rules;
+- the Python framework, packaging, exact execution versions, and isolation controls;
+- numeric operating limits, recovery targets, retention rules, and verification methods;
+- concrete delegation rules, authorized identities, operations, and targets;
+- the executable pilot contract and integration qualification evidence.
+
+The [implementation readiness review](implementation-readiness-review.md) tracks these specifications and their required timing. Qualification results are recorded against the tested revisions and environments.
+
+## Maintaining decisions
+
+Changes to this baseline follow the designated decision authority. Record the chosen option, rationale, constraints, affected requirements, and artifact revisions; update the authoritative documentation and retain links to superseded decisions.
+
+Implementation, qualification, and delivery progress are tracked through their own Tasks, evidence, and acceptance records.
