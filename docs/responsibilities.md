@@ -1,43 +1,53 @@
 # Responsibilities
 
-Möbiræon separates logical responsibilities from agent execution configurations. Roles define accountability; governing policies establish authority, and Agent Profiles define execution configuration. A role name or model output grants no permissions.
+Möbiræon separates accountability, execution configuration, and authority. Roles define responsibilities; Agent Profiles configure execution; governing policies and execution configuration establish permissions, limits, and delegated authority.
 
 ## Roles and accountability
 
 | Role | Accountability |
 | --- | --- |
-| **Human owner** | Establishes goals, constraints, authority, and acceptance expectations; participates in clarification and early review; resolves escalated product decisions. |
-| **Orchestrator Agent** | Reasons about intake, plans, assignments, and Decisions; proposes actions through authorized Coordinator operations and initiates human escalation within policy. |
-| **Architect and planner** | Researches alternatives, describes boundaries and contracts, evaluates tradeoffs, and proposes bounded work and dependencies. |
-| **Technical writer** | Maintains specifications, acceptance criteria, component descriptions, and project summaries linked to authoritative artifacts. |
-| **Developer** | Implements assigned changes and relevant tests; documents outcomes, limitations, and unresolved questions. |
-| **Reviewer** | Independently assesses deliverables against applicable requirements, accepted decisions, and review rules. |
-| **Verifier or QA** | Establishes verification evidence, assesses relevant edge cases, and checks integrated behavior. |
-| **Decision resolver** | Investigates questions using accepted context, appropriate specialists, research, or experiments; recommends resolutions or escalation to the Orchestrator Agent. |
+| **Human owner** | Establishes goals, constraints, and acceptance expectations; approves the initial baseline and delegation policy; participates in clarification and resolves escalated Decisions within their authority. |
+| **Orchestrator Agent** | Reasons about intake, plans, Assignments, and Decisions; coordinates specialist contributions, proposes authorized coordination actions, and initiates human escalation when required. |
+| **Architect and planner** | Researches alternatives and proposes architecture, boundaries, contracts, bounded Tasks, and dependencies; records tradeoffs, assumptions, and consequences. |
+| **Technical writer** | Maintains specifications, acceptance criteria, component descriptions, and source-linked summaries; identifies ambiguity and the documentation impact of changes. |
+| **Developer** | Implements assigned changes, relevant tests, and documentation; commits and pushes through permitted repository operations; reports results, limitations, and unresolved questions. |
+| **Reviewer** | Independently assesses exact submitted revisions against applicable requirements, accepted Decisions, contracts, and review rules; records findings and review outcomes. |
+| **Verifier or QA** | Produces verification evidence for identified revisions and environments; exercises relevant edge cases, failure conditions, and integrated behavior; reports failures and limitations. |
+| **Decision resolver** | Investigates unresolved questions using accepted context, specialists, research, or experiments; evaluates evidence and alternatives and recommends resolution or escalation to the Orchestrator Agent. |
 
 ## Coordination and execution components
 
 | Component | Accountability |
 | --- | --- |
-| **Coordinator** | Enforces authority, authoritative workflow state, and progression and acceptance rules. Applies acceptance only when governing authority and evidence establish it. |
-| **Scheduler** | Deterministically dispatches eligible, authorized work within configured capacity and limits. It does not use model output as permission to bypass controls. |
-| **Worker** | Provides execution capacity for supervised Runs. Availability does not establish Task readiness or authority. |
-| **Runner Adapter** | Invokes a configured runtime through a transport, supervises its lifecycle, and normalizes outcomes. It operates within configured execution and tool policies. |
+| **Coordinator** | Maintains authoritative workflow state and enforces permissions, prerequisites, ownership, limits, progression rules, and acceptance gates. Records acceptance when the required authority and evidence establish it. |
+| **Scheduler** | Deterministically dispatches eligible, authorized Runs within configured capacity and limits. Tasks awaiting prerequisites or Decisions consume no active execution slot. |
+| **Worker** | Provides execution capacity under configured isolation and resource controls; reports availability and execution health. |
+| **Runner Adapter** | Invokes the configured runtime through a transport, delivers inputs, captures outputs, supervises the process lifecycle, and normalizes outcomes within execution and tool policies. |
 
-These are logical responsibilities, not a requirement for separate services. An Agent is the logical actor, its Profile is execution configuration, and a Run is one bounded attempt; none is interchangeable with Worker capacity.
+These are logical responsibilities and may share a service or process. Agent identity, Profile configuration, Worker capacity, and Run execution remain distinct concepts, as defined in the [definitions](definitions.md).
 
-## Role and profile assignments
+## Role and Profile assignments
 
-Role assignments and agent profiles are configured independently. Profile assignments support multiple roles within one profile and multiple profiles for a role. The governing policy determines the permitted assignments and the independence required for assessment.
+Role assignments and Agent Profiles are configured independently. A Role may use multiple qualified Profiles, and a Profile may serve multiple Roles where its instruction bindings, capabilities, and governing policy permit.
 
-Each profile specifies its AI provider, model, supported reasoning settings, tools, context access, and execution limits. Role names, profile counts, and model choices are configurable.
+Each Run records its assigned responsibilities, applicable instruction revisions, Agent identity, Profile revision, and effective configuration. Profiles specify the runtime, transport, provider, model, supported reasoning settings and options, tools, context policy, and execution limits through the Agent configuration contract.
+
+Role descriptions and shared operating rules provide the instructions for each Assignment. Reusing a Profile or changing a Role label preserves the applicable permission boundaries and review-independence requirements.
 
 ## Coordination and decision authority
 
-The Orchestrator Agent reasons about progression and uses specialist Agents for judgments within their responsibilities. The Coordinator enforces workflow state, permissions, and acceptance through explicit rules and recorded evidence; the Scheduler dispatches eligible work within those controls. A model's success statement alone does not establish that a rule has been satisfied.
+The Orchestrator Agent plans and routes work through authorized Coordinator operations. The Coordinator validates proposed actions against current state, policy, and evidence; the Scheduler dispatches work within those controls. Model output supplies proposals or evidence for evaluation, not permission to bypass controls.
 
-Agents exercise the authority granted by the governing autonomy policy and baseline. They record unresolved questions as decision requests and provide the available evidence and recommended resolution.
+Agents act within the governing baseline, delegation policy, and execution permissions. They record unresolved questions as Decision requests with evidence, attempted resolution, recommendations, affected work, and required authority. The Decision resolver investigates and recommends an outcome; any authority to accept that outcome comes from policy.
 
-The decision resolver investigates those requests and recommends a resolution or escalation. Only the Orchestrator Agent initiates or assigns agent-generated requests for human decisions or intervention, through authorized Coordinator operations. Normal human review remains available under project policy.
+Only the Orchestrator Agent initiates or assigns agent-generated requests for human decisions or intervention, through authorized Coordinator operations. Ordinary human review and intervention follow project policy.
 
-The human owner resolves escalated decisions within their authority. Accepted decisions are recorded and made available to the affected work.
+Accepted Decisions identify their authority, applicable baseline, affected revisions, and required follow-up actions. Dependent work resumes after the accepted resolution, required artifact updates, and prerequisite conditions are recorded and satisfied.
+
+## Review, acceptance, and integration
+
+Independent review uses a separate Assignment and Run under the configured independence policy. Changing the author’s Role or Profile alone does not establish independence. The same model may perform authoring and review when the policy’s independence conditions are satisfied.
+
+Review and verification provide assessments and evidence. Acceptance requires the designated authority and applicable gates; policy may explicitly grant acceptance authority to an eligible reviewer.
+
+Integration uses the assigned workflow and authorized repository identity. A Task may finish with an accepted reviewed patch when its contract permits this. Overall code delivery requires the prescribed review evidence and fresh validation of the exact combined revision. The [decision register](decisions.md) defines the governing delivery and authority boundaries.
