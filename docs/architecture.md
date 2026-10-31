@@ -1,6 +1,6 @@
 # High-level architecture
 
-**Status:** The five-part logical structure and main exchanges below were agreed on **2026-10-31**. Persistence ownership follows confirmed D-05, D-07, and D-11. The Coordination operating model below is proposed for review; detailed component contracts, infrastructure, and workflows follow separately. Agreement does not establish implementation or verification.
+**Status:** The five-part logical structure, main exchanges, and high-level Coordination operating model below were agreed on **2026-10-31**. Persistence ownership follows confirmed D-05, D-07, and D-11. Intake classification and Task readiness are the next proposals for review in [workflow](workflow.md#proposed-intake-and-task-readiness); detailed component contracts, infrastructure, and workflows follow separately. Agreement does not establish implementation or verification.
 
 This document describes the system boundary, main parts, information ownership, and their relationships. [Definitions](definitions.md), [requirements](requirements.md), [decisions](decisions.md), and [responsibilities](responsibilities.md) remain the governing sources for terminology, required behavior, selected technologies, and actor responsibilities.
 
@@ -44,7 +44,7 @@ Specialist Roles supply architecture, writing, development, review, verification
 
 Policy enforcement and integration control belong within these coordination and execution boundaries. Acceptance is recorded by the Coordinator when the designated authority and required evidence establish it.
 
-### Proposed initial operating model
+### Initial Coordination operating model
 
 Run Coordination as one dedicated background service, containing a distinct **Forge Synchronization** component alongside the Coordinator and Scheduler. Initially this component polls Gitea through the in-process forge adapter and publishes authorized updates back to it. This separates polling responsibility within the single-service baseline in D-07 and D-11.
 
@@ -80,7 +80,7 @@ A new Gitea issue is an observed input. Its managed scope, meaning, authority, a
 
 Polling, synchronization, scheduling, and reconciliation use ordinary software. The Orchestrator runs when actionable interpretation, planning, routing, or decision reasoning is required. Known workflow progression and internal results can make work eligible independently of a fresh Gitea change; neither dispatch nor continuation waits for a new issue to appear.
 
-Gitea documents an [issue search API](https://docs.gitea.com/api/operations/issue-search-issues/) and [webhook notifications](https://docs.gitea.com/usage/repository/webhooks/). Polling is the proposed first observation mechanism; webhooks may later complement it through the same adapter and Coordinator boundary. Detailed event coverage, intake conventions, actor verification, and qualification of the installed Gitea version belong to the forge contract. The corresponding high-level operating loop is in [workflow](workflow.md#proposed-coordination-loop).
+Gitea documents an [issue search API](https://docs.gitea.com/api/operations/issue-search-issues/) and [webhook notifications](https://docs.gitea.com/usage/repository/webhooks/). Polling is the agreed initial observation mechanism; webhooks may later complement it through the same adapter and Coordinator boundary. Detailed event coverage, intake conventions, actor verification, and qualification of the installed Gitea version belong to the forge contract. The corresponding high-level operating loop is in [workflow](workflow.md#coordination-loop).
 
 ## Persistence and information ownership
 

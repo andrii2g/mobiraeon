@@ -1,8 +1,8 @@
 # Workflow summary
 
-**Status: Proposed high-level workflow except for confirmed requirements and decisions.** The five-part architecture and its main exchanges are agreed; the Coordination loop below is proposed alongside the [Coordination operating model](architecture.md#proposed-initial-operating-model). D-02 confirms Agent/component terminology, D-03 confirms the hierarchy, and D-04 confirms lifecycle separation and review/rework principles. Exact state names and transitions remain to be agreed. See [definitions](definitions.md) and the approved [requirements](requirements.md).
+**Status:** The high-level Coordination loop below was agreed on **2026-10-31**, alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Intake classification and Task readiness below are proposed for review. The delivery loop and further workflow detail remain proposed where they extend the confirmed requirements and decisions. D-02 confirms Agent/component terminology, D-03 confirms the hierarchy, and D-04 confirms lifecycle separation and review/rework principles. Exact state names and transitions remain to be agreed. See [definitions](definitions.md) and the approved [requirements](requirements.md).
 
-## Proposed Coordination loop
+## Coordination loop
 
 Architecture defines which component owns an action; workflow defines which action is required next and what permits it. The initial service connects Gitea observation, authoritative coordination, and bounded Agent execution:
 
@@ -19,6 +19,45 @@ Architecture defines which component owns an action; workflow defines which acti
 The loop can pause at any prerequisite and continue independent work. Polling unchanged external state creates no Agent Run. A human answer resumes affected work only after its authority and meaning are established, required artifact updates are recorded, and prerequisites are satisfied; unresolved interpretation returns to the Orchestrator.
 
 The Gitea intake conventions must distinguish a new Request, an existing planned Task, an ordinary discussion, and an authorized decision or approval. Exact labels/templates, transition names, polling intervals, and message contracts remain follow-up design work.
+
+## Proposed intake and Task readiness
+
+### Distinguishing issues
+
+Use explicit issue kinds and suitable creation templates. The normal human entry point is a Request; the Orchestrator proposes the bounded Tasks needed to deliver it. An authorized human can also submit a Task candidate for already understood work.
+
+| Kind | Meaning and example | Initial handling |
+| --- | --- | --- |
+| **Request** | A desired outcome, such as "Allow users to export reports as CSV." May still contain unanswered questions. | Record the intake and authorize an Orchestrator Assignment to interpret, clarify, or plan the work as needed. |
+| **Initiative** | An overall delivery outcome within a Project, such as "Report export." | Link its originating Request and related Tasks; track overall outcome acceptance. |
+| **Task** | A bounded contribution with explicit inputs, Deliverables, and acceptance criteria, such as "Define the CSV format" or "Implement export against the accepted format." | Validate the work contract and context, then assess readiness for assignment. A Task can be well defined while still awaiting a prerequisite. |
+
+Propose visible kind labels such as `kind/request`, `kind/initiative`, and `kind/task`; these names are illustrative. Gitea supports [issue templates that can set labels](https://docs.gitea.com/usage/issues-prs/issue-pull-request-templates/). Templates collect the appropriate information; the Coordinator validates and records the classification and stable external mapping. Label edits request classification changes and cannot grant authority or make work Ready by themselves.
+
+D-07 already maps Initiatives and substantive Tasks to issues. Representing each Request as a separate intake issue is the additional proposal here. Keep that Request and its discussion linked to the resulting work. A Request can contribute to an existing Initiative or lead to a new one; its origin link does not add a hierarchy tier above **Project → Initiative → Task**. The Request is not silently replaced by a Task, and decomposition creates linked Tasks within the Initiative rather than nested Task trees.
+
+A human-created Task issue remains a candidate until its Initiative, governing context, work contract, and authority have been validated. Missing or ambiguous information returns to clarification. Ordinary unclassified issues remain outside automated execution unless an explicit intake rule brings them into managed scope.
+
+### Readiness for assignment
+
+The Coordinator establishes readiness from the Task contract and recorded evidence, informed by the Orchestrator's proposals. Apply four checks:
+
+| Check | What must be established |
+| --- | --- |
+| **Bounded work** | Objective, scope and exclusions, expected Deliverables, and observable acceptance criteria are clear. The Task is linked to its Initiative, and the required Role or responsibility is identified. |
+| **Usable inputs** | Required governing documents, source revisions, and other inputs are available, resolvable, and consistent. The review and acceptance expectations are known. |
+| **Satisfied prerequisites** | Required Deliverables and Decisions meet their acceptance and revision conditions. Dependencies form an acyclic graph; a closed issue alone is insufficient. |
+| **Authority to begin** | The applicable baseline approval or delegation covers the work and permitted operations, with no unresolved question preventing the assigned work. |
+
+These checks apply to the work being assigned. A clarification, research, or architecture Task needs sufficient inputs and authority for that investigation; it does not require the implementation specification it is intended to produce. An implementation Task requires its applicable approved brief/specification and accepted prerequisites. Ordinary Tasks covered by approved delegation do not require a fresh human approval each time.
+
+Keep three determinations separate:
+
+- **Task readiness:** the work has the definition, inputs, prerequisites, and authority needed to begin.
+- **Assignment eligibility:** a selected Agent/Profile is suitable and permitted for the Task or stage, including any review-independence conditions. Selecting a specific Agent is not a prerequisite for Task readiness.
+- **Run dispatch:** the Assignment remains authorized and ready, its resolved execution configuration is qualified, and ownership, capacity, and limits permit starting.
+
+A Ready Task may therefore wait for a suitable Agent or execution capacity. Any visible readiness label reflects the Coordinator's determination. Changes to governing inputs trigger reassessment; readiness is not permanent, and the Task's original history is retained. These checks apply the existing definitions and F-13 through F-15 without choosing exact lifecycle states.
 
 ## Delivery loop
 
