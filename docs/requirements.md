@@ -1,6 +1,6 @@
 # Möbiræon requirements
 
-This document defines the approved product requirements and Agent configuration contract for Möbiræon. The requirements baseline was agreed on 2026-10-30. The agreed interpretations below form part of this baseline.
+This document defines the approved product requirements and Agent configuration contract for Möbiræon. The agreed interpretations below form part of this baseline.
 
 Requirement IDs remain stable. Changes to the baseline require the applicable approval or delegated authority and must identify affected work. Implementation, qualification, and verification evidence are tracked separately; an approved requirement is not a claim that the capability has been implemented or verified.
 

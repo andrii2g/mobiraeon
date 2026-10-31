@@ -50,4 +50,6 @@ Independent review uses a separate Assignment and Run under the configured indep
 
 Review and verification provide assessments and evidence. Acceptance requires the designated authority and applicable gates; policy may explicitly grant acceptance authority to an eligible reviewer.
 
-Integration uses the assigned workflow and authorized repository identity. A Task may finish with an accepted reviewed patch when its contract permits this. Overall code delivery requires the prescribed review evidence and fresh validation of the exact combined revision. The [decision register](decisions.md) defines the governing delivery and authority boundaries.
+The [initial defaults](workflow.md#initial-defaults) assign routine routing to the Coordinator under approved rules and ordinary Task acceptance to an explicitly delegated, eligible independent reviewer. The Orchestrator handles unresolved judgment or exceptions; the Scheduler dispatches the resulting authorized Runs.
+
+Integration uses the assigned workflow and authorized repository identity. Ordinary implementation Task contracts include integration and fresh combined-revision validation. A Task may finish with an accepted reviewed patch when its contract explicitly assigns integration separately. Overall code delivery requires the prescribed review evidence and fresh validation of the exact combined revision. The [decision register](decisions.md) defines the governing delivery and authority boundaries.

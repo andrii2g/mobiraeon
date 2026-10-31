@@ -1,6 +1,6 @@
 # Intake and Task readiness
 
-**Snapshot: 2026-10-31. [A] Agreed high-level behavior.** This view follows [intake and readiness](../workflow.md#intake-and-task-readiness). It shows local decisions and handoffs, without defining exact lifecycle states or message contracts. Agreement does not mean implemented or verified.
+**[A] Agreed high-level behavior.** This view follows [intake and readiness](../workflow.md#intake-and-task-readiness). It shows local decisions and handoffs, without defining exact lifecycle states or message contracts. Agreement does not mean implemented or verified.
 
 ```mermaid
 ---

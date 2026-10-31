@@ -52,6 +52,10 @@ Review and verification normally use assignments and Runs within a Task’s work
 
 A Task is accepted when its deliverable contract, designated authority, and required evidence establish acceptance. A reviewed-patch Task may finish before a separately assigned integration Task when its contract permits this. Overall code delivery requires validation of the exact combined revision under F-21.
 
+In the initial workflow, the Coordinator routes routine assessment and in-scope rework under approved rules; independent review and required verification do not need another Orchestrator Run merely for routing. A separate Verifier/QA Agent Run is needed when the contract or policy requires it. Ordinary implementation Task contracts include authorized integration and fresh validation of the exact combined revision; reviewed-patch acceptance is permitted when integration is explicitly assigned separately. See the [workflow defaults](workflow.md#initial-defaults).
+
+The [integration handoff](workflow.md#integration-and-combined-result-validation) connects reviewed work, authorized integration, validation of the combined result, and acceptance or rework. Initiative acceptance remains an assessment of the overall intended outcome.
+
 Workflow specifications define the state names, transitions, and recovery behavior.
 
 ## D-05 Registry
@@ -109,6 +113,8 @@ Human approval establishes the initial baseline and delegation policy. Within th
 The Coordinator enforces authority and records acceptance when the required evidence and gates are satisfied. The delegation policy identifies authorized actors, operations, targets, and applicable gates. Execution configuration and project policy govern repository, infrastructure, and deployment permissions.
 
 Independent assessment and acceptance authority are distinct responsibilities. Policy may explicitly assign both to the same eligible reviewer.
+
+For the initial workflow, explicitly delegate ordinary Task acceptance to an eligible independent reviewer, conditional on all required current evidence and gates. The Coordinator enforces and records that determination. A contract or policy may require another designated authority; the default does not grant authority through Role text alone.
 
 Changes to scope, authority, infrastructure, or spending outside delegation require escalation through the Orchestrator Agent. Only the Orchestrator Agent initiates agent-generated requests for human decisions or intervention; ordinary human review follows project policy.
 

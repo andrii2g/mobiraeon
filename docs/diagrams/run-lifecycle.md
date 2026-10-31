@@ -1,6 +1,6 @@
 # Run launch and result reporting
 
-**Snapshot: 2026-10-31. [A] Agreed high-level design.** This shared lifecycle applies to every Agent stage, including Orchestrator reasoning, authoring, independent review, verification, and Agent-performed integration. It does not define exact states or API messages. The [workflow](../workflow.md#run-launch-and-result-reporting) owns the rules.
+**[A] Agreed high-level design.** This shared lifecycle applies to every Agent stage, including Orchestrator reasoning, authoring, independent review, verification, and Agent-performed integration. It does not define exact states or API messages. The [workflow](../workflow.md#run-launch-and-result-reporting) owns the rules.
 
 ```mermaid
 ---

@@ -1,6 +1,6 @@
 # Assignment and Agent selection
 
-**Snapshot: 2026-10-31. [A] Agreed high-level behavior.** This view follows [Agent assignment and selection](../workflow.md#agent-assignment-and-selection). It separates Task readiness, configuration eligibility, and Run dispatch without defining exact state names or selection contracts. Agreement does not mean implemented or verified.
+**[A] Agreed high-level behavior.** This view follows [Agent assignment and selection](../workflow.md#agent-assignment-and-selection). It separates Task readiness, configuration eligibility, and Run dispatch without defining exact state names or selection contracts. Agreement does not mean implemented or verified.
 
 ```mermaid
 ---

@@ -1,6 +1,6 @@
 # High-level system diagram
 
-**Snapshot: 2026-10-31.** All five logical parts and the responsibility boundaries in this view are agreed. [A] means agreed design, not implemented or qualified. The [architecture](../architecture.md) owns the component descriptions; the [diagram guide](README.md) explains versioning and status markers.
+**[A] Agreed high-level design.** All five logical parts and the responsibility boundaries in this view are agreed. [A] means agreed design, not implemented or qualified. The [architecture](../architecture.md) owns the component descriptions; the [diagram guide](README.md) explains versioning and status markers.
 
 ```mermaid
 flowchart LR
