@@ -1,6 +1,6 @@
 # Shared operating rules
 
-Read with your role before every run. A task is a bounded assignment with inputs, dependencies, deliverables and acceptance criteria.
+Read the exact published revision of these rules and your Role instructions supplied for every Run. A Task is a bounded unit of work with inputs, dependencies, deliverables and acceptance criteria; an Assignment allocates the Task or a workflow stage to an Agent.
 
 ## Authority
 

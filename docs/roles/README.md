@@ -1,6 +1,6 @@
 # Möbiræon roles
 
-This directory contains reusable responsibility instructions for Möbiræon. Each role has its own folder and `ROLE.md` entry point. The pack uses **task** for a bounded assignment with inputs, dependencies, deliverables, and acceptance criteria.
+This directory contains reusable responsibility instructions for Möbiræon. Each role has its own folder and `ROLE.md` entry point. A **Task** is a bounded unit of work with inputs, dependencies, deliverables, and acceptance criteria; an **Assignment** allocates a Task or workflow stage to an Agent.
 
 ## Role catalog
 
@@ -19,18 +19,18 @@ The human-owner description documents the human participant. Do not configure an
 
 ## Loading a role
 
-Configure the agent's role entry point, provider, model, reasoning settings, tools, access, and execution limits in the execution environment. Keep those settings separate from the role's responsibility text.
+Configure Role and instruction bindings, provider, model, reasoning settings, tools, access, and execution limits through the versioned Profile in the [Agent Registry](../agent-registry.md). Each registered Agent revision binds an exact Profile revision. Keep execution settings separate from the Role's responsibility text; Coordination resolves and retains the exact configuration and instruction revisions supplied to each Run.
 
 At the beginning of each run, supply:
 
-1. [Shared operating rules](_shared/OPERATING_RULES.md).
-2. The selected role's `ROLE.md`.
+1. The published revision of the [shared operating rules](_shared/OPERATING_RULES.md).
+2. The published revision of the selected Role instructions.
 3. The assigned task, including its objective, scope, exclusions, inputs, expected deliverables, and acceptance criteria.
 4. The governing project policy and the accepted requirements, specifications, contracts, decisions, and source revisions relevant to that task.
 
 Instruct the agent to read the shared rules and selected role description before performing substantive work. Supply the actual locations of project documents; they are not bundled with these reusable role instructions. If required context is missing, the agent records the missing input and returns a decision request through the orchestrator.
 
-For example, a developer run loads `_shared/OPERATING_RULES.md` and `developer/ROLE.md`, then reads its task and project context. Changing the selected role does not change the agent's tool permissions or grant approval authority.
+The source paths in this catalog identify instruction inputs for reviewed Registry publication. For example, a Developer Run receives the exact published revisions originating from `_shared/OPERATING_RULES.md` and `developer/ROLE.md`, then reads its Assignment and project context. Later source-file edits do not change those bound instructions. Changing the selected Role does not change the Agent's tool permissions or grant approval authority.
 
 ## Content conventions
 
