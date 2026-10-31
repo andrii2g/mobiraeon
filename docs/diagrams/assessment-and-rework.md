@@ -36,6 +36,8 @@ Each new submission or assessment result enters at the top. After correction, in
 
 Independent review assesses correctness, completeness, and conformance. Verification supplies check results and environment evidence; its timing and overlap follow the work contract. Separate Role names or models do not establish independence. A failed check is a finding about the work; a failed verifier execution follows Run recovery instead.
 
+The [proposed initial defaults](../workflow.md#proposed-initial-defaults) recommend routine assessment routing without another Orchestrator Run, explicit acceptance delegation to an eligible reviewer, and integration within ordinary implementation Task contracts unless separately assigned. These defaults remain under discussion; this diagram permits the contract-specific alternatives already allowed by the baseline.
+
 Acceptance remains pending while any required criterion, evidence, finding, or authority is unresolved. The Coordinator records the authorized determination and accepted revisions. An eligible reviewer can hold delegated acceptance authority; the model does not require an extra acceptance Run or fresh human approval for every Task. Only the Orchestrator initiates human escalation when resolution exceeds delegation. Changes to scope or governing contracts require the authorized Decision and artifact updates before affected work resumes.
 
 | Delivery contract | What acceptance requires |

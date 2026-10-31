@@ -1,6 +1,8 @@
 # Workflow summary
 
-**Status:** The high-level Coordination loop, intake classification, Task readiness, and Agent assignment and selection below were agreed on **2026-10-31**, alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Run launch and result reporting below are proposed for review. The delivery loop and further workflow detail remain proposed where they extend the confirmed requirements and decisions. D-02 confirms Agent/component terminology, D-03 confirms the hierarchy, and D-04 confirms lifecycle separation and review/rework principles. Exact state names and transitions remain to be agreed. See [definitions](definitions.md) and the approved [requirements](requirements.md).
+**Status:** The high-level Coordination loop, intake classification, Task readiness, Agent assignment and selection, and Run launch and result reporting below were agreed on **2026-10-31**, alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Review, verification, acceptance, and rework below are proposed for review. The delivery loop and further workflow detail remain proposed where they extend the confirmed requirements and decisions. D-02 confirms Agent/component terminology, D-03 confirms the hierarchy, and D-04 confirms lifecycle separation and review/rework principles. Exact state names and transitions remain to be agreed. See [definitions](definitions.md) and the approved [requirements](requirements.md).
+
+The [versioned Mermaid views](diagrams/README.md) show the [high-level system](diagrams/high-level.md) and four focused workflow parts: [intake/readiness](diagrams/intake-and-readiness.md), [assignment/selection](diagrams/assignment-and-selection.md), the [shared Run lifecycle](diagrams/run-lifecycle.md), and [assessment/rework](diagrams/assessment-and-rework.md). Each view identifies the agreed/proposed boundary.
 
 ## Coordination loop
 
@@ -89,7 +91,7 @@ One Task can use separate Assignments for implementation, review, and verificati
 
 Retries and reassignment retain Task identity and preserve previous allocations, results, and evidence. Record a changed authorized allocation without overwriting the former one, and reject updates from superseded execution ownership. A change to configuration already bound to a Run requires a new authorized, validated Run; it cannot rewrite the old attempt's configuration. Exact assignment transitions and recovery mechanisms follow in the detailed workflow specification.
 
-## Proposed Run launch and result reporting
+## Run launch and result reporting
 
 A Run is one bounded attempt under an authorized Assignment. Its launch, reported work, observed execution outcome, and acceptance remain separate facts. The conditions below do not choose exact lifecycle state names.
 
@@ -123,6 +125,61 @@ Stable operation identities let duplicate dispatches or reports converge without
 
 Execution capacity returns to service only after Run-owned processes are cleaned up or effectively contained. Record incomplete cleanup and withhold affected capacity while it remains unsafe to reuse. The Coordinator then records waiting, recovery, or the next authorized work without inferring acceptance from Run completion.
 
+## Proposed review, verification, acceptance, and rework
+
+After a submission is recorded, the Task contract and project policy determine the required assessments, evidence, and next action. Review and verification can overlap or repeat where dependencies permit; this proposal does not require every Task to follow a fixed review-then-QA sequence.
+
+The Coordinator applies approved routing rules, checks recorded gates, and records authorized determinations. Reviewers and verifiers supply judgments and evidence about the work; the Coordinator does not independently reason about correctness. Routine assessment and in-scope rework can proceed without another Orchestrator Run when policy already determines the next action. Unresolved interpretation, disputed findings, or exceptions needing judgment return to the Orchestrator.
+
+### Proposed initial defaults
+
+These defaults are recommendations for the first workflow, not confirmed policy. The approved baseline permits them but does not select them.
+
+| Choice | Recommended starting default |
+| --- | --- |
+| Assessment routing | After an authoring submission, arrange independent review and any verification required by the Task contract or policy. Existing applicable evidence can satisfy checks where permitted; a separate Verifier/QA Agent Run is required only when the contract or policy calls for it. |
+| Acceptance delegation | Explicitly delegate ordinary Task acceptance to an eligible independent reviewer, conditional on all required current evidence and gates. The Coordinator enforces and records the determination. Use another designated authority where the contract or policy requires it. |
+| Implementation Task boundary | Normally include authorized integration and fresh combined-revision validation in the implementation Task's acceptance contract. Permit reviewed-patch acceptance only when integration is explicitly assigned to separate work; retain that delivery obligation. |
+
+### Assess exact submissions
+
+Assess the identified Artifact revisions against their governing baseline and acceptance criteria. Supply the author handoff and existing evidence, while keeping authoritative sources available for direct inspection. Supplied evidence is distinct from checks reproduced by an assessor.
+
+| Responsibility | Result and boundary |
+| --- | --- |
+| Independent review | Assess correctness, completeness, and conformance; return grounded findings and an acceptance recommendation for the exact assessed revisions. Agent review uses a separate Assignment and Run satisfying the configured independence policy. |
+| Verification | Execute the required checks against identified revisions and environments; record results, failures, and limitations. Assign a Verifier/QA Role when required by the work contract or policy; a passing check alone does not establish acceptance. |
+| Acceptance | The designated authority determines whether the required criteria and evidence are satisfied. The Coordinator enforces the gates and records the determination, its authority, and the accepted revisions. |
+
+A different Role, Profile, Agent name, or model does not establish independence by itself. Assessors disclose authorship, repairs, and conflicts; policy governs eligibility. An eligible reviewer may also hold acceptance authority when explicitly delegated, but its assessment alone does not supply that authority.
+
+A completed assessment Run can report required changes or a failed product check; that is distinct from a failed assessor execution. Assessment reports contribute evidence to the Task's gates rather than automatically creating a new authoring submission that requires another review of the report itself. Any separately required assessment of such material follows its own contract. Later evidence or changed revisions may require an updated acceptance judgment; an earlier recommendation alone does not authorize acceptance.
+
+### Acceptance and code delivery
+
+Record acceptance only when all applicable gates pass; missing evidence, unresolved required findings, or unavailable authority leaves it pending. Ordinary acceptance within approved delegation does not require another human approval.
+
+- A documentation or planning Task can finish when its own identified Deliverable is independently assessed and accepted, even while related implementation continues.
+- An implementation Task follows its own contract. A reviewed patch can be accepted before integration only when that contract assigns integration to a separate Task.
+- Overall code delivery requires authorized integration into the designated target and fresh validation of the exact combined revision. Serialize conflicting integration operations; a reviewed branch, successful push, or merge alone cannot establish delivered success.
+
+Changed submissions, governing inputs, or intervening target changes trigger reassessment of affected review, verification, and approvals. Evidence for revision A does not automatically establish revision B; reuse requires an explicit applicability determination under policy. Initiative acceptance still assesses its overall outcome rather than counting accepted Tasks.
+
+### Rework and unresolved questions
+
+Findings identify the assessed revision, unmet criterion or concrete failure, evidence, and required correction or Decision. Distinguish defects from missing evidence, environment limitations, disputed expectations, and optional suggestions.
+
+| Condition | Next authorized action |
+| --- | --- |
+| Required correction within scope | Return the findings to the responsible author for rework; preserve the logical Task and its existing history. |
+| Missing or inconclusive evidence | Arrange the needed verification or investigation; keep acceptance pending rather than inventing a pass or assuming a product defect. |
+| Ambiguous requirement or disputed finding | Route a Decision request through the Orchestrator. Only it initiates human escalation when resolution exceeds delegated authority. |
+| Applicable criteria and evidence satisfied | Obtain the designated acceptance determination and let the Coordinator record it; continue remaining delivery obligations. |
+
+Rework starts another Run under the same Task, using a new Assignment when the authorized allocation changes. Retain previous submissions, findings, configuration, and evidence; reassess repaired revisions and affected behavior before acceptance. Assessors return repairs to the author unless separately authorized to repair, disclose their changes, and preserve subsequent assessment independence.
+
+Changes to scope or governing contracts require the applicable authorized Decision and artifact updates before affected work resumes. Exhausted recovery or budgets preserves progress and returns control under policy; it cannot establish acceptance. Exact findings, acceptance, and rework transitions remain follow-up workflow specifications under F-15, F-20, F-21, D-04, and D-10.
+
 ## Delivery loop
 
 | Stage | Main activity | Outcome |
@@ -131,7 +188,7 @@ Execution capacity returns to service only after Run-owned processes are cleaned
 | 2. Clarification | Orchestrator Agent coordinates requirements analysis, research, architecture, and writing. It consolidates unresolved questions for the human. | A reviewed brief and initial specification approved by the human. |
 | 3. Planning | Agents propose milestones and bounded Tasks, with dependencies, ownership, inputs, acceptance criteria, and limits. | An approved, versioned delivery baseline and eligible work. |
 | 4. Execution | The Scheduler dispatches eligible, authorized Runs for recorded Assignments. Workers and Runner Adapters use the selected Agent Profiles and runtimes to produce artifacts and validation evidence. | A submission, an internal question, or a recorded execution failure. |
-| 5. Review and integration | An independent reviewer checks the submission. Accepted changes are integrated and verified against the current shared baseline. | Accepted documentation or integrated, validated code. |
+| 5. Assessment and integration | Arrange independent review and required verification, resolve findings, and perform authorized integration as the Task contract requires. Record acceptance only after its applicable gates pass. | Accepted Task Deliverables; overall code delivery additionally requires fresh validation of the exact combined revision. |
 | 6. Outcome acceptance | Required results are checked together against the Initiative's agreed outcome. | A completed Initiative, or specific remaining work. |
 
 The loop also applies to a feature, defect, migration, or investigation in an existing project. The amount of planning scales to the change; a small task need not create every planning role or milestone.

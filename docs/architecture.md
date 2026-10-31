@@ -1,6 +1,6 @@
 # High-level architecture
 
-**Status:** The five-part logical structure, main exchanges, high-level Coordination operating model, intake/readiness conventions, and Agent assignment/selection were agreed on **2026-10-31**. Persistence ownership follows confirmed D-05, D-07, and D-11. Run launch and result reporting are the next proposals for review in [workflow](workflow.md#proposed-run-launch-and-result-reporting); detailed component contracts, infrastructure, and workflows follow separately. Agreement does not establish implementation or verification.
+**Status:** The five-part logical structure, main exchanges, high-level Coordination operating model, intake/readiness conventions, Agent assignment/selection, and Run launch/reporting were agreed on **2026-10-31**. Persistence ownership follows confirmed D-05, D-07, and D-11. Review, verification, acceptance, and rework routing are the next proposals for review in [workflow](workflow.md#proposed-review-verification-acceptance-and-rework); detailed component contracts, infrastructure, and workflows follow separately. Agreement does not establish implementation or verification.
 
 This document describes the system boundary, main parts, information ownership, and their relationships. [Definitions](definitions.md), [requirements](requirements.md), [decisions](decisions.md), and [responsibilities](responsibilities.md) remain the governing sources for terminology, required behavior, selected technologies, and actor responsibilities.
 
@@ -24,15 +24,7 @@ The product supports the work described in the [product overview](../README.md).
 
 These are logical responsibilities. Their grouping does not require a separate service or database for each part.
 
-```mermaid
-flowchart LR
-    Human[Human] <--> Interface[Human interface]
-    Interface <--> Coordination[Coordination]
-    Registry[Agent Registry] --> Coordination
-    Coordination <--> Execution[Agent execution]
-    Coordination <--> Artifacts[Artifacts and context]
-    Execution <--> Artifacts
-```
+The [high-level Mermaid system diagram](diagrams/high-level.md) shows these five parts, their main exchanges, and the Coordinator's ownership of operational state. The [focused workflow diagrams](diagrams/README.md) cover intake/readiness, assignment/selection, the shared Run lifecycle, and assessment/rework, marking proposed routing explicitly.
 
 ## Coordination and Agent reasoning
 
