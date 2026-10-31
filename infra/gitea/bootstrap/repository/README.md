@@ -1,16 +1,16 @@
-# Möbiræon workflow lab
+# Möbiræon Gitea issue templates
 
-This repository rehearses human intake and linked work items in local Gitea. The proposed repository name is **`mobiraeon-workflow-lab`**, with private visibility and `main` as its default branch.
+These starter files provide Request, Initiative, and Task issue-template examples for a Gitea repository. They can be adapted to the managed repository's approved forge configuration.
 
-This is a setup rehearsal. No Coordinator, polling integration, Scheduler, Worker, or Agent runtime is implemented or activated by these files. It is not the selected D-12 feature pilot, an application repository, or the Agent Registry.
+The files collect human input. Coordinator, polling, Scheduler, Worker, and Agent execution require their separate implementation and qualification.
 
 ## Prepare the repository
 
-1. Create the private repository in the local Gitea instance under the intended human owner or organization. Enable issues.
-2. Place this README and the entire `.gitea/` directory at the repository root and commit them on its default branch. Preserve the hidden directory name.
-3. Create the three repository labels below before trying the templates. Their names are proposed conventions for this rehearsal, not finalized adapter contracts.
+1. Select the intended Gitea repository and enable issues under its approved configuration.
+2. Place the entire `.gitea/` directory at the repository root and commit it on the default branch. Preserve the hidden directory name and the repository's existing README.
+3. Create the three example repository labels below before trying the templates. Their automated handling remains subject to the forge-adapter contract and qualification.
 4. Open **New Issue** and confirm the Request, Initiative, and Task choices appear. Check their wording and automatic kind labels in the installed Gitea version.
-5. Rehearse one human-authored Request, a linked Initiative, and a bounded Task. Use ordinary issue links to preserve their origin and scope. Record the observed result and any gaps; do not describe this as automated workflow qualification.
+5. Verify origin and scope links between a Request, its Initiative, and bounded Tasks. Record the observed behavior and any gaps; manual template checks do not qualify the automated workflow.
 
 | Label | Meaning |
 | --- | --- |
@@ -28,6 +28,6 @@ No workflow-status labels are supplied. Exact lifecycle states and their transit
 
 Keep the Request and its discussion. Creating an Initiative or decomposing work does not replace the Request or create nested Task trees. Scope links and execution prerequisites are recorded separately.
 
-These Markdown templates collect information; they do not enforce completeness or validate approvals. Labels and issue closure do not establish readiness, delegated authority, acceptance, or permission to execute. In the target system those determinations belong to the Coordinator under the governing policies and evidence rules. During this rehearsal all tracking is manual. Do not put credential values in issues or attachments.
+These Markdown templates collect information; they do not enforce completeness or validate approvals. Labels and issue closure do not establish readiness, delegated authority, acceptance, or permission to execute. In the target system those determinations belong to the Coordinator under the governing policies and evidence rules. Do not put credential values in issues or attachments.
 
 The formats follow [Gitea's issue-template documentation](https://docs.gitea.com/usage/issues-prs/issue-pull-request-templates/). Verify template rendering and label behavior against the local installation. The authoritative product definitions, requirements, decisions, and workflow remain in the Möbiræon documentation repository.

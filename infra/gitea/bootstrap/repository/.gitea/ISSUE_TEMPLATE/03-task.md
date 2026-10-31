@@ -6,7 +6,7 @@ labels:
   - "kind/task"
 ---
 
-Setup rehearsal: this is a Task candidate until validated. A kind label does not make it Ready, assign an Agent, or authorize execution.
+This is a Task candidate until validated. A kind label does not make it Ready, assign an Agent, or authorize execution.
 
 ## Initiative and origin
 

@@ -6,7 +6,7 @@ labels:
   - "kind/request"
 ---
 
-Setup rehearsal: submitting this issue does not approve work or start an Agent. Do not include credentials.
+Submitting this issue does not approve work or start an Agent. Do not include credentials.
 
 ## Desired outcome
 

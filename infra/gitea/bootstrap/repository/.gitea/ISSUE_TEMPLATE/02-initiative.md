@@ -6,7 +6,7 @@ labels:
   - "kind/initiative"
 ---
 
-Setup rehearsal: this issue records a proposed delivery outcome. Labels and closure do not establish approval or acceptance.
+This issue records a proposed delivery outcome. Labels and closure do not establish approval or acceptance.
 
 ## Project and origin
 
