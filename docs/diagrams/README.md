@@ -10,6 +10,7 @@ These Mermaid sources summarize the design discussed in the governing documents.
 | [3. Run lifecycle](run-lifecycle.md) | Authorize and dispatch a bounded attempt, supervise it, and record its outcome |
 | [4. Assessment and rework](assessment-and-rework.md) | High-level assessment model and initial defaults |
 | [5. Integration and validation](integration-and-validation.md) | High-level view of combining reviewed work and validating the whole result |
+| [6. Initiative outcome acceptance](initiative-acceptance.md) | Proposed whole-outcome assessment, acceptance authority, and remaining-work handoff |
 
 ## Agreement legend
 

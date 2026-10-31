@@ -193,6 +193,23 @@ The default keeps integration and combined-result validation within the implemen
 
 Task acceptance confirms its contribution; Initiative acceptance assesses the overall intended outcome. A merge alone does not establish either acceptance or production-deployment authority.
 
+## Proposed Initiative outcome acceptance
+
+The baseline already requires acceptance of the overall outcome. This proposal describes the handoff and Initiative-level authority, shown in the [focused diagram](diagrams/initiative-acceptance.md).
+
+An Initiative is complete when:
+
+- Its required delivery obligations are satisfied; optional follow-up work is distinguished by the approved scope.
+- Current evidence establishes the overall agreed outcome, including validation of the exact combined code revision where applicable.
+- No unresolved required finding, prerequisite, or Decision prevents acceptance.
+- The designated Initiative authority accepts the outcome and the Coordinator enforces and records that determination.
+
+The proposed authority default is an eligible independent Reviewer with explicit Initiative-level delegation; human acceptance applies where policy reserves it. Ordinary Task acceptance delegation does not automatically grant Initiative acceptance. Reuse applicable review and validation evidence, arranging further assessment only where needed to establish the overall outcome.
+
+The Orchestrator coordinates the outcome assessment and missing work. If individual Tasks are accepted but the outcome is unmet, keep the Initiative open and arrange missing assessment, rework, or bounded additional work within approved scope. Preserve valid Task acceptance and its history; scope changes follow the Decision process.
+
+Request closure and later follow-up remain separate discussion topics in the [remaining agenda](implementation-plan.md#remaining-high-level-discussions).
+
 ## Delivery loop
 
 | Stage | Main activity | Outcome |

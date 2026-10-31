@@ -1,6 +1,6 @@
 # Möbiræon documentation
 
-The product requirements and D-01 through D-12 form the confirmed baseline. The high-level architecture and workflow through integration and combined-result validation are confirmed, including the assessment/rework defaults. Further workflow detail remains under review. Complete the remaining contracts and operational specifications before implementing the affected capabilities or activating the pilot.
+The product requirements and D-01 through D-12 form the confirmed baseline. The high-level architecture and workflow through integration and combined-result validation are confirmed, including the assessment/rework defaults. Initiative-level assessment and acceptance authority are proposed in the [workflow](workflow.md#proposed-initiative-outcome-acceptance); the [remaining agenda](implementation-plan.md#remaining-high-level-discussions) separates high-level discussions from later specifications. Complete the remaining contracts and operational specifications before implementing the affected capabilities or activating the pilot.
 
 ## Reading order
 
@@ -10,10 +10,10 @@ The product requirements and D-01 through D-12 form the confirmed baseline. The 
 | [Definitions](definitions.md) | Canonical terminology and relationships |
 | [Requirements](requirements.md) | Approved requirements, Agent configuration contract, and acceptance scenarios |
 | [High-level architecture](architecture.md) | System boundary, five logical parts, Coordination responsibilities, persistence ownership, and main exchanges |
-| [Workflow](workflow.md) | Confirmed Coordination, intake/readiness, assignment/selection, Run handoff, assessment/rework defaults, and integration/validation; further delivery detail remains open |
-| [Mermaid diagrams](diagrams/README.md) | High-level system plus focused intake, assignment, Run, assessment, and integration views, with agreement markers and versioning guidance |
+| [Workflow](workflow.md) | Coordination through integration/validation, proposed Initiative outcome acceptance, and remaining delivery detail |
+| [Mermaid diagrams](diagrams/README.md) | High-level system and focused workflow views, with agreement markers |
 | [Decision register](decisions.md) | Confirmed decisions, remaining details, and their consequences |
-| [Planning sequence](implementation-plan.md) | The order for resolving decisions and validating the design |
+| [Planning sequence](implementation-plan.md) | Remaining high-level discussions, later specifications, and design validation order |
 | [Implementation readiness review](implementation-readiness-review.md) | Remaining contracts, operational details, and recommended discussion order |
 | [Infrastructure](infrastructure.md) | Gitea/PostgreSQL Compose setup in WSL, local configuration, verification, and backup/restore procedures |
 | [Gitea workflow lab](gitea-workflow-lab.md) | Created private rehearsal repository, starter templates and labels, linked samples, and API verification evidence |
