@@ -1,6 +1,6 @@
 # Möbiræon documentation
 
-The product requirements and D-01 through D-12 form the confirmed baseline. The five-part high-level architecture, main exchanges, and Coordination operating model and loop were agreed on 2026-10-31. Intake classification, Task readiness conventions, and further workflow detail remain under review. Complete the remaining contracts and operational specifications before implementing the affected capabilities or activating the pilot.
+The product requirements and D-01 through D-12 form the confirmed baseline. The five-part high-level architecture, main exchanges, Coordination operating model and loop, and intake/readiness conventions were agreed on 2026-10-31. Agent assignment and selection, and further workflow detail, remain under review. Complete the remaining contracts and operational specifications before implementing the affected capabilities or activating the pilot.
 
 ## Reading order
 
@@ -10,7 +10,7 @@ The product requirements and D-01 through D-12 form the confirmed baseline. The 
 | [Definitions](definitions.md) | Canonical terminology and relationships |
 | [Requirements](requirements.md) | Approved requirements, Agent configuration contract, and acceptance scenarios |
 | [High-level architecture](architecture.md) | System boundary, five logical parts, Coordination responsibilities, persistence ownership, and main exchanges |
-| [Workflow](workflow.md) | The agreed Coordination loop; proposed intake, Task readiness, delivery loop, clarification, review, and closure |
+| [Workflow](workflow.md) | Agreed Coordination, intake, and readiness; proposed Agent assignment/selection and further delivery, review, and closure detail |
 | [Decision register](decisions.md) | Confirmed decisions, remaining details, and their consequences |
 | [Planning sequence](implementation-plan.md) | The order for resolving decisions and validating the design |
 | [Implementation readiness review](implementation-readiness-review.md) | Remaining contracts, operational details, and recommended discussion order |

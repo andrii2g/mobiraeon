@@ -76,6 +76,8 @@ Execution qualification covers process-tree cleanup, workspace boundaries, netwo
 
 Use **local Gitea** as the initial human-facing forge interface through a versioned, forge-neutral adapter contract.
 
+Represent each Request as a separate intake issue, retaining its discussion and links to the resulting existing or new Initiative and Tasks. The normal human entry point is a Request; authorized humans may also submit Task candidates for the same validation and readiness checks.
+
 Map Initiatives and substantive Tasks to issues, delivery targets to milestones, and code submissions to pull requests. Möbiræon owns authoritative workflow state, Runs, execution ownership, retry state, policy enforcement, and acceptance. Routine review events do not require separate forge items.
 
 Adapters translate supported operations and events, declare capabilities, and preserve traceable mappings between internal and external records. Qualify the Gitea adapter first, then add GitLab and other forge integrations through the same contract.

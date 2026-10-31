@@ -1,6 +1,6 @@
 # Workflow summary
 
-**Status:** The high-level Coordination loop below was agreed on **2026-10-31**, alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Intake classification and Task readiness below are proposed for review. The delivery loop and further workflow detail remain proposed where they extend the confirmed requirements and decisions. D-02 confirms Agent/component terminology, D-03 confirms the hierarchy, and D-04 confirms lifecycle separation and review/rework principles. Exact state names and transitions remain to be agreed. See [definitions](definitions.md) and the approved [requirements](requirements.md).
+**Status:** The high-level Coordination loop, intake classification, and Task readiness below were agreed on **2026-10-31**, alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Agent assignment and selection below are proposed for review. The delivery loop and further workflow detail remain proposed where they extend the confirmed requirements and decisions. D-02 confirms Agent/component terminology, D-03 confirms the hierarchy, and D-04 confirms lifecycle separation and review/rework principles. Exact state names and transitions remain to be agreed. See [definitions](definitions.md) and the approved [requirements](requirements.md).
 
 ## Coordination loop
 
@@ -20,7 +20,7 @@ The loop can pause at any prerequisite and continue independent work. Polling un
 
 The Gitea intake conventions must distinguish a new Request, an existing planned Task, an ordinary discussion, and an authorized decision or approval. Exact labels/templates, transition names, polling intervals, and message contracts remain follow-up design work.
 
-## Proposed intake and Task readiness
+## Intake and Task readiness
 
 ### Distinguishing issues
 
@@ -32,9 +32,9 @@ Use explicit issue kinds and suitable creation templates. The normal human entry
 | **Initiative** | An overall delivery outcome within a Project, such as "Report export." | Link its originating Request and related Tasks; track overall outcome acceptance. |
 | **Task** | A bounded contribution with explicit inputs, Deliverables, and acceptance criteria, such as "Define the CSV format" or "Implement export against the accepted format." | Validate the work contract and context, then assess readiness for assignment. A Task can be well defined while still awaiting a prerequisite. |
 
-Propose visible kind labels such as `kind/request`, `kind/initiative`, and `kind/task`; these names are illustrative. Gitea supports [issue templates that can set labels](https://docs.gitea.com/usage/issues-prs/issue-pull-request-templates/). Templates collect the appropriate information; the Coordinator validates and records the classification and stable external mapping. Label edits request classification changes and cannot grant authority or make work Ready by themselves.
+Use visible kind labels, with exact names remaining to be specified; `kind/request`, `kind/initiative`, and `kind/task` are illustrative. Gitea supports [issue templates that can set labels](https://docs.gitea.com/usage/issues-prs/issue-pull-request-templates/). Templates collect the appropriate information; the Coordinator validates and records the classification and stable external mapping. Label edits request classification changes and cannot grant authority or make work Ready by themselves.
 
-D-07 already maps Initiatives and substantive Tasks to issues. Representing each Request as a separate intake issue is the additional proposal here. Keep that Request and its discussion linked to the resulting work. A Request can contribute to an existing Initiative or lead to a new one; its origin link does not add a hierarchy tier above **Project → Initiative → Task**. The Request is not silently replaced by a Task, and decomposition creates linked Tasks within the Initiative rather than nested Task trees.
+[D-07](decisions.md#d-07-forge-integration-and-initial-platform) maps Requests to separate intake issues and Initiatives and substantive Tasks to their delivery issues. Keep the Request and its discussion linked to the resulting work. A Request can contribute to an existing Initiative or lead to a new one; its origin link does not add a hierarchy tier above **Project → Initiative → Task**. The Request is not silently replaced by a Task, and decomposition creates linked Tasks within the Initiative rather than nested Task trees.
 
 A human-created Task issue remains a candidate until its Initiative, governing context, work contract, and authority have been validated. Missing or ambiguous information returns to clarification. Ordinary unclassified issues remain outside automated execution unless an explicit intake rule brings them into managed scope.
 
@@ -58,6 +58,36 @@ Keep three determinations separate:
 - **Run dispatch:** the Assignment remains authorized and ready, its resolved execution configuration is qualified, and ownership, capacity, and limits permit starting.
 
 A Ready Task may therefore wait for a suitable Agent or execution capacity. Any visible readiness label reflects the Coordinator's determination. Changes to governing inputs trigger reassessment; readiness is not permanent, and the Task's original history is retained. These checks apply the existing definitions and F-13 through F-15 without choosing exact lifecycle states.
+
+## Proposed Agent assignment and selection
+
+An Assignment records who is authorized to perform a Task or workflow stage. A **Role** defines the responsibility, an **Agent** supplies a stable registered identity, and its **Profile** supplies versioned execution configuration. A **Worker** supplies capacity when a Run starts. A registered Agent does not require a permanently running process.
+
+### Selection and authorization
+
+| Step | High-level rule and owner |
+| --- | --- |
+| Identify the responsibility | The Task or stage identifies the needed responsibility, such as architecture, development, review, or verification. The Orchestrator proposes the Role when planning or clarifying the work; an approved workflow can already establish it. |
+| Find eligible configurations | For ordinary delivery work, Coordination considers enabled registered Agents whose referenced Profiles support the Role, instructions, required tools, and applicable qualified execution scope. Project permissions, effective limits, and any review-independence conditions must permit the work. |
+| Apply an approved preference | For routine work, an assignment rule supplies preferred registered Agents and explicitly permitted alternatives. Filter for eligibility before applying the preference. Ambiguous suitability or a consequential exception goes to the Orchestrator for a proposal. |
+| Record the Assignment | The Coordinator validates the proposed selection and records the Task/stage, assigned responsibility, selected Agent and Profile revisions, governing references, expected outputs and evidence, and applicable authority, review expectations, and limits. Assignment does not start execution. |
+| Dispatch a Run | The Scheduler dispatches the recorded selection when readiness, ownership, qualification, capacity, and limits permit. Before execution, the Run receives its immutable effective configuration and context record under F-08. |
+
+Select an existing registered Agent revision together with the exact Profile revision it references. Profile selection is part of finding a suitable registered configuration; the Scheduler does not attach an arbitrary Profile or model to an Agent. A different binding or permitted override follows the versioned Registry process. Roles and Profiles may be reused across assignments where instruction bindings and policy allow, as described in [responsibilities](responsibilities.md#role-and-profile-assignments).
+
+### Initial selection policy
+
+Begin with approved defaults for work classes and a small, explicit preference order. [D-08](decisions.md#d-08-initial-profiles) supplies the intent: strong reasoning Profiles for clarification, architecture, specifications, and consequential Decisions; medium Profiles for routine implementation; independently configured review. Concrete runtime/model settings and support claims remain subject to qualification.
+
+Eligibility comes before preference: a favored configuration must still provide the required capabilities within governing permissions, qualification, and limits. The Orchestrator can recommend another eligible configuration within delegation; exceptions outside that authority follow the Decision process. No new model call is needed merely to repeat a routine approved selection.
+
+If no eligible Agent configuration exists, preserve the Task and record the missing capability, configuration, qualification, or candidate permission. The Task remains Ready only while its own readiness gates still hold; loss of governing authority or required inputs triggers reassessment. Route the unresolved choice through the Orchestrator when an eligible Orchestrator can run; otherwise expose the required authorized action. Temporary lack of execution capacity normally means waiting. Any alternative must be explicitly permitted and validated; never silently substitute a model/runtime, weaken required capability, or broaden permissions.
+
+### Handoff and reassignment
+
+One Task can use separate Assignments for implementation, review, and verification. Review requires a separate Assignment and Run with the applicable independence checks; a different Role, Profile, or Agent name alone does not establish independence. The same model remains permissible when policy allows.
+
+Retries and reassignment retain Task identity and preserve previous allocations, results, and evidence. Record a changed authorized allocation without overwriting the former one, and reject updates from superseded execution ownership. A change to configuration already bound to a Run requires a new authorized, validated Run; it cannot rewrite the old attempt's configuration. Exact assignment transitions and recovery mechanisms follow in the detailed workflow specification.
 
 ## Delivery loop
 
