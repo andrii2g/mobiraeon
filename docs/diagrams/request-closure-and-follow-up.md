@@ -27,4 +27,4 @@ Before acceptance, ordinary corrections remain same-Task rework. After closure, 
 
 Cancellation, rejection, or duplicate handling closes work for a different reason from fulfillment. Uncertain reports need investigation or a Decision before classification; changes to governing scope follow the existing authority process.
 
-Related: [Initiative outcome acceptance](initiative-acceptance.md). Next discussions: [waiting and recovery](waiting-and-recovery.md) and [human controls](human-controls.md). Return to the [diagram guide](README.md).
+Related: [Initiative outcome acceptance](initiative-acceptance.md). Continue with [waiting and recovery](waiting-and-recovery.md) and [human controls](human-controls.md). Return to the [diagram guide](README.md).

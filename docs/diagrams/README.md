@@ -16,12 +16,13 @@ These Mermaid sources summarize the design discussed in the governing documents.
 | [9. Human controls](human-controls.md) | Human intervention and scope changes |
 | [10. Context and shared work](context-and-shared-work.md) | Context handoff and coordination of parallel Tasks |
 | [11. Agent setup and Gitea](agent-setup-and-gitea.md) | Agent onboarding and stable forge-identity relationship |
-| [12. Registry organization](registry-organization.md) | Proposed catalog areas and configuration publication boundaries |
+| [12. Registry API and persistence](registry-organization.md) | Forge-independent Python/SQLite Registry and configuration ownership |
+| [13. First-Agent preparation](first-agent-preparation.md) | Administrator-led bootstrap and initial enablement |
 
 ## Agreement legend
 
 - **[A] Agreed:** an explicitly accepted high-level step or a rule already established by the approved requirements and decisions.
-- **[P] Proposed:** routing or behavior prepared for the current discussion and awaiting agreement. Proposed nodes use an amber background as well as the text marker in the view's introduction.
+- All current views describe the design baseline. Green nodes show processing and retained records; indigo nodes distinguish participants or context without implying an unconfirmed step.
 - Arrows show logical relationships or handoffs. They do not define API messages, transactional boundaries, exact lifecycle state names, or a mandatory total ordering of concurrent work. Polling, independent work, and supervised execution can overlap under the governing controls.
 
 Read the system view first, then use the focused workflow views as needed. Links at each boundary connect the parts without duplicating the shared Run lifecycle or drawing long feedback arrows across the whole delivery process. Review, verification, reasoning, and repair are all ordinary bounded Agent Runs; subsequent work re-enters the relevant view.

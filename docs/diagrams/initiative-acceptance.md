@@ -25,6 +25,6 @@ The Orchestrator coordinates assessment and gaps; reviewers and verifiers supply
 
 The acceptance default is an eligible independent Reviewer with explicit Initiative-level delegation. Task-level reviewer authority does not automatically extend to the Initiative. Human acceptance follows the project policy.
 
-Required delivery, current outcome evidence, and the absence of unresolved required blockers govern completion. Accepted Tasks alone do not establish the overall outcome. Missing work returns through [assessment and rework](assessment-and-rework.md); Request closure and later follow-up are covered by the [remaining discussion agenda](../implementation-plan.md#remaining-high-level-discussions).
+Required delivery, current outcome evidence, and the absence of unresolved required blockers govern completion. Accepted Tasks alone do not establish the overall outcome. Missing work returns through [assessment and rework](assessment-and-rework.md); Request fulfillment and later defects or changed goals follow [Request closure and follow-up](request-closure-and-follow-up.md).
 
-Related: [integration and validation](integration-and-validation.md). Next discussion: [Request closure and follow-up](request-closure-and-follow-up.md). Return to the [diagram guide](README.md).
+Related: [integration and validation](integration-and-validation.md). Continue with [Request closure and follow-up](request-closure-and-follow-up.md). Return to the [diagram guide](README.md).

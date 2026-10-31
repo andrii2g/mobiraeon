@@ -1,0 +1,24 @@
+# First-Agent preparation
+
+**[A] Bootstrap and initial enablement.** This view applies the Registry and onboarding model to the first Agents without defining exact states or API commands. See [first-Agent preparation](../agent-registry.md#first-agent-preparation) for the initial catalog and administrator-led setup.
+
+```mermaid
+---
+config:
+  flowchart:
+    wrappingWidth: 270
+---
+flowchart TB
+    BOOT["Authorized human prepares instructions<br/>and Role-specific Profiles through Registry interface"] --> CREATE["Create stable Agents disabled<br/>Bind exact Profiles and pilot integrations"]
+    CREATE --> PUBLISH["Review, validate and publish<br/>immutable Registry revisions"]
+    PUBLISH --> QUALIFY["Authorized qualification work<br/>records evidence for intended scope"]
+    QUALIFY --> ENABLE["Administrator enables eligible Agents<br/>Configured intake rule identifies Orchestrator"]
+    ENABLE --> COORD["Coordinator authorizes work<br/>Scheduler dispatches eligible bounded Runs"]
+
+    classDef agreed fill:#e8f3ee,stroke:#28644d,color:#12372a;
+    class BOOT,CREATE,PUBLISH,QUALIFY,ENABLE,COORD agreed;
+```
+
+Bootstrap needs no running Orchestrator. Creating, publishing, qualifying, and enabling configuration remain distinct from assigning work. Authorized qualification checks evaluate the candidate execution configuration independently of dispatching a disabled Agent; they cannot override disablement or revoked access. Separate QA Runs follow the contract rather than being required for every Task. Credential values remain outside the Registry and model context.
+
+Continue with the agreed [Agent setup](agent-setup-and-gitea.md) or [Run lifecycle](run-lifecycle.md), or return to the [diagram guide](README.md).
