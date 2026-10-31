@@ -14,7 +14,8 @@ These Mermaid sources summarize the design discussed in the governing documents.
 | [7. Request closure and follow-up](request-closure-and-follow-up.md) | Fulfillment and handling of later defects or changed goals |
 | [8. Waiting and recovery](waiting-and-recovery.md) | Choices among waiting, retry, reassignment, and stopping |
 | [9. Human controls](human-controls.md) | Human intervention and scope changes |
-| [10. Context and shared work](context-and-shared-work.md) | Proposed context handoff and coordination of parallel Tasks |
+| [10. Context and shared work](context-and-shared-work.md) | Context handoff and coordination of parallel Tasks |
+| [11. Agent setup and Gitea](agent-setup-and-gitea.md) | Proposed onboarding and forge-identity relationship |
 
 ## Agreement legend
 

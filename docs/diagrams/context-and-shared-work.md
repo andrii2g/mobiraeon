@@ -1,6 +1,6 @@
 # Context continuity and shared work
 
-**[P] High-level handoff proposal.** Exact revisions, durable evidence, and isolated mutable workspaces already follow the baseline. This view summarizes context provision and parallel work; see the [workflow proposal](../workflow.md#proposed-context-continuity-and-shared-work).
+**[A] High-level context and shared work.** This view summarizes context provision, durable handoffs, and isolated parallel work; see the [workflow](../workflow.md#context-continuity-and-shared-work).
 
 ```mermaid
 ---
@@ -17,9 +17,9 @@ flowchart TB
     B --> HANDOFF
     HANDOFF --> GATES["Applicable review, acceptance,<br/>dependency and integration gates"]
 
-    classDef proposed fill:#fff3d6,stroke:#a66b12,color:#513807;
+    classDef agreed fill:#e8f3ee,stroke:#28644d,color:#12372a;
     classDef boundary fill:#eef2ff,stroke:#5261a3,color:#20294f;
-    class CONTEXT,A,B,HANDOFF,GATES proposed;
+    class CONTEXT,A,B,HANDOFF,GATES agreed;
     class SOURCES,PLAN boundary;
 ```
 

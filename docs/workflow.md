@@ -1,6 +1,6 @@
 # Workflow summary
 
-**Status:** The high-level Coordination loop, intake/readiness, Agent assignment, Run lifecycle, assessment/rework model and initial defaults, integration/combined-result validation, Initiative outcome acceptance, Request closure/follow-up, waiting/recovery routing, and human controls/scope changes are confirmed alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Context continuity and shared work below are proposed for discussion. Exact lifecycle states, transitions, contracts, and further workflow detail remain open where they extend the confirmed requirements and decisions. See [definitions](definitions.md), the approved [requirements](requirements.md), and D-02 through D-04 for the governing terminology, hierarchy, and lifecycle principles.
+**Status:** The high-level Coordination loop, intake/readiness, Agent assignment, Run lifecycle, assessment/rework model and initial defaults, integration/combined-result validation, Initiative outcome acceptance, Request closure/follow-up, waiting/recovery routing, human controls/scope changes, and context continuity/shared work are confirmed alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Agent onboarding below is proposed for discussion. Exact lifecycle states, transitions, contracts, and further workflow detail remain open where they extend the confirmed requirements and decisions. See [definitions](definitions.md), the approved [requirements](requirements.md), and D-02 through D-04 for the governing terminology, hierarchy, and lifecycle principles.
 
 The [versioned Mermaid views](diagrams/README.md) show the [high-level system](diagrams/high-level.md) and focused workflow parts: [intake/readiness](diagrams/intake-and-readiness.md), [assignment/selection](diagrams/assignment-and-selection.md), the [shared Run lifecycle](diagrams/run-lifecycle.md), [assessment/rework](diagrams/assessment-and-rework.md), [integration/validation](diagrams/integration-and-validation.md), [Initiative acceptance](diagrams/initiative-acceptance.md), [Request closure/follow-up](diagrams/request-closure-and-follow-up.md), [waiting/recovery](diagrams/waiting-and-recovery.md), [human controls](diagrams/human-controls.md), and [context/shared work](diagrams/context-and-shared-work.md). Each view identifies the agreed/proposed boundary.
 
@@ -278,16 +278,30 @@ Authorized human controls reach the Coordinator directly without requiring an Or
 
 Changed goals follow the linked-Request rule above. Authorized updates to governing scope preserve prior baselines and evidence while reassessing their applicability to affected work. Human-produced changes remain subject to the normal review and acceptance gates.
 
-## Proposed context continuity and shared work
+## Context continuity and shared work
 
 Before each Run, supply shared operating rules, the selected Role instructions, the Assignment, relevant accepted requirements, specifications and Decisions, applicable policies, acceptance criteria, and required prerequisite outputs at identified revisions. Routine assembly follows the approved Task/context policy without another Orchestrator Run. The Orchestrator proposes context and boundaries needing judgment; the Coordinator validates references, authority, and readiness and pins the inputs. Agents assess sufficiency and report conflicts; execution resolves authorized sources.
 
-Durable Artifacts and recorded handoffs retain produced progress, including unaccepted work, findings, evidence, limitations, and unresolved questions across new Runs, retries, and reassignment. Summaries identify source revisions and freshness; they guide access to governing material rather than replacing it or proving success. Review context follows independence policy rather than automatically inheriting an author's conversation. The [focused diagram](diagrams/context-and-shared-work.md) shows this proposed model.
+Durable Artifacts and recorded handoffs retain produced progress, including unaccepted work, findings, evidence, limitations, and unresolved questions across new Runs, retries, and reassignment. Summaries identify source revisions and freshness; they guide access to governing material rather than replacing it or proving success. Review context follows independence policy rather than automatically inheriting an author's conversation. The [focused diagram](diagrams/context-and-shared-work.md) shows this model.
 
 - Missing or changed governing inputs trigger reassessment of affected work. Do not silently switch to the latest baseline or rewrite an earlier Run's configuration, context, or evidence; unrelated authorized work can continue.
 - Parallel Tasks can proceed when their accepted prerequisites and stable contracts permit it. The dependency graph governs execution order; a parent relationship alone creates no prerequisite.
 - Parallel Tasks may edit the same paths in isolated mutable workspaces within explicit change boundaries. Coordinate conflicts, shared contracts, test state, and integration targets; authoring can overlap while conflicting integration operations remain serialized.
 - Keep outputs versioned and distinguish produced material from accepted results. When an output or Decision resolution satisfies a governed dependency, its required acceptance and applicable revision must be recorded; a closed issue or summary is insufficient.
+
+## Proposed Agent onboarding
+
+Prepare an Agent through versioned definitions and separately authorized access. Its stable identity remains distinct from its Role, Profile, execution Worker, individual Runs, and any Gitea user. The [pilot and Agent setup discussion](pilot-and-agent-setup.md) owns the proposed setup choices, including any per-Agent forge-account mapping.
+
+| Step | Proposed preparation |
+| --- | --- |
+| 1. Define responsibilities and configuration | Select or define the Role instructions, shared rules, and reusable Profile suitable for the intended work and governing permissions and limits. |
+| 2. Register the Agent | Establish a stable logical identity with an exact Profile revision binding. Retain any permitted overrides in its versioned definition. |
+| 3. Arrange forge access | If the chosen policy uses separate Gitea identities, provision the required identity mapping and approved permissions. Definitions retain secret references; credential values stay in the authorized secret mechanism. |
+| 4. Validate and publish | Review and validate the Registry definitions and their references, then publish a retrievable Git revision for configuration resolution. |
+| 5. Qualify and enable selection | Record qualification of the execution combination for its supported scope and enable the Agent through the authorized configuration process. Assignments and dispatch still require current readiness, authority, and execution capacity and limits. |
+
+Publication, qualification, administrative enablement, and permission to perform particular work are separate determinations. Publishing a definition establishes none of the others by itself. Changes produce new reviewed Registry revisions and apply through authorized selection; they do not rewrite existing Run configuration or history. Whether each Agent needs a separate Gitea user remains a proposed policy choice.
 
 ## Closure rules
 

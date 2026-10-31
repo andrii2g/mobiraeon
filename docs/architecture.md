@@ -1,6 +1,6 @@
 # High-level architecture
 
-The logical architecture and delivery workflow include [waiting/recovery](workflow.md#waiting-and-recovery) and [human controls](workflow.md#human-controls-and-scope-changes). The [context continuity and shared-work handoff](workflow.md#proposed-context-continuity-and-shared-work) is proposed for discussion. Persistence ownership follows D-05, D-07, and D-11; detailed component contracts and infrastructure follow separately. Design agreement does not establish implementation or verification.
+The logical architecture and delivery workflow include [waiting/recovery](workflow.md#waiting-and-recovery), [human controls](workflow.md#human-controls-and-scope-changes), and [context continuity/shared work](workflow.md#context-continuity-and-shared-work). [Agent onboarding, Gitea identities, and the concrete pilot](pilot-and-agent-setup.md) are proposed for discussion. Persistence ownership follows D-05, D-07, and D-11; detailed component contracts and infrastructure follow separately. Design agreement does not establish implementation or verification.
 
 This document describes the system boundary, main parts, information ownership, and their relationships. [Definitions](definitions.md), [requirements](requirements.md), [decisions](decisions.md), and [responsibilities](responsibilities.md) remain the governing sources for terminology, required behavior, selected technologies, and actor responsibilities.
 

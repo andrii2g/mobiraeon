@@ -44,6 +44,10 @@ Only the Orchestrator Agent initiates or assigns agent-generated requests for hu
 
 Accepted Decisions identify their authority, applicable baseline, affected revisions, and required follow-up actions. Dependent work resumes after the accepted resolution, required artifact updates, and prerequisite conditions are recorded and satisfied.
 
+## Context continuity and shared work
+
+Approved context rules support routine assembly. The Orchestrator proposes relevance and work boundaries needing judgment; the Coordinator validates references, authority, and readiness and binds Run inputs. Execution resolves permitted sources, and Agents report insufficient or conflicting context. Durable versioned handoffs retain partial progress and acceptance status. Parallel mutable work is isolated, while shared contracts, test state, and integration are coordinated under the [context workflow](workflow.md#context-continuity-and-shared-work).
+
 ## Recovery and human controls
 
 The Coordinator records and enforces durable waiting conditions, recovery decisions, and authorized human controls. The Scheduler respects them when dispatching; execution supervises wind-down and cleanup or containment. The Orchestrator handles unresolved judgment when eligible. Authorized human controls do not require an Orchestrator Run. Takeover retires prior automation ownership before exclusive human work, and return to automation requires current checks. Human-produced changes remain subject to normal review and acceptance.

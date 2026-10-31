@@ -1,6 +1,6 @@
 # Möbiræon documentation
 
-The product requirements and D-01 through D-12 form the design baseline. The high-level architecture and workflow cover delivery, recovery, human controls, and scope changes. [Context continuity and shared work](workflow.md#proposed-context-continuity-and-shared-work) are proposed for discussion; the [remaining agenda](implementation-plan.md#remaining-high-level-discussions) separates high-level discussions from later specifications. Complete the remaining contracts and operational specifications before implementing the affected capabilities or activating the pilot.
+The product requirements and D-01 through D-12 form the design baseline. The high-level architecture and workflow cover delivery, recovery, human controls, scope changes, and context continuity. [Agent onboarding, Gitea identities, and the concrete pilot](pilot-and-agent-setup.md) are proposed for discussion; the [remaining agenda](implementation-plan.md#remaining-high-level-discussions) separates these choices from later specifications. Complete the remaining contracts and operational specifications before implementing the affected capabilities or activating the pilot.
 
 ## Reading order
 
@@ -10,10 +10,11 @@ The product requirements and D-01 through D-12 form the design baseline. The hig
 | [Definitions](definitions.md) | Canonical terminology and relationships |
 | [Requirements](requirements.md) | Approved requirements, Agent configuration contract, and acceptance scenarios |
 | [High-level architecture](architecture.md) | System boundary, five logical parts, Coordination responsibilities, persistence ownership, and main exchanges |
-| [Workflow](workflow.md) | Delivery, recovery, human controls, scope changes, and the proposed context/shared-work handoff |
+| [Workflow](workflow.md) | Delivery, recovery, human controls, context/shared work, and proposed Agent onboarding |
 | [Mermaid diagrams](diagrams/README.md) | High-level system and focused workflow views, with agreement markers |
 | [Decision register](decisions.md) | Confirmed decisions, remaining details, and their consequences |
 | [Planning sequence](implementation-plan.md) | Remaining high-level discussions, later specifications, and design validation order |
+| [Pilot and Agent setup](pilot-and-agent-setup.md) | Proposed repository/feature choice, Registry hosting, Gitea identity mappings, and setup order |
 | [Implementation readiness review](implementation-readiness-review.md) | Remaining contracts, operational details, and recommended discussion order |
 | [Infrastructure](infrastructure.md) | Gitea/PostgreSQL Compose setup in WSL, local configuration, verification, and backup/restore procedures |
 | [Gitea workflow lab](gitea-workflow-lab.md) | Created private rehearsal repository, starter templates and labels, linked samples, and API verification evidence |

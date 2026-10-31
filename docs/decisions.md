@@ -72,6 +72,8 @@ Keep Worker availability, active Runs, and other operational state outside the R
 
 Detailed schemas, global/project catalog organization, and permitted override resolution follow the Agent configuration contract and configuration specifications.
 
+The [Agent onboarding and forge-identity proposal](pilot-and-agent-setup.md#registry-and-gitea-identities) builds on this storage choice; its concrete repository and account mappings remain under discussion.
+
 ## D-06 Execution boundary
 
 The initial deployment uses **one Linux control host and locally attached, isolated container Workers**. Authorized cloud or local model connections are configured independently of Worker placement.
@@ -159,6 +161,8 @@ Demonstrate Decision waiting and continuation, interrupted-Run recovery, duplica
 Before execution, approve a pilot contract identifying the repository and revision, bounded feature, acceptance criteria, permitted operations, execution configuration, operating limits, and required evidence. The release scope identifies included integrations and those deferred to later increments.
 
 Greenfield project creation and production deployment are outside this pilot.
+
+The concrete repository, feature, and setup sequence are proposed in the [pilot discussion](pilot-and-agent-setup.md#demonstration-pilot); they do not become selected merely by appearing as candidates.
 
 ## Implementation specifications
 

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "kind/request",
+    "color": "2563eb",
+    "description": "Desired outcome submitted for intake or clarification; does not authorize execution.",
+    "exclusive": true
+  },
+  {
+    "name": "kind/initiative",
+    "color": "7c3aed",
+    "description": "Delivery outcome within a Project, delivered through linked Tasks.",
+    "exclusive": true
+  },
+  {
+    "name": "kind/task",
+    "color": "16a34a",
+    "description": "Bounded work candidate; readiness and assignment require validation.",
+    "exclusive": true
+  }
+]
