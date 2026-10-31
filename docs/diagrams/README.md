@@ -15,7 +15,8 @@ These Mermaid sources summarize the design discussed in the governing documents.
 | [8. Waiting and recovery](waiting-and-recovery.md) | Choices among waiting, retry, reassignment, and stopping |
 | [9. Human controls](human-controls.md) | Human intervention and scope changes |
 | [10. Context and shared work](context-and-shared-work.md) | Context handoff and coordination of parallel Tasks |
-| [11. Agent setup and Gitea](agent-setup-and-gitea.md) | Proposed onboarding and forge-identity relationship |
+| [11. Agent setup and Gitea](agent-setup-and-gitea.md) | Agent onboarding and stable forge-identity relationship |
+| [12. Registry organization](registry-organization.md) | Proposed catalog areas and configuration publication boundaries |
 
 ## Agreement legend
 

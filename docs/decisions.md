@@ -64,15 +64,17 @@ Workflow specifications define the state names, transitions, and recovery behavi
 
 ## D-05 Registry
 
-Use a dedicated Git repository containing **JSON configuration and Markdown instructions**. Identify published configuration revisions by exact Git commits and retain them as immutable, retrievable sources.
+Implement the Agent Registry as a forge-independent **Python module in the Möbiræon repository and application**, with its own authenticated, versioned management API and authoritative **SQLite persistence**. Initially share the application and database with Coordination while preserving separate logical ownership. Gitea is an external forge integration, not the Registry's store or administrative interface.
 
-Begin with Git-based editing and review. Future editors use the same validation and publication process. Resolve configuration to specific revisions for each Run and retain immutable configuration snapshots in operational storage.
+Manage stable Agent identities, reusable Profiles, versioned instructions, and their policy and integration references through the approved configuration contract. Publish reviewed, validated definitions under immutable, retrievable **Registry revision IDs**, not Git commit identities. Resolve exact references for each Run and retain its immutable configuration snapshot. Authorized edits produce new revisions; concurrent editing must not silently overwrite another change.
 
-Keep Worker availability, active Runs, and other operational state outside the Registry. Store credential values in the configured secret-management mechanism and use references in configuration.
+Publication, execution qualification, administrative enablement, and authority for particular work remain separate determinations. Registry administration is authorized and audited; changing configuration cannot grant permissions beyond governing policy. External forge-account bindings remain distinct from reusable Profiles and model-provider accounts.
 
-Detailed schemas, global/project catalog organization, and permitted override resolution follow the Agent configuration contract and configuration specifications.
+Git import/export is optional and follows the same validation and authority rules. SQLite remains the single authoritative Registry store; imports, exports, and any Git repository do not become a second live authority. Keep Worker availability, active Runs, and other operational state logically outside the Registry. Store credential values in the configured secret-management mechanism and use references in configuration.
 
-The [Agent onboarding and forge-identity proposal](pilot-and-agent-setup.md#registry-and-gitea-identities) builds on this storage choice; its concrete repository and account mappings remain under discussion.
+Backup and recovery must preserve Registry revisions and the references used by historical Runs alongside coordination state and retained Artifacts. Detailed API, persistence, and override-resolution contracts remain specifications.
+
+Start with the five Agents in the [initial catalog](agent-registry.md#initial-agent-catalog), using Role-specific Profiles and [administrator-led preparation](agent-registry.md#first-agent-preparation). An authorized human uses the Registry CLI to create disabled Agents, review and publish definitions, qualify the candidate configuration, and enable eligible selection. Qualification checks do not dispatch a disabled Agent or override revoked access. Catalog changes in the pilot remain administrator-led; Agents do not create or enable other Agents.
 
 ## D-06 Execution boundary
 
@@ -93,6 +95,10 @@ Map Initiatives and substantive Tasks to issues, delivery targets to milestones,
 Adapters translate supported operations and events, declare capabilities, and preserve traceable mappings between internal and external records. Qualify the Gitea adapter first, then add GitLab and other forge integrations through the same contract.
 
 Begin with an in-process adapter and one active operational forge per Project. Project migration and cross-forge synchronization are separate capabilities.
+
+Use one stable Gitea automation account for each registered Agent that acts in the forge, plus a separate Coordination service account. Project integration configuration binds forge identities and permitted operations separately from reusable Profiles and model-provider accounts.
+
+Account access grants no workflow authority and does not establish review independence. Privileged operations remain subject to Coordinator enforcement; configuration retains secret references rather than credential values. The [Agent setup](pilot-and-agent-setup.md#registry-and-gitea-identities) describes these identity boundaries.
 
 ## D-08 Initial Profiles
 
@@ -136,17 +142,19 @@ Changes to scope, authority, infrastructure, or spending outside delegation requ
 
 Implement the first release in **Python**, with one active Coordinator/Scheduler service and supervised, isolated Agent runner processes.
 
-Use **SQLite on local persistent disk** for durable coordination state. The Coordinator controls authoritative database changes; runners submit results through authorized operations. Keep published Agent Profiles and instructions in Git and retain substantial artifacts separately with durable, versioned references.
+Use **SQLite on local persistent disk** for authoritative Registry definitions and durable coordination state. The first deployment shares one application and database: the Registry module owns catalog changes through its authorized API, while the Coordinator controls authoritative workflow changes. Runners submit results through authorized operations. Retain substantial artifacts separately with durable, versioned references.
 
 Integrate Gitea through the forge-adapter contract.
 
-Preserve transactional state changes, durable dispatch and operation records, recoverable ownership, stale-result rejection, idempotency or reconciliation, and audit history. Test backup, restoration, and recovery across the database, retained artifacts, and referenced configuration revisions.
+Preserve transactional state changes, durable dispatch and operation records, recoverable ownership, stale-result rejection, idempotency or reconciliation, and audit history. Test backup, restoration, and recovery across Registry revisions, coordination and per-Run records, and retained artifacts so their durable references remain resolvable.
 
 Reassess PostgreSQL or other infrastructure when multi-instance operation, availability requirements, or measured workload justify it.
 
 ## D-12 First live validation and release scope
 
-Deliver one bounded feature in a prepared, existing demonstration repository using local Gitea, the Linux/container execution environment, and one primary qualified execution path.
+Use **`andrey/mobiraeon-demo`** for the pilot: export the currently displayed tasks as CSV from a prepared task-list application. Prepare and review its working baseline before automated feature execution; repository creation and application scaffolding are preparation outside the pilot.
+
+The pilot uses local Gitea, the Linux/container execution environment, and one primary qualified execution path.
 
 Exercise the complete delivery workflow:
 
@@ -162,14 +170,14 @@ Before execution, approve a pilot contract identifying the repository and revisi
 
 Greenfield project creation and production deployment are outside this pilot.
 
-The concrete repository, feature, and setup sequence are proposed in the [pilot discussion](pilot-and-agent-setup.md#demonstration-pilot); they do not become selected merely by appearing as candidates.
+Application technology, CSV columns and examples, the exact baseline revision, and the detailed pilot contract remain to be specified in the [pilot setup](pilot-and-agent-setup.md#demonstration-pilot).
 
 ## Implementation specifications
 
 Implementation preparation supplies:
 
 - detailed workflow states, transitions, acceptance gates, and recovery procedures;
-- Registry schemas, catalog organization, and override-resolution rules;
+- Registry API and persistence contracts, schemas, publication and concurrent-edit rules, and override resolution;
 - the Python framework, packaging, exact execution versions, and isolation controls;
 - numeric operating limits, recovery targets, retention rules, and verification methods;
 - concrete delegation rules, authorized identities, operations, and targets;

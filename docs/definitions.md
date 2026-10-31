@@ -21,7 +21,7 @@ Möbiræon uses the following terms consistently across its documentation, work 
 | **Role** | Defined responsibilities, such as architecture, development, or review. A Role name or description grants no permissions; governing policy establishes authority. |
 | **Agent** | A logical AI actor with a stable registered identity. |
 | **Agent Profile** | Reusable, versioned configuration defining how an Agent executes assigned work. |
-| **Agent Registry** | The persistent, versioned catalog of registered Agents and Agent Profiles, separate from live execution state. |
+| **Agent Registry** | The persistent, versioned catalog of registered Agents, reusable Profiles, instructions, policies, and project integration bindings, managed through its configuration interface and separate from live execution state. |
 | **Worker** | Execution capacity available to host supervised Runs. |
 | **Runner Adapter** | A component that invokes a configured runtime through a transport, supervises its lifecycle, and normalizes execution outcomes. |
 | **Run** | One bounded execution attempt under an Assignment, pinned to its configuration and context revisions. |

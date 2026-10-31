@@ -21,6 +21,7 @@ Möbiræon separates accountability, execution configuration, and authority. Rol
 | --- | --- |
 | **Coordinator** | Maintains authoritative workflow state and enforces permissions, prerequisites, ownership, limits, progression rules, and acceptance gates. Records acceptance when the required authority and evidence establish it. |
 | **Scheduler** | Deterministically dispatches eligible, authorized Runs within configured capacity and limits. Tasks awaiting prerequisites or Decisions consume no active execution slot. |
+| **Agent Registry module** | Owns authorized configuration administration, validation/publication, immutable revisions, enablement changes, and configuration audit history through its API and SQLite persistence. Supplies configuration to Coordination without granting workflow authority. |
 | **Worker** | Provides execution capacity under configured isolation and resource controls; reports availability and execution health. |
 | **Runner Adapter** | Invokes the configured runtime through a transport, delivers inputs, captures outputs, supervises the process lifecycle, and normalizes outcomes within execution and tool policies. |
 
@@ -33,6 +34,10 @@ Role assignments and Agent Profiles are configured independently. A Role may use
 Each Run records its assigned responsibilities, applicable instruction revisions, Agent identity, Profile revision, and effective configuration. Profiles specify the runtime, transport, provider, model, supported reasoning settings and options, tools, context policy, and execution limits through the Agent configuration contract.
 
 Role descriptions and shared operating rules provide the instructions for each Assignment. Reusing a Profile or changing a Role label preserves the applicable permission boundaries and review-independence requirements.
+
+Each registered Agent acting in Gitea uses its own stable automation account through versioned project integration bindings, separate from its internal Registry identity. The Coordination service uses a separate account; Agents with no forge operations need no account merely to execute. Account access does not establish workflow authority or independence. Authorized Registry administrators manage configuration through the Registry interface; Agents cannot expand their own authority through configuration edits. See [Agent onboarding](workflow.md#agent-onboarding) and the [initial Agent catalog](agent-registry.md#initial-agent-catalog).
+
+For the first pilot, an authorized human administrator prepares the five initial Agents through the Registry CLI. Bootstrap requires no running Orchestrator or Agent Run. The administrator creates disabled Agents with Role-specific Profiles, reviews and publishes their definitions, qualifies the candidate execution configuration, and enables eligible selection. Catalog changes remain administrator-led; Agents do not create or enable other Agents. The [preparation sequence](agent-registry.md#first-agent-preparation) preserves the separate publication, qualification, enablement, and dispatch gates.
 
 ## Coordination and decision authority
 

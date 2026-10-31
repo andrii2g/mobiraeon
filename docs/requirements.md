@@ -71,7 +71,7 @@ These interpretations form part of the agreed functional requirements.
 
 | Requirement | Agreed interpretation |
 | --- | --- |
-| F-16 | The requirement establishes that a mapping exists. Choosing that mapping remains an architecture decision. |
+| F-16 | The requirement establishes that a mapping exists. [D-07](decisions.md#d-07-forge-integration-and-initial-platform) selects the initial Gitea mapping; detailed adapter operations and qualification follow separately. |
 | F-20 | A reviewer supplies an independent assessment. The reviewer may also hold acceptance authority when policy explicitly grants it. |
 | F-21 | A Task may finish with a reviewed patch when its contract assigns integration to another Task. Overall code delivery remains incomplete until the combined result passes validation. |
 | F-25 | Coordinator, Scheduler, and Orchestrator Agent are separate logical responsibilities; this does not require separate services. |
@@ -155,7 +155,9 @@ These labels preserve selection intent; they do not establish qualified provider
 
 ### Storage boundary
 
-A persistent, versioned catalog is required. [D-05](decisions.md#d-05-registry) selects a dedicated Git repository with JSON configuration and Markdown instructions. Published configuration revisions are identified by exact Git commits, immutable, and retrievable; editing and any future editor share validation and publication.
+A persistent, versioned catalog is required. [D-05](decisions.md#d-05-registry) selects a forge-independent Python Registry module with an authenticated, versioned API and authoritative SQLite persistence. It initially shares the application and database with Coordination while retaining separate logical ownership. Published definitions have immutable, retrievable Registry revision IDs; exact configuration references and per-Run records preserve their provenance.
+
+Registry administration follows authorized, validated, auditable operations and protects against conflicting concurrent edits. Publication, execution qualification, administrative enablement, and authorization for particular work remain separate. Git import/export is optional and does not create another authoritative store or a dependency on Gitea.
 
 Credentials are resolved separately through the configured secret-management mechanism. Operational state and immutable per-Run configuration snapshots remain separate from published Registry definitions.
 
