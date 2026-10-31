@@ -1,6 +1,6 @@
 # Workflow summary
 
-**Status:** The high-level Coordination loop, intake classification, and Task readiness below were agreed on **2026-10-31**, alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Agent assignment and selection below are proposed for review. The delivery loop and further workflow detail remain proposed where they extend the confirmed requirements and decisions. D-02 confirms Agent/component terminology, D-03 confirms the hierarchy, and D-04 confirms lifecycle separation and review/rework principles. Exact state names and transitions remain to be agreed. See [definitions](definitions.md) and the approved [requirements](requirements.md).
+**Status:** The high-level Coordination loop, intake classification, Task readiness, and Agent assignment and selection below were agreed on **2026-10-31**, alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Run launch and result reporting below are proposed for review. The delivery loop and further workflow detail remain proposed where they extend the confirmed requirements and decisions. D-02 confirms Agent/component terminology, D-03 confirms the hierarchy, and D-04 confirms lifecycle separation and review/rework principles. Exact state names and transitions remain to be agreed. See [definitions](definitions.md) and the approved [requirements](requirements.md).
 
 ## Coordination loop
 
@@ -59,7 +59,7 @@ Keep three determinations separate:
 
 A Ready Task may therefore wait for a suitable Agent or execution capacity. Any visible readiness label reflects the Coordinator's determination. Changes to governing inputs trigger reassessment; readiness is not permanent, and the Task's original history is retained. These checks apply the existing definitions and F-13 through F-15 without choosing exact lifecycle states.
 
-## Proposed Agent assignment and selection
+## Agent assignment and selection
 
 An Assignment records who is authorized to perform a Task or workflow stage. A **Role** defines the responsibility, an **Agent** supplies a stable registered identity, and its **Profile** supplies versioned execution configuration. A **Worker** supplies capacity when a Run starts. A registered Agent does not require a permanently running process.
 
@@ -88,6 +88,40 @@ If no eligible Agent configuration exists, preserve the Task and record the miss
 One Task can use separate Assignments for implementation, review, and verification. Review requires a separate Assignment and Run with the applicable independence checks; a different Role, Profile, or Agent name alone does not establish independence. The same model remains permissible when policy allows.
 
 Retries and reassignment retain Task identity and preserve previous allocations, results, and evidence. Record a changed authorized allocation without overwriting the former one, and reject updates from superseded execution ownership. A change to configuration already bound to a Run requires a new authorized, validated Run; it cannot rewrite the old attempt's configuration. Exact assignment transitions and recovery mechanisms follow in the detailed workflow specification.
+
+## Proposed Run launch and result reporting
+
+A Run is one bounded attempt under an authorized Assignment. Its launch, reported work, observed execution outcome, and acceptance remain separate facts. The conditions below do not choose exact lifecycle state names.
+
+### Preparing and launching
+
+| Step | Responsibility and result |
+| --- | --- |
+| Select eligible work | The Scheduler selects an authorized Assignment whose work is eligible to run. Selection alone does not start execution or grant new authority. |
+| Bind and record the attempt | The Coordinator rechecks readiness, permissions, ownership, qualification, capacity, and limits. It resolves configuration and context revisions, establishes exclusive recoverable execution ownership, and durably records the Run and dispatch before launch. |
+| Start supervised execution | The Scheduler dispatches the recorded Run. A Worker supplies isolated capacity; the Runner Adapter starts the configured runtime noninteractively with the Assignment, shared rules, Role instructions, governing context, and output contract. Trusted controls enforce permissions and limits, including subprocess operations. |
+
+The immutable Run record identifies the selected Agent/Profile and Worker, runtime and provider configuration, requested and effective settings, governing revisions, and applicable permissions and limits under F-08. Later observations cannot rewrite it. Ordinary Runs require qualified execution; explicitly authorized qualification Runs follow F-09. Interactive input requests produce a controlled failure or recorded internal decision request rather than an unattended terminal wait.
+
+### Returning and recording results
+
+The Agent reports produced Artifacts and exact revisions, validation actually performed and its environment, results and limitations, unresolved questions or prerequisites, and the proposed next action. This report follows the shared role rules and configured output contract; a claim of completion or successful process exit does not establish Task acceptance.
+
+The Runner Adapter separately captures observed execution facts, including exit or interruption, cancellation, usage when available, output truncation, and cleanup status. Keep Agent claims distinct from supervisor observations and identify missing or uncertain information. Reports and captured records must protect secrets.
+
+The Coordinator authenticates the submitting execution identity and checks current ownership, authority, governing revisions, and referenced evidence before applying authorized updates. Expired or superseded execution cannot advance authoritative state or have its results accepted. An Agent's completion claim cannot establish acceptance; the required independent assessment and designated authority must establish it under policy. The Developer Role explicitly prohibits self-acceptance.
+
+### Outcomes and continuation
+
+- **Produced work** proceeds to the applicable review, verification, integration, or acceptance gate; submission alone does not satisfy that gate.
+- **Blocked work** records the missing prerequisite or Decision and preserves progress. The Orchestrator handles unresolved interpretation or routing; waiting requires no active model session.
+- **A failed attempt** records the failure and follows bounded recovery policy; it does not itself determine the Task's final outcome.
+- **Cancellation** records the authorized stop and any retained work or uncertain effects; it is distinct from failure and successful delivery.
+- **An unknown or interrupted outcome** requires reconciliation. Missing acknowledgement cannot establish success, failure, or permission to repeat an operation blindly.
+
+Stable operation identities let duplicate dispatches or reports converge without duplicate launches, changes, or acceptance. Before retrying uncertain operations, check their existing effects. Retries preserve Task identity, original evidence, and cumulative limits; changes to bound configuration require a new authorized Run.
+
+Execution capacity returns to service only after Run-owned processes are cleaned up or effectively contained. Record incomplete cleanup and withhold affected capacity while it remains unsafe to reuse. The Coordinator then records waiting, recovery, or the next authorized work without inferring acceptance from Run completion.
 
 ## Delivery loop
 
