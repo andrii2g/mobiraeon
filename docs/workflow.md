@@ -1,8 +1,8 @@
 # Workflow summary
 
-**Status:** The high-level Coordination loop, intake/readiness, Agent assignment, Run lifecycle, assessment/rework model and initial defaults, integration/combined-result validation, Initiative outcome acceptance, and Request closure/follow-up are confirmed alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Waiting/recovery routing and human controls/scope changes below are proposed for discussion. Exact lifecycle states, transitions, contracts, and further workflow detail remain open where they extend the confirmed requirements and decisions. See [definitions](definitions.md), the approved [requirements](requirements.md), and D-02 through D-04 for the governing terminology, hierarchy, and lifecycle principles.
+**Status:** The high-level Coordination loop, intake/readiness, Agent assignment, Run lifecycle, assessment/rework model and initial defaults, integration/combined-result validation, Initiative outcome acceptance, Request closure/follow-up, waiting/recovery routing, and human controls/scope changes are confirmed alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Context continuity and shared work below are proposed for discussion. Exact lifecycle states, transitions, contracts, and further workflow detail remain open where they extend the confirmed requirements and decisions. See [definitions](definitions.md), the approved [requirements](requirements.md), and D-02 through D-04 for the governing terminology, hierarchy, and lifecycle principles.
 
-The [versioned Mermaid views](diagrams/README.md) show the [high-level system](diagrams/high-level.md) and focused workflow parts: [intake/readiness](diagrams/intake-and-readiness.md), [assignment/selection](diagrams/assignment-and-selection.md), the [shared Run lifecycle](diagrams/run-lifecycle.md), [assessment/rework](diagrams/assessment-and-rework.md), [integration/validation](diagrams/integration-and-validation.md), [Initiative acceptance](diagrams/initiative-acceptance.md), [Request closure/follow-up](diagrams/request-closure-and-follow-up.md), [waiting/recovery](diagrams/waiting-and-recovery.md), and [human controls](diagrams/human-controls.md). Each view identifies the agreed/proposed boundary.
+The [versioned Mermaid views](diagrams/README.md) show the [high-level system](diagrams/high-level.md) and focused workflow parts: [intake/readiness](diagrams/intake-and-readiness.md), [assignment/selection](diagrams/assignment-and-selection.md), the [shared Run lifecycle](diagrams/run-lifecycle.md), [assessment/rework](diagrams/assessment-and-rework.md), [integration/validation](diagrams/integration-and-validation.md), [Initiative acceptance](diagrams/initiative-acceptance.md), [Request closure/follow-up](diagrams/request-closure-and-follow-up.md), [waiting/recovery](diagrams/waiting-and-recovery.md), [human controls](diagrams/human-controls.md), and [context/shared work](diagrams/context-and-shared-work.md). Each view identifies the agreed/proposed boundary.
 
 ## Coordination loop
 
@@ -248,11 +248,11 @@ Establish shared contracts first, then deliver small usable slices across data, 
 
 Several Tasks may depend on the same Decision. Resolution makes affected work eligible for re-evaluation; it does not by itself prove that the required artifacts or approvals exist.
 
-## Proposed waiting and recovery
+## Waiting and recovery
 
-The proposed defaults distinguish waiting, recoverable execution problems, changed allocation, and stopping. The [focused diagram](diagrams/waiting-and-recovery.md) shows the routing; unresolved judgment returns to the Orchestrator.
+The defaults distinguish waiting, recoverable execution problems, changed allocation, and stopping. The [focused diagram](diagrams/waiting-and-recovery.md) shows the routing; unresolved judgment returns to the Orchestrator.
 
-| Action | Proposed default |
+| Action | Default |
 | --- | --- |
 | Wait | Persist the unmet condition and progress without an idle model session. Meaningful external or internal changes trigger reassessment; independent eligible work can continue. |
 | Retry | Retry only recoverable, authorized work within remaining limits, using the same Task and a new Run. Reconcile unknown launches or external effects before repeating operations. |
@@ -261,11 +261,11 @@ The proposed defaults distinguish waiting, recoverable execution problems, chang
 
 The Coordinator enforces the applicable policy and the Scheduler dispatches only currently eligible work. Recovery preserves evidence and cumulative limits; superseded execution cannot advance authoritative state. Affected capacity remains unavailable until cleanup or effective containment is established. Stopping an attempt or further starts does not itself cancel the logical Task or establish acceptance. If the Orchestrator cannot run, expose the required authorized action without idle model calls or bypassing limits. Existing review, acceptance, and escalation gates still apply.
 
-## Proposed human controls and scope changes
+## Human controls and scope changes
 
-Apply each authorized control to an explicit scope of work; Request-scoped controls follow validated delivery links within the existing hierarchy. These proposed defaults are summarized in the [focused diagram](diagrams/human-controls.md).
+Apply each authorized control to an explicit scope of work; Request-scoped controls follow validated delivery links within the existing hierarchy. These defaults are summarized in the [focused diagram](diagrams/human-controls.md).
 
-| Control | Proposed effect |
+| Control | Effect |
 | --- | --- |
 | Pause | Immediately hold new starts and wind down affected active Runs under supervision, preserving progress. Do not leave their processes frozen indefinitely. |
 | Resume | An explicit request lifts only the selected hold, preserving broader holds, cancellation, and remaining limits. Recheck current readiness, authority, and execution conditions before a new Run, preserving the original Run record. Cancelled work requires new authorization to continue. |
@@ -277,6 +277,17 @@ Apply each authorized control to an explicit scope of work; Request-scoped contr
 Authorized human controls reach the Coordinator directly without requiring an Orchestrator Run. It validates authority and scope, persists holds and cancellation decisions across restarts, and distinguishes a recorded control from observed stopping, cleanup, or containment. The Orchestrator handles unresolved judgment and required escalation when eligible; an unavailable Orchestrator does not delay authorized controls. Scope changes within existing delegation need no automatic additional human approval. Exact commands, transitions, and enforcement details remain follow-up specifications.
 
 Changed goals follow the linked-Request rule above. Authorized updates to governing scope preserve prior baselines and evidence while reassessing their applicability to affected work. Human-produced changes remain subject to the normal review and acceptance gates.
+
+## Proposed context continuity and shared work
+
+Before each Run, supply shared operating rules, the selected Role instructions, the Assignment, relevant accepted requirements, specifications and Decisions, applicable policies, acceptance criteria, and required prerequisite outputs at identified revisions. Routine assembly follows the approved Task/context policy without another Orchestrator Run. The Orchestrator proposes context and boundaries needing judgment; the Coordinator validates references, authority, and readiness and pins the inputs. Agents assess sufficiency and report conflicts; execution resolves authorized sources.
+
+Durable Artifacts and recorded handoffs retain produced progress, including unaccepted work, findings, evidence, limitations, and unresolved questions across new Runs, retries, and reassignment. Summaries identify source revisions and freshness; they guide access to governing material rather than replacing it or proving success. Review context follows independence policy rather than automatically inheriting an author's conversation. The [focused diagram](diagrams/context-and-shared-work.md) shows this proposed model.
+
+- Missing or changed governing inputs trigger reassessment of affected work. Do not silently switch to the latest baseline or rewrite an earlier Run's configuration, context, or evidence; unrelated authorized work can continue.
+- Parallel Tasks can proceed when their accepted prerequisites and stable contracts permit it. The dependency graph governs execution order; a parent relationship alone creates no prerequisite.
+- Parallel Tasks may edit the same paths in isolated mutable workspaces within explicit change boundaries. Coordinate conflicts, shared contracts, test state, and integration targets; authoring can overlap while conflicting integration operations remain serialized.
+- Keep outputs versioned and distinguish produced material from accepted results. When an output or Decision resolution satisfies a governed dependency, its required acceptance and applicable revision must be recorded; a closed issue or summary is insufficient.
 
 ## Closure rules
 

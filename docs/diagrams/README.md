@@ -12,8 +12,9 @@ These Mermaid sources summarize the design discussed in the governing documents.
 | [5. Integration and validation](integration-and-validation.md) | High-level view of combining reviewed work and validating the whole result |
 | [6. Initiative outcome acceptance](initiative-acceptance.md) | Whole-outcome assessment, acceptance authority, and remaining-work handoff |
 | [7. Request closure and follow-up](request-closure-and-follow-up.md) | Fulfillment and handling of later defects or changed goals |
-| [8. Waiting and recovery](waiting-and-recovery.md) | Proposed choices among waiting, retry, reassignment, and stopping |
-| [9. Human controls](human-controls.md) | Proposed handling of human intervention and scope changes |
+| [8. Waiting and recovery](waiting-and-recovery.md) | Choices among waiting, retry, reassignment, and stopping |
+| [9. Human controls](human-controls.md) | Human intervention and scope changes |
+| [10. Context and shared work](context-and-shared-work.md) | Proposed context handoff and coordination of parallel Tasks |
 
 ## Agreement legend
 

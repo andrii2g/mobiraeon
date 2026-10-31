@@ -1,6 +1,6 @@
 # Human controls and scope changes
 
-**[P] High-level control proposal.** Authorized human instructions reach the Coordinator directly. The [workflow proposal](../workflow.md#proposed-human-controls-and-scope-changes) describes pause, resume, cancellation, reprioritization, takeover, and scope changes.
+**[A] High-level human controls.** Authorized human instructions reach the Coordinator directly. The [workflow](../workflow.md#human-controls-and-scope-changes) describes pause, resume, cancellation, reprioritization, takeover, and scope changes.
 
 ```mermaid
 ---
@@ -15,9 +15,9 @@ flowchart TB
     CONTINUE -->|Yes| CHECK["Recheck readiness and authority;<br/>dispatch eligible work within limits"]
     CONTINUE -->|No| HOLD["Affected work remains held or stopped;<br/>record the required next action"]
 
-    classDef proposed fill:#fff3d6,stroke:#a66b12,color:#513807;
+    classDef agreed fill:#e8f3ee,stroke:#28644d,color:#12372a;
     classDef boundary fill:#eef2ff,stroke:#5261a3,color:#20294f;
-    class COORD,APPLY,CONTINUE,CHECK,HOLD proposed;
+    class COORD,APPLY,CONTINUE,CHECK,HOLD agreed;
     class HUMAN boundary;
 ```
 

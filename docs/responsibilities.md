@@ -44,6 +44,12 @@ Only the Orchestrator Agent initiates or assigns agent-generated requests for hu
 
 Accepted Decisions identify their authority, applicable baseline, affected revisions, and required follow-up actions. Dependent work resumes after the accepted resolution, required artifact updates, and prerequisite conditions are recorded and satisfied.
 
+## Recovery and human controls
+
+The Coordinator records and enforces durable waiting conditions, recovery decisions, and authorized human controls. The Scheduler respects them when dispatching; execution supervises wind-down and cleanup or containment. The Orchestrator handles unresolved judgment when eligible. Authorized human controls do not require an Orchestrator Run. Takeover retires prior automation ownership before exclusive human work, and return to automation requires current checks. Human-produced changes remain subject to normal review and acceptance.
+
+See [waiting and recovery](workflow.md#waiting-and-recovery) and [human controls and scope changes](workflow.md#human-controls-and-scope-changes) for their effects and boundaries.
+
 ## Review, acceptance, and integration
 
 Independent review uses a separate Assignment and Run under the configured independence policy. Changing the author’s Role or Profile alone does not establish independence. The same model may perform authoring and review when the policy’s independence conditions are satisfied.

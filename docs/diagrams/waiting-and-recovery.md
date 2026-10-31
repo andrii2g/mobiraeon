@@ -1,6 +1,6 @@
 # Waiting and recovery
 
-**[P] High-level routing proposal.** Durable waiting, bounded recovery, preserved history, and exclusive ownership already follow the baseline. This view summarizes the next-action choices in the [workflow proposal](../workflow.md#proposed-waiting-and-recovery).
+**[A] High-level waiting and recovery.** This view summarizes next-action choices under durable waiting, bounded recovery, preserved history, and exclusive ownership. See the [workflow](../workflow.md#waiting-and-recovery).
 
 ```mermaid
 ---
@@ -15,9 +15,9 @@ flowchart TB
     COORD -->|Allocation must change| REASSIGN["Reassign eligible execution<br/>under the same Task"]
     COORD -->|Stop is required| STOP["Stop affected automation;<br/>preserve progress and required next action"]
 
-    classDef proposed fill:#fff3d6,stroke:#a66b12,color:#513807;
+    classDef agreed fill:#e8f3ee,stroke:#28644d,color:#12372a;
     classDef boundary fill:#eef2ff,stroke:#5261a3,color:#20294f;
-    class COORD,WAIT,RETRY,REASSIGN,STOP proposed;
+    class COORD,WAIT,RETRY,REASSIGN,STOP agreed;
     class CHANGE boundary;
 ```
 

@@ -108,6 +108,8 @@ Use an approved, versioned pilot operating profile defining execution, concurren
 
 On exhaustion, preserve progress and stop, pause, or return control to the Orchestrator Agent according to policy. Create a human escalation when resolution requires human authority or input.
 
+Apply the [waiting and recovery rules](workflow.md#waiting-and-recovery): wait durably for missing conditions, retry only recoverable authorized work through a new Run within remaining limits, reassign eligible execution under the same Task, or stop affected automation when continuation is not permitted. Preserve exclusive ownership, history, cumulative limits, and human holds across restart. Reconcile uncertain effects before repeating operations; return capacity only after cleanup or effective containment.
+
 The operating profile supplies numeric limits, measurement methods, enforcement boundaries, and treatment of estimated or unavailable usage and cost. Verify enforcement, recovery, and retention behavior before live operation under N-01, N-02, N-05, and N-07.
 
 ## D-10 Authority
@@ -123,6 +125,8 @@ For the initial workflow, explicitly delegate ordinary Task acceptance to an eli
 Use an eligible independent Reviewer with explicit Initiative-level delegation for Initiative outcome acceptance; human acceptance applies where policy reserves it. Ordinary Task acceptance authority does not automatically extend to Initiative acceptance. Reuse applicable assessment and validation evidence, arranging additional assessment where needed.
 
 An explicit Request closure rule may use accepted outcomes without another approval or Run. Broader or unresolved Request-level judgment requires applicable authority; Task or Initiative delegation alone does not supply that grant.
+
+Authorized [human controls](workflow.md#human-controls-and-scope-changes) reach the Coordinator directly. Pause holds new starts and winds down affected Runs; resume lifts only the selected hold and rechecks conditions before new execution. Cancellation ends selected work without establishing acceptance or automatic undo. Reprioritization changes eligible pending order without automatic preemption. Takeover holds automation and retires prior execution ownership, with cleanup or containment before exclusive human work. Returning to automation is explicit; human-produced changes follow normal acceptance gates. Controls and authorized scope changes preserve history and respect broader holds, cancellation, and limits.
 
 Changes to scope, authority, infrastructure, or spending outside delegation require escalation through the Orchestrator Agent. Only the Orchestrator Agent initiates agent-generated requests for human decisions or intervention; ordinary human review follows project policy.
 
