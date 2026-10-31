@@ -1,6 +1,6 @@
 # High-level architecture
 
-**Status:** The five-part logical structure below was agreed on **2026-10-31**. Persistence ownership follows confirmed D-05, D-07, and D-11. The main exchanges describe the next level of the design for review; detailed component contracts, infrastructure, and workflows follow separately. Agreement does not establish implementation or verification.
+**Status:** The five-part logical structure and main exchanges below were agreed on **2026-10-31**. Persistence ownership follows confirmed D-05, D-07, and D-11. The Coordination operating model below is proposed for review; detailed component contracts, infrastructure, and workflows follow separately. Agreement does not establish implementation or verification.
 
 This document describes the system boundary, main parts, information ownership, and their relationships. [Definitions](definitions.md), [requirements](requirements.md), [decisions](decisions.md), and [responsibilities](responsibilities.md) remain the governing sources for terminology, required behavior, selected technologies, and actor responsibilities.
 
@@ -36,13 +36,51 @@ flowchart LR
 
 ## Coordination and Agent reasoning
 
-The **Coordinator** authorizes operations and maintains authoritative workflow state. The **Scheduler** determines when eligible, authorized work can run within the available capacity and limits. Neither responsibility requires model reasoning to enforce its rules.
+The **Coordinator** authorizes operations and maintains authoritative workflow state. The **Scheduler** determines when eligible, authorized work can run within the available capacity and limits. Both apply deterministic rules.
 
 The **Orchestrator Agent** reasons about intake, plans, Assignments, and Decisions. It proposes actions through authorized Coordinator operations and executes through the same controlled execution boundary as specialist Agents. Only it may initiate agent-generated requests for human decisions or intervention; ordinary human review follows project policy.
 
 Specialist Roles supply architecture, writing, development, review, verification, and decision investigation as required. The [role catalog](roles/README.md) owns their instructions. Roles, Agent identities, Profiles, Workers, and Runs remain distinct; a Role description or model response grants no permissions.
 
 Policy enforcement and integration control belong within these coordination and execution boundaries. Acceptance is recorded by the Coordinator when the designated authority and required evidence establish it.
+
+### Proposed initial operating model
+
+Run Coordination as one dedicated background service, containing a distinct **Forge Synchronization** component alongside the Coordinator and Scheduler. Initially this component polls Gitea through the in-process forge adapter and publishes authorized updates back to it. This separates polling responsibility within the single-service baseline in D-07 and D-11.
+
+| Responsibility | Owner |
+| --- | --- |
+| Discover new or changed managed Gitea items, including relevant human replies and review activity; publish authorized status and work-item updates | Forge Synchronization, through the forge adapter |
+| Reconcile observations with internal records; enforce authority, prerequisites, ownership, and limits; record authorized Assignments and acceptance | Coordinator |
+| Interpret Requests, clarify intent, decompose work, and propose suitable Roles, Agent/Profile selections, Assignments, and Decision resolutions | Orchestrator Agent, in bounded Runs |
+| Dispatch already authorized, eligible Runs according to configured scheduling rules and available capacity | Scheduler |
+| Start and supervise the selected Agent's Run, returning results and evidence | Agent execution, through Workers and Runner Adapters |
+
+```mermaid
+flowchart LR
+    Gitea[Gitea] <--> Sync
+    subgraph Service[Coordination service]
+        Sync[Forge Synchronization] --> Coordinator
+        Coordinator -->|Authorized work| Scheduler
+        Coordinator -->|Authorized updates| Sync
+    end
+    subgraph Execution[Agent execution]
+        Orchestrator[Orchestrator Runs]
+        Specialists[Specialist Runs]
+    end
+    Scheduler --> Orchestrator
+    Scheduler --> Specialists
+    Orchestrator -->|Proposed plans and actions| Coordinator
+    Specialists -->|Results and decision requests| Coordinator
+```
+
+A configured intake rule identifies an eligible Orchestrator Agent/Profile for a new Request needing interpretation. The Coordinator authorizes a bounded intake Assignment, and the Scheduler dispatches its Run through the normal execution boundary. Subsequent Role and Agent/Profile selections can come from the Orchestrator's validated proposals or an already approved explicit assignment rule. The Scheduler applies those selections without interpreting issue prose or inventing a plan.
+
+A new Gitea issue is an observed input. Its managed scope, meaning, authority, and required context must be established before it becomes executable work. An unplanned Task may need clarification; a mapped, already planned Task can proceed directly when its recorded Assignment and prerequisites permit. Repeated observations of the same item, including Möbiræon's own status updates, must not create duplicate Requests, Assignments, or Runs.
+
+Polling, synchronization, scheduling, and reconciliation use ordinary software. The Orchestrator runs when actionable interpretation, planning, routing, or decision reasoning is required. Known workflow progression and internal results can make work eligible independently of a fresh Gitea change; neither dispatch nor continuation waits for a new issue to appear.
+
+Gitea documents an [issue search API](https://docs.gitea.com/api/operations/issue-search-issues/) and [webhook notifications](https://docs.gitea.com/usage/repository/webhooks/). Polling is the proposed first observation mechanism; webhooks may later complement it through the same adapter and Coordinator boundary. Detailed event coverage, intake conventions, actor verification, and qualification of the installed Gitea version belong to the forge contract. The corresponding high-level operating loop is in [workflow](workflow.md#proposed-coordination-loop).
 
 ## Persistence and information ownership
 

@@ -1,6 +1,24 @@
 # Workflow summary
 
-**Status: Proposed summary except for confirmed requirements and decisions.** D-02 confirms Agent/component terminology, D-03 confirms the hierarchy, and D-04 confirms lifecycle separation and review/rework principles. Exact state names and transitions remain to be agreed. See [definitions](definitions.md) and the approved [requirements](requirements.md).
+**Status: Proposed high-level workflow except for confirmed requirements and decisions.** The five-part architecture and its main exchanges are agreed; the Coordination loop below is proposed alongside the [Coordination operating model](architecture.md#proposed-initial-operating-model). D-02 confirms Agent/component terminology, D-03 confirms the hierarchy, and D-04 confirms lifecycle separation and review/rework principles. Exact state names and transitions remain to be agreed. See [definitions](definitions.md) and the approved [requirements](requirements.md).
+
+## Proposed Coordination loop
+
+Architecture defines which component owns an action; workflow defines which action is required next and what permits it. The initial service connects Gitea observation, authoritative coordination, and bounded Agent execution:
+
+| Activity | Responsibility and result |
+| --- | --- |
+| Observe | Forge Synchronization polls new and changed managed Gitea items through the adapter. Relevant replies and review activity are inputs alongside newly created issues. Internal Run results, accepted prerequisites, and recovery conditions also trigger coordination. |
+| Reconcile | The Coordinator maps observations to internal records, validates the applicable actor and requested operation, and identifies meaningful changes. Existing mapped Tasks retain their identity. Repeated observations and the system's own published updates do not create duplicate work. |
+| Reason when needed | For a new Request needing interpretation, an intake rule supplies the Orchestrator Agent/Profile; the Coordinator authorizes its bounded Assignment and the Scheduler dispatches it. The Orchestrator proposes clarification, planning, suitable Roles and Agent Profiles, Assignments, or Decisions. Already planned work can proceed without another reasoning Run. |
+| Authorize | The Coordinator validates proposed actions against the governing baseline, policy, inputs, and prerequisites, then records the authorized work and waiting conditions. A discovered issue or proposed plan alone does not authorize implementation. |
+| Dispatch | The Scheduler dispatches eligible, authorized Runs for recorded Assignments within capacity and limits. Agent execution starts and supervises the selected Agent through its configured Runner Adapter. |
+| Assess and continue | The Coordinator records submitted results and evidence. The approved workflow determines the next review, verification, integration, or acceptance action. New ambiguity or changes needing judgment activate the Orchestrator; established progression can go directly to scheduling. |
+| Publish | Authorized work-item, status, and evidence updates reach Gitea through Forge Synchronization and the adapter. Routine Runs, retries, and review events remain internal unless the mapping calls for a substantive forge item. |
+
+The loop can pause at any prerequisite and continue independent work. Polling unchanged external state creates no Agent Run. A human answer resumes affected work only after its authority and meaning are established, required artifact updates are recorded, and prerequisites are satisfied; unresolved interpretation returns to the Orchestrator.
+
+The Gitea intake conventions must distinguish a new Request, an existing planned Task, an ordinary discussion, and an authorized decision or approval. Exact labels/templates, transition names, polling intervals, and message contracts remain follow-up design work.
 
 ## Delivery loop
 
@@ -9,7 +27,7 @@
 | 1. Intake | Human supplies a goal, initial requirements, ideas, constraints, and exclusions. | A classified Request linked to a Project and delivery scope. |
 | 2. Clarification | Orchestrator Agent coordinates requirements analysis, research, architecture, and writing. It consolidates unresolved questions for the human. | A reviewed brief and initial specification approved by the human. |
 | 3. Planning | Agents propose milestones and bounded Tasks, with dependencies, ownership, inputs, acceptance criteria, and limits. | An approved, versioned delivery baseline and eligible work. |
-| 4. Execution | Scheduler assigns ready work. Workers use the selected agent profiles and CLI runtimes to produce artifacts and validation evidence. | A submission, an internal question, or a recorded execution failure. |
+| 4. Execution | The Scheduler dispatches eligible, authorized Runs for recorded Assignments. Workers and Runner Adapters use the selected Agent Profiles and runtimes to produce artifacts and validation evidence. | A submission, an internal question, or a recorded execution failure. |
 | 5. Review and integration | An independent reviewer checks the submission. Accepted changes are integrated and verified against the current shared baseline. | Accepted documentation or integrated, validated code. |
 | 6. Outcome acceptance | Required results are checked together against the Initiative's agreed outcome. | A completed Initiative, or specific remaining work. |
 
@@ -20,8 +38,8 @@ Establish shared contracts first, then deliver small usable slices across data, 
 ## Questions and human escalation
 
 1. An agent records the precise ambiguity, the evidence inspected, options, and its recommendation, linked to affected work.
-2. The Task becomes Blocked and releases execution capacity.
-3. The Orchestrator Agent resolves the question within approved requirements or routes it to a suitable internal role.
+2. The affected work waits and releases execution capacity; independent work can continue.
+3. The Orchestrator Agent resolves the question within delegated authority and the governing baseline, or routes it to a suitable internal role.
 4. If human authority or clarification is needed, only the Orchestrator Agent initiates a human escalation through the Coordinator.
 5. The authorized answer is recorded, affected specifications are revised as required, and prerequisites are rechecked before execution resumes.
 
@@ -29,7 +47,7 @@ Several Tasks may depend on the same Decision. Resolution makes affected work el
 
 ## Waiting and recovery
 
-Events and periodic reconciliation wake the Scheduler when useful work is possible. Waiting does not require an active model session. Failed or expired Runs follow bounded recovery policy; exhausted recovery produces a visible blocker and a Decision for the Orchestrator Agent.
+External observations, internal results, and periodic reconciliation reach Coordination. Validated changes make work eligible for Scheduler reassessment. Waiting does not require an active model session. Failed or expired Runs follow bounded recovery policy; exhausted recovery produces a visible blocker and a Decision for the Orchestrator Agent.
 
 Retries and resumed runs preserve task identity, original evidence, configuration history, and existing change references. Duplicate events must converge without duplicate accepted work. Pause and cancellation stop further dispatch in the selected scope and handle active runs under an agreed policy.
 
