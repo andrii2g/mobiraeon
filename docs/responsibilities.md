@@ -52,4 +52,6 @@ Review and verification provide assessments and evidence. Acceptance requires th
 
 The [initial defaults](workflow.md#initial-defaults) assign routine routing to the Coordinator under approved rules and ordinary Task acceptance to an explicitly delegated, eligible independent reviewer. The Orchestrator handles unresolved judgment or exceptions; the Scheduler dispatches the resulting authorized Runs.
 
+For [Initiative outcome acceptance](workflow.md#initiative-outcome-acceptance), the Orchestrator coordinates the overall assessment and any missing work. An eligible independent Reviewer requires explicit Initiative-level delegation to accept the outcome; Task-level authority does not extend automatically. The Coordinator enforces and records the determination.
+
 Integration uses the assigned workflow and authorized repository identity. Ordinary implementation Task contracts include integration and fresh combined-revision validation. A Task may finish with an accepted reviewed patch when its contract explicitly assigns integration separately. Overall code delivery requires the prescribed review evidence and fresh validation of the exact combined revision. The [decision register](decisions.md) defines the governing delivery and authority boundaries.

@@ -1,8 +1,8 @@
 # Workflow summary
 
-**Status:** The high-level Coordination loop, intake/readiness, Agent assignment, Run lifecycle, assessment/rework model and initial defaults, and integration/combined-result validation are confirmed alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Exact lifecycle states, transitions, contracts, and further workflow detail remain open where they extend the confirmed requirements and decisions. See [definitions](definitions.md), the approved [requirements](requirements.md), and D-02 through D-04 for the governing terminology, hierarchy, and lifecycle principles.
+**Status:** The high-level Coordination loop, intake/readiness, Agent assignment, Run lifecycle, assessment/rework model and initial defaults, integration/combined-result validation, and Initiative outcome acceptance are confirmed alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Request closure and follow-up below are proposed for discussion. Exact lifecycle states, transitions, contracts, and further workflow detail remain open where they extend the confirmed requirements and decisions. See [definitions](definitions.md), the approved [requirements](requirements.md), and D-02 through D-04 for the governing terminology, hierarchy, and lifecycle principles.
 
-The [versioned Mermaid views](diagrams/README.md) show the [high-level system](diagrams/high-level.md) and focused workflow parts: [intake/readiness](diagrams/intake-and-readiness.md), [assignment/selection](diagrams/assignment-and-selection.md), the [shared Run lifecycle](diagrams/run-lifecycle.md), [assessment/rework](diagrams/assessment-and-rework.md), and [integration/validation](diagrams/integration-and-validation.md). Each view identifies the agreed/proposed boundary.
+The [versioned Mermaid views](diagrams/README.md) show the [high-level system](diagrams/high-level.md) and focused workflow parts: [intake/readiness](diagrams/intake-and-readiness.md), [assignment/selection](diagrams/assignment-and-selection.md), the [shared Run lifecycle](diagrams/run-lifecycle.md), [assessment/rework](diagrams/assessment-and-rework.md), [integration/validation](diagrams/integration-and-validation.md), [Initiative acceptance](diagrams/initiative-acceptance.md), and [Request closure/follow-up](diagrams/request-closure-and-follow-up.md). Each view identifies the agreed/proposed boundary.
 
 ## Coordination loop
 
@@ -193,9 +193,9 @@ The default keeps integration and combined-result validation within the implemen
 
 Task acceptance confirms its contribution; Initiative acceptance assesses the overall intended outcome. A merge alone does not establish either acceptance or production-deployment authority.
 
-## Proposed Initiative outcome acceptance
+## Initiative outcome acceptance
 
-The baseline already requires acceptance of the overall outcome. This proposal describes the handoff and Initiative-level authority, shown in the [focused diagram](diagrams/initiative-acceptance.md).
+The overall outcome is assessed under Initiative-level authority, as shown in the [focused diagram](diagrams/initiative-acceptance.md).
 
 An Initiative is complete when:
 
@@ -204,11 +204,24 @@ An Initiative is complete when:
 - No unresolved required finding, prerequisite, or Decision prevents acceptance.
 - The designated Initiative authority accepts the outcome and the Coordinator enforces and records that determination.
 
-The proposed authority default is an eligible independent Reviewer with explicit Initiative-level delegation; human acceptance applies where policy reserves it. Ordinary Task acceptance delegation does not automatically grant Initiative acceptance. Reuse applicable review and validation evidence, arranging further assessment only where needed to establish the overall outcome.
+The authority default is an eligible independent Reviewer with explicit Initiative-level delegation; human acceptance applies where policy reserves it. Ordinary Task acceptance delegation does not automatically grant Initiative acceptance. Reuse applicable review and validation evidence, arranging further assessment only where needed to establish the overall outcome.
 
 The Orchestrator coordinates the outcome assessment and missing work. If individual Tasks are accepted but the outcome is unmet, keep the Initiative open and arrange missing assessment, rework, or bounded additional work within approved scope. Preserve valid Task acceptance and its history; scope changes follow the Decision process.
 
-Request closure and later follow-up remain separate discussion topics in the [remaining agenda](implementation-plan.md#remaining-high-level-discussions).
+Request closure and later follow-up are proposed below; the [remaining agenda](implementation-plan.md#remaining-high-level-discussions) tracks further high-level discussions.
+
+## Proposed Request closure and follow-up
+
+The Coordinator records a Request as fulfilled when accepted delivery covers its agreed requested outcome under an explicit closure rule. That rule may use already accepted outcomes without another approval or Run; broader or unresolved Request-level judgment requires applicable authority. Initiative acceptance delegation does not automatically grant that broader authority. Closure follows the Request's own outcome rather than requiring every related Initiative to finish.
+
+Preserve the original Request and its delivery links within the existing hierarchy. The Orchestrator classifies later reports as baseline defects, changed goals, or questions needing resolution. Scope changes require an authorized Decision before affected work proceeds; existing delegation applies without an automatic new human approval. The [focused diagram](diagrams/request-closure-and-follow-up.md) shows this proposed handling.
+
+| Situation | Proposed handling |
+| --- | --- |
+| Defect before Request fulfillment | Return the correction to the responsible Task as rework, preserve its identity, and reassess the changed result and affected acceptance. |
+| Baseline defect after fulfilled closure | Normally create linked repair work or a new Request. Reassess affected acceptance and closure; correct or reopen them when evidence shows original fulfillment was unsupported, preserving the history. |
+| Changed goal or unresolved expectation | Use a linked new Request for the changed goal; resolve uncertainty through the Decision process before classifying or authorizing affected work. |
+| Cancellation, duplicate, or rejection | Record the distinct closure reason; these outcomes do not establish fulfillment. |
 
 ## Delivery loop
 

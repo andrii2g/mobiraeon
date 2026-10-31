@@ -56,6 +56,8 @@ In the initial workflow, the Coordinator routes routine assessment and in-scope 
 
 The [integration handoff](workflow.md#integration-and-combined-result-validation) connects reviewed work, authorized integration, validation of the combined result, and acceptance or rework. Initiative acceptance remains an assessment of the overall intended outcome.
 
+Complete an Initiative when its required delivery obligations are satisfied, current evidence establishes its overall outcome, no unresolved required condition prevents acceptance, and its designated authority accepts. The Coordinator enforces and records the determination. The Orchestrator coordinates any missing assessment or work under the [Initiative outcome workflow](workflow.md#initiative-outcome-acceptance).
+
 Workflow specifications define the state names, transitions, and recovery behavior.
 
 ## D-05 Registry
@@ -115,6 +117,8 @@ The Coordinator enforces authority and records acceptance when the required evid
 Independent assessment and acceptance authority are distinct responsibilities. Policy may explicitly assign both to the same eligible reviewer.
 
 For the initial workflow, explicitly delegate ordinary Task acceptance to an eligible independent reviewer, conditional on all required current evidence and gates. The Coordinator enforces and records that determination. A contract or policy may require another designated authority; the default does not grant authority through Role text alone.
+
+Use an eligible independent Reviewer with explicit Initiative-level delegation for Initiative outcome acceptance; human acceptance applies where policy reserves it. Ordinary Task acceptance authority does not automatically extend to Initiative acceptance. Reuse applicable assessment and validation evidence, arranging additional assessment where needed.
 
 Changes to scope, authority, infrastructure, or spending outside delegation require escalation through the Orchestrator Agent. Only the Orchestrator Agent initiates agent-generated requests for human decisions or intervention; ordinary human review follows project policy.
 
