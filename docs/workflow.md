@@ -1,8 +1,8 @@
 # Workflow summary
 
-**Status:** The high-level Coordination loop, intake/readiness, Agent assignment, Run lifecycle, assessment/rework model and initial defaults, integration/combined-result validation, and Initiative outcome acceptance are confirmed alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Request closure and follow-up below are proposed for discussion. Exact lifecycle states, transitions, contracts, and further workflow detail remain open where they extend the confirmed requirements and decisions. See [definitions](definitions.md), the approved [requirements](requirements.md), and D-02 through D-04 for the governing terminology, hierarchy, and lifecycle principles.
+**Status:** The high-level Coordination loop, intake/readiness, Agent assignment, Run lifecycle, assessment/rework model and initial defaults, integration/combined-result validation, Initiative outcome acceptance, and Request closure/follow-up are confirmed alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Waiting/recovery routing and human controls/scope changes below are proposed for discussion. Exact lifecycle states, transitions, contracts, and further workflow detail remain open where they extend the confirmed requirements and decisions. See [definitions](definitions.md), the approved [requirements](requirements.md), and D-02 through D-04 for the governing terminology, hierarchy, and lifecycle principles.
 
-The [versioned Mermaid views](diagrams/README.md) show the [high-level system](diagrams/high-level.md) and focused workflow parts: [intake/readiness](diagrams/intake-and-readiness.md), [assignment/selection](diagrams/assignment-and-selection.md), the [shared Run lifecycle](diagrams/run-lifecycle.md), [assessment/rework](diagrams/assessment-and-rework.md), [integration/validation](diagrams/integration-and-validation.md), [Initiative acceptance](diagrams/initiative-acceptance.md), and [Request closure/follow-up](diagrams/request-closure-and-follow-up.md). Each view identifies the agreed/proposed boundary.
+The [versioned Mermaid views](diagrams/README.md) show the [high-level system](diagrams/high-level.md) and focused workflow parts: [intake/readiness](diagrams/intake-and-readiness.md), [assignment/selection](diagrams/assignment-and-selection.md), the [shared Run lifecycle](diagrams/run-lifecycle.md), [assessment/rework](diagrams/assessment-and-rework.md), [integration/validation](diagrams/integration-and-validation.md), [Initiative acceptance](diagrams/initiative-acceptance.md), [Request closure/follow-up](diagrams/request-closure-and-follow-up.md), [waiting/recovery](diagrams/waiting-and-recovery.md), and [human controls](diagrams/human-controls.md). Each view identifies the agreed/proposed boundary.
 
 ## Coordination loop
 
@@ -208,15 +208,15 @@ The authority default is an eligible independent Reviewer with explicit Initiati
 
 The Orchestrator coordinates the outcome assessment and missing work. If individual Tasks are accepted but the outcome is unmet, keep the Initiative open and arrange missing assessment, rework, or bounded additional work within approved scope. Preserve valid Task acceptance and its history; scope changes follow the Decision process.
 
-Request closure and later follow-up are proposed below; the [remaining agenda](implementation-plan.md#remaining-high-level-discussions) tracks further high-level discussions.
+Request closure and later follow-up follow the rules below; the [remaining agenda](implementation-plan.md#remaining-high-level-discussions) tracks further high-level discussions.
 
-## Proposed Request closure and follow-up
+## Request closure and follow-up
 
 The Coordinator records a Request as fulfilled when accepted delivery covers its agreed requested outcome under an explicit closure rule. That rule may use already accepted outcomes without another approval or Run; broader or unresolved Request-level judgment requires applicable authority. Initiative acceptance delegation does not automatically grant that broader authority. Closure follows the Request's own outcome rather than requiring every related Initiative to finish.
 
-Preserve the original Request and its delivery links within the existing hierarchy. The Orchestrator classifies later reports as baseline defects, changed goals, or questions needing resolution. Scope changes require an authorized Decision before affected work proceeds; existing delegation applies without an automatic new human approval. The [focused diagram](diagrams/request-closure-and-follow-up.md) shows this proposed handling.
+Preserve the original Request and its delivery links within the existing hierarchy. The Orchestrator classifies later reports as baseline defects, changed goals, or questions needing resolution. Scope changes require an authorized Decision before affected work proceeds; existing delegation applies without an automatic new human approval. The [focused diagram](diagrams/request-closure-and-follow-up.md) shows this handling.
 
-| Situation | Proposed handling |
+| Situation | Handling |
 | --- | --- |
 | Defect before Request fulfillment | Return the correction to the responsible Task as rework, preserve its identity, and reassess the changed result and affected acceptance. |
 | Baseline defect after fulfilled closure | Normally create linked repair work or a new Request. Reassess affected acceptance and closure; correct or reopen them when evidence shows original fulfillment was unsupported, preserving the history. |
@@ -248,11 +248,35 @@ Establish shared contracts first, then deliver small usable slices across data, 
 
 Several Tasks may depend on the same Decision. Resolution makes affected work eligible for re-evaluation; it does not by itself prove that the required artifacts or approvals exist.
 
-## Waiting and recovery
+## Proposed waiting and recovery
 
-External observations, internal results, and periodic reconciliation reach Coordination. Validated changes make work eligible for Scheduler reassessment. Waiting does not require an active model session. Failed or expired Runs follow bounded recovery policy; exhausted recovery produces a visible blocker and a Decision for the Orchestrator Agent.
+The proposed defaults distinguish waiting, recoverable execution problems, changed allocation, and stopping. The [focused diagram](diagrams/waiting-and-recovery.md) shows the routing; unresolved judgment returns to the Orchestrator.
 
-Retries and resumed runs preserve task identity, original evidence, configuration history, and existing change references. Duplicate events must converge without duplicate accepted work. Pause and cancellation stop further dispatch in the selected scope and handle active runs under an agreed policy.
+| Action | Proposed default |
+| --- | --- |
+| Wait | Persist the unmet condition and progress without an idle model session. Meaningful external or internal changes trigger reassessment; independent eligible work can continue. |
+| Retry | Retry only recoverable, authorized work within remaining limits, using the same Task and a new Run. Reconcile unknown launches or external effects before repeating operations. |
+| Reassign | Record a new allocation to an eligible Agent under the same Task. Preserve prior results and history, retire superseded execution ownership, and establish exclusive ownership for the new attempt. |
+| Stop | Stop affected execution or further starts when authority, recovery, or limits do not permit continuation. Preserve work and the reason; route unresolved Decisions through the Orchestrator without claiming acceptance. |
+
+The Coordinator enforces the applicable policy and the Scheduler dispatches only currently eligible work. Recovery preserves evidence and cumulative limits; superseded execution cannot advance authoritative state. Affected capacity remains unavailable until cleanup or effective containment is established. Stopping an attempt or further starts does not itself cancel the logical Task or establish acceptance. If the Orchestrator cannot run, expose the required authorized action without idle model calls or bypassing limits. Existing review, acceptance, and escalation gates still apply.
+
+## Proposed human controls and scope changes
+
+Apply each authorized control to an explicit scope of work; Request-scoped controls follow validated delivery links within the existing hierarchy. These proposed defaults are summarized in the [focused diagram](diagrams/human-controls.md).
+
+| Control | Proposed effect |
+| --- | --- |
+| Pause | Immediately hold new starts and wind down affected active Runs under supervision, preserving progress. Do not leave their processes frozen indefinitely. |
+| Resume | An explicit request lifts only the selected hold, preserving broader holds, cancellation, and remaining limits. Recheck current readiness, authority, and execution conditions before a new Run, preserving the original Run record. Cancelled work requires new authorization to continue. |
+| Cancel | End the selected work and stop affected Runs under supervision. Preserve completed effects and progress; cancellation establishes neither success nor automatic undo. |
+| Reprioritize | Change the order of eligible work without changing permissions, dependencies, or budgets. Do not automatically preempt active work. |
+| Take over | Hold affected automation, retire old execution ownership, and clean up or contain execution before exclusive human work. Record human changes; explicit return to automation requires fresh checks. |
+| Change scope | Record authorized baseline updates, identify affected work, and reassess its readiness, acceptance, and evidence. Unrelated authorized work can continue. |
+
+Authorized human controls reach the Coordinator directly without requiring an Orchestrator Run. It validates authority and scope, persists holds and cancellation decisions across restarts, and distinguishes a recorded control from observed stopping, cleanup, or containment. The Orchestrator handles unresolved judgment and required escalation when eligible; an unavailable Orchestrator does not delay authorized controls. Scope changes within existing delegation need no automatic additional human approval. Exact commands, transitions, and enforcement details remain follow-up specifications.
+
+Changed goals follow the linked-Request rule above. Authorized updates to governing scope preserve prior baselines and evidence while reassessing their applicability to affected work. Human-produced changes remain subject to the normal review and acceptance gates.
 
 ## Closure rules
 

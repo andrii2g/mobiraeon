@@ -1,6 +1,6 @@
 # Request closure and follow-up
 
-**[P] Proposed high-level model.** Request fulfillment follows its own agreed outcome and applicable delivery evidence. The Request remains an origin record outside the Project → Initiative → Task hierarchy. See the [workflow proposal](../workflow.md#proposed-request-closure-and-follow-up).
+**[A] High-level Request closure.** Request fulfillment follows its own agreed outcome and applicable delivery evidence. The Request remains an origin record outside the Project → Initiative → Task hierarchy. See the [workflow](../workflow.md#request-closure-and-follow-up).
 
 ```mermaid
 ---
@@ -15,9 +15,9 @@ flowchart TB
     CLOSE -. Later report .-> ASSESS["Orchestrator assesses a defect,<br/>changed goal or uncertainty"]
     ASSESS --> FOLLOWUP["Arrange linked follow-up;<br/>reassess prior fulfillment when warranted"]
 
-    classDef proposed fill:#fff3d6,stroke:#a66b12,color:#513807;
+    classDef agreed fill:#e8f3ee,stroke:#28644d,color:#12372a;
     classDef boundary fill:#eef2ff,stroke:#5261a3,color:#20294f;
-    class MATCH,OPEN,CLOSE,ASSESS,FOLLOWUP proposed;
+    class MATCH,OPEN,CLOSE,ASSESS,FOLLOWUP agreed;
     class EVIDENCE boundary;
 ```
 
@@ -27,4 +27,4 @@ Before acceptance, ordinary corrections remain same-Task rework. After closure, 
 
 Cancellation, rejection, or duplicate handling closes work for a different reason from fulfillment. Uncertain reports need investigation or a Decision before classification; changes to governing scope follow the existing authority process.
 
-Related: [Initiative outcome acceptance](initiative-acceptance.md). Return to the [diagram guide](README.md).
+Related: [Initiative outcome acceptance](initiative-acceptance.md). Next discussions: [waiting and recovery](waiting-and-recovery.md) and [human controls](human-controls.md). Return to the [diagram guide](README.md).

@@ -1,6 +1,6 @@
 # Möbiræon documentation
 
-The product requirements and D-01 through D-12 form the confirmed baseline. The high-level architecture and workflow cover delivery through Initiative outcome acceptance, including assessment/rework and acceptance delegation. [Request closure and follow-up](workflow.md#proposed-request-closure-and-follow-up) are proposed for discussion; the [remaining agenda](implementation-plan.md#remaining-high-level-discussions) separates high-level discussions from later specifications. Complete the remaining contracts and operational specifications before implementing the affected capabilities or activating the pilot.
+The product requirements and D-01 through D-12 form the confirmed baseline. The high-level architecture and workflow cover delivery through Request closure and follow-up, including assessment/rework and acceptance delegation. [Waiting and recovery](workflow.md#proposed-waiting-and-recovery) and [human controls and scope changes](workflow.md#proposed-human-controls-and-scope-changes) are proposed for discussion; the [remaining agenda](implementation-plan.md#remaining-high-level-discussions) separates high-level discussions from later specifications. Complete the remaining contracts and operational specifications before implementing the affected capabilities or activating the pilot.
 
 ## Reading order
 
@@ -10,7 +10,7 @@ The product requirements and D-01 through D-12 form the confirmed baseline. The 
 | [Definitions](definitions.md) | Canonical terminology and relationships |
 | [Requirements](requirements.md) | Approved requirements, Agent configuration contract, and acceptance scenarios |
 | [High-level architecture](architecture.md) | System boundary, five logical parts, Coordination responsibilities, persistence ownership, and main exchanges |
-| [Workflow](workflow.md) | Coordination through Initiative outcome acceptance, proposed Request closure/follow-up, and remaining delivery detail |
+| [Workflow](workflow.md) | Coordination through Request closure/follow-up; proposed recovery, human controls, and scope-change handling |
 | [Mermaid diagrams](diagrams/README.md) | High-level system and focused workflow views, with agreement markers |
 | [Decision register](decisions.md) | Confirmed decisions, remaining details, and their consequences |
 | [Planning sequence](implementation-plan.md) | Remaining high-level discussions, later specifications, and design validation order |
