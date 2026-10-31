@@ -6,3 +6,11 @@
 /backups/
 /infra/gitea/backups/
 /artifacts/
+.venv/
+.tools/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+/dist/
+/var/
+/submissions/
