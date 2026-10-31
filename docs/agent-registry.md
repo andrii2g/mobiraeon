@@ -18,7 +18,17 @@ These collections describe ownership, not physical tables, package names, or exa
 
 Registry persistence is the authoritative publication source. Git may supply reviewed import inputs or receive exports through the same validation process; it is not a second independently editable Registry. A separate Gitea Registry repository is unnecessary. Structured configuration and Markdown instruction content remain supported without making Git commits their identity.
 
-Versioned project bindings preserve internal Agent identities and historical forge attribution. Account provisioning and forge qualification remain separate preparation activities under the [setup model](pilot-and-agent-setup.md#registry-and-gitea-identities). Project migration and cross-forge synchronization remain separately scoped under [D-07](decisions.md#d-07-forge-integration-and-initial-platform).
+Versioned project bindings preserve internal Agent identities and historical forge attribution. Account provisioning and forge qualification remain separate preparation activities under the [forge identity rules](#forge-identities). Project migration and cross-forge synchronization remain separately scoped under [D-07](decisions.md#d-07-forge-integration-and-initial-platform).
+
+## Forge identities
+
+Use one stable Gitea automation account for each registered Agent that acts in the forge, plus a separate Coordination service account. Accounts attach to Agent identities rather than Roles, Profile revisions, Workers, or individual Runs. An Agent performing no forge operations need not acquire a forge account merely to execute.
+
+Versioned project integration configuration binds each Agent to the relevant forge instance, account, repositories, and permitted operations. These bindings remain separate from reusable Profiles and model-provider accounts. Exact binding fields and physical schemas belong to the implementation contracts.
+
+The Coordination account publishes coordination updates; Agent-attributed submissions and reviews use their mapped principals through authorized operations. Account provisioning is an administrative activity. Repository access alone grants no workflow authority or review independence. Trusted operations enforce authenticated actor and Run attribution; a commit author name is insufficient proof of the acting principal.
+
+Use applicable Gitea [repository and team permissions](https://docs.gitea.com/usage/access-control/permissions/), [API-token permissions](https://docs.gitea.com/development/api-usage/), and [protected-branch controls](https://docs.gitea.com/usage/access-control/protected-branches/) alongside Möbiræon's controls, qualifying the actual operations on the installed instance. Configuration, exports, and Run records retain secret references; credential values remain outside the Registry and model-visible context.
 
 ## Revision and execution boundaries
 
@@ -56,15 +66,15 @@ Apply the [onboarding model](workflow.md#agent-onboarding) through the following
 | Seed instructions | Import reviewed snapshots of the finalized [Role catalog](roles/README.md) and shared rules, retaining their source provenance. These become published instruction revisions; live file changes cannot silently change Run inputs. |
 | Prepare Profiles | Start with explicit Role-specific Profiles targeting one primary execution path to qualify first. Reuse suitable capability and policy definitions. Configure runtime/provider/model references, reasoning intent, tools, output/context contracts, and limits under the existing configuration contract. |
 | Create Agents | Create each stable identity disabled for ordinary selection. Bind it to an exact Profile revision and retain any permitted explicit overrides; assign no work during creation. |
-| Bind the pilot Project | Bind the selected Agent definitions and governing policies, then arrange external account access and versioned integration bindings. Each Agent acting in Gitea uses its own stable mapped account; credentials remain separate. |
+| Bind the Project | Bind the selected Agent definitions and governing policies, then arrange external account access and versioned integration bindings. Each Agent acting in Gitea uses its own stable mapped account; credentials remain separate. |
 | Publish and qualify | Review and validate the definitions and dependencies, then publish exact retrievable Registry revisions. Authorized qualification checks evaluate the candidate execution configuration/environment independently of ordinary Agent selection; they do not dispatch the disabled Agent or override disablement or revoked access. |
-| Enable selection | An authorized administrator enables each Agent whose intended configuration is qualified and suitable for the pilot. A configured intake rule identifies the initial Orchestrator; every ordinary Assignment and Run still passes current Coordinator and Scheduler checks. |
+| Enable selection | An authorized administrator enables each Agent whose intended configuration is qualified for its intended work. A configured intake rule identifies the initial Orchestrator; every ordinary Assignment and Run still passes current Coordinator and Scheduler checks. |
 
 Several Profiles may share the same runtime, provider, and model where suitable. Preserve [D-08](decisions.md#d-08-initial-profiles): strong reasoning for planning and consequential Decisions, medium reasoning for routine implementation, and independently configured review.
 
 A Profile is reusable only where its Role and instruction bindings, capabilities, and policy support the work. Sharing a runtime does not permit arbitrary Profile substitution. Independent review requires the separate Assignment, Run, provenance, and context controls already established in the workflow; a separate Gitea account alone is insufficient.
 
-After initial setup, create, configure, and enable additional Agents through the same controlled Registry operations. Catalog changes in the first pilot are administrator-led; Agents do not create or enable other Agents.
+After initial setup, create, configure, and enable additional Agents through the same controlled Registry operations. Initial catalog changes are administrator-led; Agents do not create or enable other Agents.
 
 Configuration changes produce reviewed revisions for later selections. Existing Runs retain their exact configuration and context. Detailed schemas, model/provider choices, runtime versions, numeric limits, account names, and validation commands remain the next design layer. The [first-Agent preparation diagram](diagrams/first-agent-preparation.md) summarizes the setup sequence.
 

@@ -9,7 +9,7 @@ config:
     wrappingWidth: 270
 ---
 flowchart TB
-    BOOT["Authorized human prepares instructions<br/>and Role-specific Profiles through Registry interface"] --> CREATE["Create stable Agents disabled<br/>Bind exact Profiles and pilot integrations"]
+    BOOT["Authorized human prepares instructions<br/>and Role-specific Profiles through Registry interface"] --> CREATE["Create stable Agents disabled<br/>Bind exact Profiles and project integrations"]
     CREATE --> PUBLISH["Review, validate and publish<br/>immutable Registry revisions"]
     PUBLISH --> QUALIFY["Authorized qualification work<br/>records evidence for intended scope"]
     QUALIFY --> ENABLE["Administrator enables eligible Agents<br/>Configured intake rule identifies Orchestrator"]

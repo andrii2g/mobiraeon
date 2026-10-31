@@ -1,8 +1,8 @@
 # Workflow summary
 
-**Status:** The high-level Coordination loop, intake/readiness, Agent assignment, Run lifecycle, assessment/rework model and initial defaults, integration/combined-result validation, Initiative outcome acceptance, Request closure/follow-up, waiting/recovery routing, human controls/scope changes, context continuity/shared work, and Agent onboarding are confirmed alongside the [Coordination operating model](architecture.md#initial-coordination-operating-model). Registry organization and the first registered Agents remain proposed in the [Agent Registry discussion](agent-registry.md). Exact lifecycle states, transitions, contracts, and further workflow detail remain open where they extend the confirmed requirements and decisions. See [definitions](definitions.md), the approved [requirements](requirements.md), and D-02 through D-04 for the governing terminology, hierarchy, and lifecycle principles.
+This document defines the high-level delivery workflow, recovery and human controls, context handoffs, and Agent onboarding. The [Agent Registry](agent-registry.md) owns versioned configuration and the initial administrator-led setup. [Definitions](definitions.md), [requirements](requirements.md), and [decisions](decisions.md) govern the terminology and rules; the [implementation plan](implementation-plan.md#remaining-specifications) identifies unfinished contracts and the [qualification and live-pilot gates](implementation-plan.md#gates-before-qualification-or-live-pilot-execution).
 
-The [versioned Mermaid views](diagrams/README.md) show the [high-level system](diagrams/high-level.md) and focused workflow parts: [intake/readiness](diagrams/intake-and-readiness.md), [assignment/selection](diagrams/assignment-and-selection.md), the [shared Run lifecycle](diagrams/run-lifecycle.md), [assessment/rework](diagrams/assessment-and-rework.md), [integration/validation](diagrams/integration-and-validation.md), [Initiative acceptance](diagrams/initiative-acceptance.md), [Request closure/follow-up](diagrams/request-closure-and-follow-up.md), [waiting/recovery](diagrams/waiting-and-recovery.md), [human controls](diagrams/human-controls.md), and [context/shared work](diagrams/context-and-shared-work.md). Each view identifies the agreed/proposed boundary.
+The [versioned Mermaid views](diagrams/README.md) show the [high-level system](diagrams/high-level.md) and focused workflow parts: [intake/readiness](diagrams/intake-and-readiness.md), [assignment/selection](diagrams/assignment-and-selection.md), the [shared Run lifecycle](diagrams/run-lifecycle.md), [assessment/rework](diagrams/assessment-and-rework.md), [integration/validation](diagrams/integration-and-validation.md), [Initiative acceptance](diagrams/initiative-acceptance.md), [Request closure/follow-up](diagrams/request-closure-and-follow-up.md), [waiting/recovery](diagrams/waiting-and-recovery.md), [human controls](diagrams/human-controls.md), [context/shared work](diagrams/context-and-shared-work.md), and [first-Agent preparation](diagrams/first-agent-preparation.md). These views summarize the design baseline without defining exact states or API messages.
 
 ## Coordination loop
 
@@ -30,11 +30,11 @@ Use explicit issue kinds and suitable creation templates. The normal human entry
 
 | Kind | Meaning and example | Initial handling |
 | --- | --- | --- |
-| **Request** | A desired outcome, such as "Allow users to export reports as CSV." May still contain unanswered questions. | Record the intake and authorize an Orchestrator Assignment to interpret, clarify, or plan the work as needed. |
-| **Initiative** | An overall delivery outcome within a Project, such as "Report export." | Link its originating Request and related Tasks; track overall outcome acceptance. |
-| **Task** | A bounded contribution with explicit inputs, Deliverables, and acceptance criteria, such as "Define the CSV format" or "Implement export against the accepted format." | Validate the work contract and context, then assess readiness for assignment. A Task can be well defined while still awaiting a prerequisite. |
+| **Request** | A desired outcome, such as "Improve an existing feature." May still contain unanswered questions. | Record the intake and authorize an Orchestrator Assignment to interpret, clarify, or plan the work as needed. |
+| **Initiative** | An overall delivery outcome within a Project, such as "Deliver the agreed feature improvement." | Link its originating Request and related Tasks; track overall outcome acceptance. |
+| **Task** | A bounded contribution with explicit inputs, Deliverables, and acceptance criteria, such as "Define the interface contract" or "Implement against the accepted contract." | Validate the work contract and context, then assess readiness for assignment. A Task can be well defined while still awaiting a prerequisite. |
 
-Use visible kind labels, with exact names remaining to be specified; `kind/request`, `kind/initiative`, and `kind/task` are illustrative. Gitea supports [issue templates that can set labels](https://docs.gitea.com/usage/issues-prs/issue-pull-request-templates/). Templates collect the appropriate information; the Coordinator validates and records the classification and stable external mapping. Label edits request classification changes and cannot grant authority or make work Ready by themselves.
+Use visible kind labels and creation templates to collect the appropriate information. The reusable [starter templates](../infra/gitea/bootstrap/repository/README.md) and [label manifest](../infra/gitea/bootstrap/labels.json) provide Request, Initiative, and Task examples. Automated adapter handling still requires its detailed contract and qualification. The Coordinator validates and records classification and stable external mappings. Label edits request classification changes and cannot grant authority or make work Ready by themselves.
 
 [D-07](decisions.md#d-07-forge-integration-and-initial-platform) maps Requests to separate intake issues and Initiatives and substantive Tasks to their delivery issues. Keep the Request and its discussion linked to the resulting work. A Request can contribute to an existing Initiative or lead to a new one; its origin link does not add a hierarchy tier above **Project → Initiative → Task**. The Request is not silently replaced by a Task, and decomposition creates linked Tasks within the Initiative rather than nested Task trees.
 
@@ -208,7 +208,7 @@ The authority default is an eligible independent Reviewer with explicit Initiati
 
 The Orchestrator coordinates the outcome assessment and missing work. If individual Tasks are accepted but the outcome is unmet, keep the Initiative open and arrange missing assessment, rework, or bounded additional work within approved scope. Preserve valid Task acceptance and its history; scope changes follow the Decision process.
 
-Request closure and later follow-up follow the rules below; the [remaining agenda](implementation-plan.md#remaining-high-level-discussions) tracks further high-level discussions.
+Request closure and later follow-up follow the rules below. The [specification plan](implementation-plan.md#remaining-specifications) tracks the detailed contracts that remain to be completed.
 
 ## Request closure and follow-up
 
@@ -291,17 +291,19 @@ Durable Artifacts and recorded handoffs retain produced progress, including unac
 
 ## Agent onboarding
 
-Prepare an Agent through versioned definitions and separately authorized access. Its stable identity remains distinct from its Role, Profile, execution Worker, individual Runs, and any Gitea user. [Pilot and Agent setup](pilot-and-agent-setup.md) owns the selected setup and forge-account policy.
+Prepare an Agent through authorized Registry API operations and separately authorized access. The Python Registry module in `mobiraeon` retains configuration and immutable published revisions in SQLite independently of Gitea. The Agent's stable identity remains distinct from its Role, Profile, execution Worker, individual Runs, and any forge user. The Registry's [forge identities](agent-registry.md#forge-identities) define the account mappings and access boundary.
 
 | Step | Preparation |
 | --- | --- |
-| 1. Define responsibilities and configuration | Select or define the Role instructions, shared rules, and reusable Profile suitable for the intended work and governing permissions and limits. |
-| 2. Register the Agent | Establish a stable logical identity with an exact Profile revision binding. Retain any permitted overrides in its versioned definition. |
+| 1. Define responsibilities and configuration | Through the Registry interface, select or define versioned Role instructions, shared rules, and a reusable Profile suitable for the intended work and governing permissions and limits. |
+| 2. Register the Agent | Establish a stable internal identity with an exact Profile revision binding. Retain any permitted overrides in its versioned definition; a forge account is an external binding. |
 | 3. Arrange forge access | Map each Agent acting in Gitea to its own stable account and approved permissions, separate from the Coordination account. Other Agents need no forge account. Definitions retain secret references; credential values stay in the authorized secret mechanism. |
-| 4. Validate and publish | Review and validate the Registry definitions and their references, then publish a retrievable Git revision for configuration resolution. |
+| 4. Validate and publish | Review and validate the definitions and all required references, then publish an immutable, retrievable Registry revision in SQLite. Record provenance and audit history; reject stale edits and inconsistent references. |
 | 5. Qualify and enable selection | Record qualification of the execution combination for its supported scope and enable the Agent through the authorized configuration process. Assignments and dispatch still require current readiness, authority, and execution capacity and limits. |
 
-Publication, qualification, administrative enablement, and permission to perform particular work are separate determinations. Publishing a definition establishes none of the others by itself. Changes produce new reviewed Registry revisions and apply through authorized selection; they do not rewrite existing Run configuration or history. The [Agent Registry discussion](agent-registry.md) covers the proposed organization and first registered Agents.
+Publication, qualification, administrative enablement, and permission to perform particular work are separate determinations. Publishing a definition establishes none of the others by itself. The Coordinator rechecks current enablement, authority, and qualification before dispatch; an older enabled revision cannot bypass current disablement or revoked access. Disabling new selection and controlling active Runs are distinct operations under the existing control rules.
+
+Changes produce new reviewed Registry revisions and apply through authorized selection; they do not rewrite existing Run configuration, integration attribution, or history. Git imports and exports use the same validation and publication path. The [first-Agent preparation](agent-registry.md#first-agent-preparation) defines administrator-led creation, Role-specific Profiles, initial disablement, publication, qualification, and enablement. Exact state names and API operations remain later specifications.
 
 ## Closure rules
 
@@ -316,4 +318,4 @@ Publication, qualification, administrative enablement, and permission to perform
 
 A completed architecture Task stays complete while implementation Tasks continue under the same Initiative. Dependencies express that those Tasks require the architecture output. Delegation and routing are audit events unless they create a distinct deliverable or Decision.
 
-A closed queue or a collection of closed tickets is insufficient evidence that the outcome works. Exact states and their transition policies remain subject to [D-04](decisions.md#decision-register).
+A closed queue or a collection of closed tickets is insufficient evidence that the outcome works. Exact states and their transition policies remain subject to [D-04](decisions.md#d-04-lifecycles).

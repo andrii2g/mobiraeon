@@ -98,7 +98,7 @@ Begin with an in-process adapter and one active operational forge per Project. P
 
 Use one stable Gitea automation account for each registered Agent that acts in the forge, plus a separate Coordination service account. Project integration configuration binds forge identities and permitted operations separately from reusable Profiles and model-provider accounts.
 
-Account access grants no workflow authority and does not establish review independence. Privileged operations remain subject to Coordinator enforcement; configuration retains secret references rather than credential values. The [Agent setup](pilot-and-agent-setup.md#registry-and-gitea-identities) describes these identity boundaries.
+Account access grants no workflow authority and does not establish review independence. Privileged operations remain subject to Coordinator enforcement; configuration retains secret references rather than credential values. The [forge identity model](agent-registry.md#forge-identities) describes these boundaries.
 
 ## D-08 Initial Profiles
 
@@ -152,9 +152,7 @@ Reassess PostgreSQL or other infrastructure when multi-instance operation, avail
 
 ## D-12 First live validation and release scope
 
-Use **`andrey/mobiraeon-demo`** for the pilot: export the currently displayed tasks as CSV from a prepared task-list application. Prepare and review its working baseline before automated feature execution; repository creation and application scaffolding are preparation outside the pilot.
-
-The pilot uses local Gitea, the Linux/container execution environment, and one primary qualified execution path.
+Deliver one bounded feature in a prepared, existing repository using local Gitea, the Linux/container execution environment, and one primary qualified execution path. Prepare and review its working baseline before automated feature execution; repository creation and application scaffolding are preparation outside the pilot.
 
 Exercise the complete delivery workflow:
 
@@ -170,7 +168,7 @@ Before execution, approve a pilot contract identifying the repository and revisi
 
 Greenfield project creation and production deployment are outside this pilot.
 
-Application technology, CSV columns and examples, the exact baseline revision, and the detailed pilot contract remain to be specified in the [pilot setup](pilot-and-agent-setup.md#demonstration-pilot).
+Select the concrete repository, bounded feature, starting revision, and scenario-specific acceptance criteria during [implementation planning](implementation-plan.md).
 
 ## Implementation specifications
 
@@ -183,7 +181,7 @@ Implementation preparation supplies:
 - concrete delegation rules, authorized identities, operations, and targets;
 - the executable pilot contract and integration qualification evidence.
 
-The [implementation readiness review](implementation-readiness-review.md) tracks these specifications and their required timing. Qualification results are recorded against the tested revisions and environments.
+The [implementation plan](implementation-plan.md#remaining-specifications) tracks these specifications and their required timing. Its [qualification and live-pilot gates](implementation-plan.md#gates-before-qualification-or-live-pilot-execution) identify execution prerequisites; [verification and evidence](implementation-plan.md#verification-and-evidence) defines the required records. Qualification results identify the tested revisions and environments.
 
 ## Maintaining decisions
 

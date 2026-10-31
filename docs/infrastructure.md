@@ -1,6 +1,6 @@
 # Gitea infrastructure
 
-**Status:** Configuration complete for final review and commit; first startup and restore validation remain pending in WSL. This configuration provides Gitea and its PostgreSQL database on Docker Engine in Linux under WSL. It does not start Möbiræon Coordination, Workers, or Gitea Actions.
+This configuration provides Gitea and its PostgreSQL database on Docker Engine in Linux under WSL. The existing instance has recorded startup and limited CLI/API verification under [setup verification](#recorded-setup-verification). The remaining operational checks and isolated restore still require verification. This configuration does not start Möbiræon Coordination, the Agent Registry, Workers, or Gitea Actions.
 
 The [Compose file](../infra/gitea/compose.yaml) and [environment example](../infra/gitea/.env.example) live in `infra/gitea/`. Use `docker compose` (Compose v2) from that directory for all commands below, except where another directory is explicitly specified. Keep the real, ignored `.env` alongside `compose.yaml`.
 
@@ -28,15 +28,17 @@ infra/
 | Accounts | Self-registration disabled; sign-in required to view content; new repositories private by default |
 | Optional services | Mail and Actions disabled; no runner, proxy, or webhook receiver |
 
+The Compose and environment-example default is `http://localhost:3000/`. The existing Windows-facing instance uses `http://localhost:3001/`. Use the applicable configured address when following these instructions; the Windows endpoint does not change the Compose defaults or establish Worker-container connectivity.
+
 The fixed Compose project name `mobiraeon` keeps resource names stable across checkout locations. Volumes are `mobiraeon_postgres-data`, `mobiraeon_gitea-data`, and `mobiraeon_gitea-config`. Do not run a second checkout under this same project name against the same Docker daemon. A separate test installation must use `docker compose -p ANOTHER_NAME ...` consistently.
 
-Gitea uses PostgreSQL for its own records. Möbiræon's future authoritative coordination storage remains SQLite under [D-11](decisions.md#d-11-implementation-technology-and-topology). Gitea issues represent Initiatives and substantive Tasks; milestones represent delivery targets under [D-07](decisions.md#d-07-forge-integration-and-initial-platform). Labels and issue closure do not independently establish internal acceptance.
+Gitea uses PostgreSQL for its own records. Möbiræon's selected application design uses SQLite for Registry and authoritative coordination storage under [D-05](decisions.md#d-05-registry) and [D-11](decisions.md#d-11-implementation-technology-and-topology), with separate logical ownership. The Registry module and its API are independent of Gitea. Gitea issues represent Initiatives and substantive Tasks; milestones represent delivery targets under [D-07](decisions.md#d-07-forge-integration-and-initial-platform). Labels and issue closure do not independently establish internal acceptance.
 
 Release tags are pinned, but image digests have not yet been recorded. Record the pulled digests and Linux/WSL, Docker, and Compose versions during deployment qualification. The rootless Gitea image runs as a non-root user; this does not imply that the Docker daemon itself is rootless.
 
 ### Release and image selection
 
-Checked on **2026-10-31**: [Gitea 28.2.0](https://github.com/go-gitea/gitea/releases/tag/v28.2.0) and [PostgreSQL 18.6](https://www.postgresql.org/docs/release/) are the latest stable releases. PostgreSQL 19 is still a release candidate and is not selected. The [official PostgreSQL image list](https://hub.docker.com/_/postgres) publishes `18.6-trixie`. Pin explicit versions and review updates rather than using a moving `latest` tag.
+The selected release pins are [Gitea 28.2.0](https://github.com/go-gitea/gitea/releases/tag/v28.2.0) and [PostgreSQL 18.6](https://www.postgresql.org/docs/release/). The [official PostgreSQL image list](https://hub.docker.com/_/postgres) publishes `18.6-trixie`. Keep explicit versions and review updates rather than using a moving `latest` tag.
 
 The official Gitea rootless image is already a Linux image: its [release Dockerfile](https://github.com/go-gitea/gitea/blob/v28.2.0/Dockerfile.rootless) uses Alpine Linux 3.24, includes Git, certificates, curl and SSH key tools, and runs as UID/GID 1000. Docker containers share the WSL Linux kernel; Gitea's Alpine userspace and PostgreSQL's Debian userspace do not need to match the WSL distribution. The official package supplies the startup and configuration handling used by this Compose file. A custom Debian/Ubuntu image would require maintaining dependencies, binary verification, user permissions, signal handling, initialization, and update builds. Keep the official image unless a concrete dependency or organizational requirement justifies a custom build. Do not install or upgrade Gitea interactively inside a running container; replace the pinned image through a reviewed update.
 
@@ -109,7 +111,13 @@ Changing either password in `.env` does not rotate an existing database role pas
 
 ## Verification before relying on the instance
 
-Record observations and exact revisions when running these checks; none has yet been live-validated by this change.
+### Recorded setup verification
+
+Basic checks confirmed service health and API operations for private repositories, issue templates, labels, and linked issues. Full operational and automated workflow qualification remains incomplete.
+
+### Remaining verification
+
+Record observations and exact revisions when running the checks below. Also verify browser template rendering and automatic label application. Authenticated workflow approvals and automated forge-adapter behavior require separate qualification.
 
 - Confirm both services become healthy and `curl --fail http://localhost:3000/api/healthz` succeeds.
 - Verify the Gitea login and role privileges using the commands below. The role flags must all be `f`, with database owner `gitea`.
@@ -212,7 +220,9 @@ The drill rejects existing target volumes and starts services only after all ext
 
 ## Next integration steps
 
-Create an organization, a dedicated Agent Registry repository, and a demonstration repository. Add a separate automation account with access only to managed repositories, scoped API tokens, and branch protections. Qualify issue/comment/milestone/pull-request operations against this installed Gitea version before connecting the Coordinator. Initial observation uses polling under the agreed [architecture](architecture.md#coordination-and-agent-reasoning).
+Configure the authorized Project repositories and separate Coordination and forge-acting Agent accounts according to the Registry's [forge identity model](agent-registry.md#forge-identities). Scope account access to permitted managed-repository operations and apply the required token permissions and branch protections. Qualify issue/comment/milestone/pull-request operations against this installed Gitea version before connecting the Coordinator. Initial observation uses polling under the agreed [architecture](architecture.md#coordination-and-agent-reasoning).
+
+Prepare definitions through Möbiræon's Registry API and immutable publication process. The application-owned SQLite Registry has no Gitea repository prerequisite; optional Git imports and exports remain subject to Registry validation and publication controls.
 
 `localhost` is a deliberate bootstrap address: inside a Worker container it refers to that Worker, not Gitea. Before container integration, select a canonical hostname reachable from Windows, WSL, and Workers; configure resolution, `GITEA_DOMAIN`, `GITEA_ROOT_URL`, and the published binding together. Services on the `mobiraeon_forge` network can reach `gitea:3000` internally, but advertised clone URLs also need to be reachable. Workers should not join the database network. Review TLS and access restrictions before exposing HTTP beyond the local machine; this Compose file supplies neither a reverse proxy nor certificates.
 
