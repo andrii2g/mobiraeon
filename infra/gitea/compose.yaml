@@ -1,0 +1,94 @@
+name: mobiraeon
+
+services:
+  postgres:
+    image: docker.io/library/postgres:18.6-trixie
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?Set POSTGRES_ADMIN_PASSWORD in .env}
+      GITEA_DB_PASSWORD: ${GITEA_DB_PASSWORD:?Set GITEA_DB_PASSWORD in .env}
+    volumes:
+      # PostgreSQL 18+ uses a versioned data directory under this parent.
+      - postgres-data:/var/lib/postgresql
+      - type: bind
+        source: ./postgres/init/10-create-gitea.sh
+        target: /docker-entrypoint-initdb.d/10-create-gitea.sh
+        read_only: true
+        bind:
+          create_host_path: false
+    networks:
+      - database
+    healthcheck:
+      # TCP excludes the socket-only temporary server used during initialization.
+      test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-U", "postgres", "-d", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    stop_grace_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  gitea:
+    image: docker.gitea.com/gitea:28.2.0-rootless
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      GITEA__database__DB_TYPE: postgres
+      GITEA__database__HOST: postgres:5432
+      GITEA__database__NAME: gitea
+      GITEA__database__USER: gitea
+      GITEA__database__PASSWD: ${GITEA_DB_PASSWORD:?Set GITEA_DB_PASSWORD in .env}
+      GITEA__database__SSL_MODE: disable
+      GITEA__server__DOMAIN: ${GITEA_DOMAIN:-localhost}
+      GITEA__server__ROOT_URL: ${GITEA_ROOT_URL:-http://localhost:3000/}
+      GITEA__server__HTTP_PORT: "3000"
+      GITEA__server__SSH_DOMAIN: ${GITEA_DOMAIN:-localhost}
+      GITEA__server__SSH_PORT: ${GITEA_SSH_PORT:-2222}
+      GITEA__server__SSH_LISTEN_PORT: "2222"
+      GITEA__server__START_SSH_SERVER: "true"
+      GITEA__service__DISABLE_REGISTRATION: "true"
+      GITEA__service__REQUIRE_SIGNIN_VIEW: "true"
+      GITEA__repository__DEFAULT_PRIVATE: private
+      GITEA__repository__DEFAULT_BRANCH: main
+      GITEA__actions__ENABLED: "false"
+      GITEA__mailer__ENABLED: "false"
+      GITEA__log__MODE: console
+    ports:
+      - "${GITEA_BIND_ADDRESS:-127.0.0.1}:${GITEA_HTTP_PORT:-3000}:3000"
+      - "${GITEA_BIND_ADDRESS:-127.0.0.1}:${GITEA_SSH_PORT:-2222}:2222"
+    volumes:
+      - gitea-data:/var/lib/gitea
+      - gitea-config:/etc/gitea
+    networks:
+      - forge
+      - database
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:3000/api/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    stop_grace_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  forge:
+  database:
+    internal: true
+
+volumes:
+  postgres-data:
+  gitea-data:
+  gitea-config:

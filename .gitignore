@@ -1,0 +1,8 @@
+# Local environment files at any depth; keep examples reviewable
+.env
+.env.*
+!.env.example
+# Deployment backups and generated artifacts
+/backups/
+/infra/gitea/backups/
+/artifacts/

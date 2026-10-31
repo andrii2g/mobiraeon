@@ -1,0 +1,2 @@
+# PostgreSQL initialization scripts are executed by Linux after Windows checkouts.
+/infra/gitea/postgres/init/*.sh text eol=lf

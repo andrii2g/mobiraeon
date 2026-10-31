@@ -14,6 +14,7 @@ The product requirements and D-01 through D-12 form the confirmed baseline. The 
 | [Decision register](decisions.md) | Confirmed decisions, remaining details, and their consequences |
 | [Planning sequence](implementation-plan.md) | The order for resolving decisions and validating the design |
 | [Implementation readiness review](implementation-readiness-review.md) | Remaining contracts, operational details, and recommended discussion order |
+| [Infrastructure](infrastructure.md) | Gitea/PostgreSQL Compose setup in WSL, local configuration, verification, and backup/restore procedures |
 
 The earlier experimental sample is historical context; its technology choices and state names do not establish the target design. Its prototype reference is not present in this checkout.
 
