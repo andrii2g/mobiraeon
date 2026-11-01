@@ -22,6 +22,21 @@ Registry persistence is the authoritative publication source. Git may supply rev
 
 Versioned project bindings preserve internal Agent identities and historical forge attribution. Account provisioning and forge qualification remain separate preparation activities under the [forge identity rules](#forge-identities). Project migration and cross-forge synchronization remain separately scoped under [D-07](decisions.md#d-07-forge-integration-and-initial-platform).
 
+## Administrator access and bootstrap authority
+
+Start with one explicitly designated human owner as administrator. Administrative identities and grants belong to trusted application access controls, separate from publishable Agent definitions, Role text, and forge accounts. Publishing configuration cannot create administrative authority.
+
+| Area | Behavior |
+| --- | --- |
+| First-owner bootstrap | An explicit, protected local setup action establishes the first administrator while administrative access is uninitialized. No running Orchestrator or Agent is required. |
+| Bootstrap boundary | Access initialization survives restart. Clearing the Agent catalog cannot reopen bootstrap; repeated setup cannot add administrators, replace the owner, or reset established access. |
+| Ordinary administration | API and CLI establish trusted caller identity and enforce the same current permissions on every protected operation, including reads. The foundation's local OS operator grants and test policies do not automatically grant Registry administration. |
+| Permission boundaries | Catalog management and granting administrative access are distinct permissions; initially the owner may hold both. Registry administration does not automatically grant execution or delivery-acceptance authority. |
+| Automation | Agents receive no Registry administration in Increment 2. Later Coordination access uses its own trusted service identity with only the access needed to resolve published definitions and current eligibility. |
+| Revocation and recovery | Revocation blocks subsequent protected operations. Protect against accidental loss of the last usable administrator and provide explicit owner-controlled recovery while keeping first-time bootstrap closed. |
+
+Retain attributable audit records for bootstrap, access changes, recovery, and catalog operations, including their outcomes. Credential values stay outside Agent definitions and logs. Authentication technology, concrete grant contracts, credential storage, and the recovery procedure remain implementation details. The [access and bootstrap diagram](diagrams/registry-access.md) shows the authority boundary.
+
 ## Authoring and publication
 
 Agents, Profiles, instructions, policies, and capability definitions follow the same high-level authoring path. Publication establishes reviewed configuration; execution qualification and current eligibility remain separate.
@@ -82,7 +97,7 @@ Apply the [onboarding model](workflow.md#agent-onboarding) through the following
 
 | Stage | Preparation |
 | --- | --- |
-| Bootstrap | An authorized human administrator uses the Registry interface, initially through a CLI. Creating the first Orchestrator does not require an already running Orchestrator or an Agent Run. |
+| Bootstrap | Establish the first human administrator through the protected [access bootstrap](#administrator-access-and-bootstrap-authority), then use authorized Registry operations, initially through a CLI. Creating the first Orchestrator does not require an already running Orchestrator or an Agent Run. |
 | Seed instructions | Import snapshots of the finalized [Role catalog](roles/README.md) and shared rules as authoring inputs, retaining their source provenance. Validate, review, and publish instruction revisions through the same publication path; live file changes cannot silently change Run inputs. |
 | Prepare Profiles | Start with explicit Role-specific Profiles targeting one primary execution path to qualify first. Reuse suitable capability and policy definitions. Configure runtime/provider/model references, reasoning intent, tools, output/context contracts, and limits under the existing configuration contract. |
 | Create Agents | Create each stable identity disabled for ordinary selection. Bind it to an exact Profile revision and retain any permitted explicit overrides; assign no work during creation. |

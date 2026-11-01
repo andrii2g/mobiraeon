@@ -19,6 +19,7 @@ These Mermaid sources summarize the design discussed in the governing documents.
 | [12. Registry API and persistence](registry-organization.md) | Forge-independent Python/SQLite Registry and configuration ownership |
 | [13. First-Agent preparation](first-agent-preparation.md) | Administrator-led bootstrap and initial enablement |
 | [14. Registry authoring and publication](registry-publication.md) | Editable drafts, exact-content review, immutable publication, and later changes |
+| [15. Registry administrator access](registry-access.md) | First-owner bootstrap, shared API/CLI permission checks, revocation, and owner-controlled recovery |
 
 ## Agreement legend
 

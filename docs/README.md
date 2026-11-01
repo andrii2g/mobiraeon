@@ -14,7 +14,7 @@ The product requirements and D-01 through D-12 form the design baseline. The hig
 | [Mermaid diagrams](diagrams/README.md) | High-level system and focused workflow views, with agreement markers |
 | [Decision register](decisions.md) | Confirmed decisions, remaining details, and their consequences |
 | [Implementation plan](implementation-plan.md) | Accepted increments, current planning, remaining specifications, and verification gates |
-| [Agent Registry](agent-registry.md) | Registry ownership, API, logical collections, authoring/publication, revision boundaries, forge identities, first Agents, and bootstrap |
+| [Agent Registry](agent-registry.md) | Registry ownership, administrator access/bootstrap authority, authoring/publication, revision boundaries, forge identities, and first Agents |
 | [Infrastructure](infrastructure.md) | Gitea/PostgreSQL Compose setup in WSL, local configuration, verification, and backup/restore procedures |
 
 ## Agreement and change rules

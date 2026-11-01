@@ -70,7 +70,7 @@ Do not implement scheduling, Assignments/Runs, Workers, actual runtime qualifica
 | 1. Define Registry contracts | Bound authoring, review/publication, exact references, current restrictions, conflict handling, and permitted overrides using the approved configuration fields. | Representative valid/invalid examples distinguish immutable content from current control state and authority. |
 | 2. Implement Registry persistence | Add owned catalog/history records, migrations, atomic changes, attribution, and protection against stale concurrent edits in the existing database. | Restart preserves catalog revisions; upgrades preserve the foundation; conflicting edits cannot silently overwrite one another. |
 | 3. Implement controlled catalog operations | Manage definitions, validation, review/publication, exact retrieval, and enable/disable through the shared authorized operation path. | Published content cannot be overwritten; exact dependencies resolve consistently; invalid or unauthorized changes produce no unauthorized mutation; credentials stay outside catalog content. |
-| 4. Provide API and CLI administration | Expose the same operations through an authenticated, versioned HTTP API described by OpenAPI and the administrator CLI. | Both interfaces enforce consistent validation/authority rules; unauthenticated or unauthorized requests cannot mutate or disclose protected records. |
+| 4. Provide API and CLI administration | Expose the same operations through an authenticated, versioned HTTP API described by OpenAPI and the administrator CLI, with protected setup and recovery under the access model. | Both interfaces enforce consistent validation/authority rules; unauthorized requests cannot mutate or disclose protected records. Repeated bootstrap cannot reset access; revocation and last-administrator protection are enforced and attributable. |
 | 5. Prepare the initial catalog | Import reviewed Role/shared-rule snapshots with provenance and create the five named Agents disabled, bound to explicit Role-specific Profile revisions. | Repeated preparation avoids duplicate identities or silent overwrites and cannot enable Agents or dispatch work. No existing Orchestrator is required. |
 | 6. Verify and independently assess the Registry | Exercise the combined persistent catalog, API/CLI, publication, current controls, bootstrap, and failure paths. | Repeatable checks and independent review assess the same combined source. Retain Increment 1's evidence and identify Increment 2's snapshot/results separately; designated acceptance follows the established process. |
 
@@ -78,15 +78,19 @@ Do not implement scheduling, Assignments/Runs, Workers, actual runtime qualifica
 
 The [Registry authoring model](agent-registry.md#authoring-and-publication) governs Tasks 1–6: editable drafts, validation, review of exact candidates and dependencies, and immutable publication with no partial published result on failure. Candidate edits require renewed review. The same authorized human may author, review, and publish when policy permits. Publishing a Profile does not update dependent Agent bindings automatically; restoring earlier settings creates a new reviewed revision under current checks. Publication remains separate from qualification, enablement, and authorization for work.
 
+### Administrator access and bootstrap baseline
+
+The [access model](agent-registry.md#administrator-access-and-bootstrap-authority) establishes one designated human administrator through protected local setup, with persistent initialization separate from the Agent catalog. API and CLI use the same current authorization checks, including protected reads. Catalog management and administrative-grant permissions remain distinct; the owner may hold both. Agents receive no Registry administration, and later Coordination access is limited to its service needs. Retain attributable audit records, revocation, protection against accidental loss of the last usable administrator, and explicit owner-controlled recovery that keeps first-time bootstrap closed. The foundation's local OS grants do not establish Registry administration.
+
 ### Boundaries to settle before implementation
 
 - **Authoring and publication contracts:** specify concrete operations, exact-reference validation, review applicability checks, current controls, permitted overrides, and stale-edit handling under the agreed high-level model.
-- **Administrator access:** define bootstrap authority and authenticated API/CLI behavior. The foundation's local OS operator grants and test policy doubles do not automatically grant Registry administration.
+- **Administrator access contracts:** specify authentication, protected setup and recovery procedures, concrete grants and revocation, credential handling, and API/CLI caller context under the agreed access model.
 - **Bootstrap inputs:** deliberately select complete nonsecret candidate Profile settings and their instruction/policy/capability references. Missing inputs cannot become published placeholders; fixture definitions prove tests without becoming qualified operational entries.
 - **Enablement and qualification:** initial Agents remain disabled. Administrative controls must respect qualification and governing authority; the Registry cannot own or fabricate Coordination's qualification evidence or authorize ordinary execution merely by publishing or enabling a definition.
 - **Implementation detail:** select the API framework, physical schema, concrete operation contracts, and bootstrap commands after the high-level behavior and applicable contracts are agreed. Live runtime/model values and operating profiles remain separately governed.
 
-Administrator access and bootstrap authority are the next discussion, followed by bootstrap inputs/evidence and the remaining current-control and override contracts. Concrete mechanisms and operating values require their applicable agreements before implementation.
+Bootstrap inputs and evidence for preparing the first five Agents are the next discussion, followed by the remaining current-control and override contracts. Concrete mechanisms and operating values require their applicable agreements before implementation.
 
 ## Remaining specifications
 
@@ -118,7 +122,7 @@ Apply each gate to the relevant activity. Qualification and live execution requi
 
 The [acceptance scenarios](requirements.md#acceptance-scenarios) and requirement-specific checks define observable completion. Verification includes:
 
-- **Registry and bootstrap:** authorized administration, validation/publication, immutable references, exact Agent/Profile bindings, and separate qualification and enablement. Optional imports cannot bypass publication controls.
+- **Registry and bootstrap:** protected first-owner setup, persistent access initialization, consistent API/CLI authorization including protected reads, revocation, last-administrator protection, audited recovery that keeps bootstrap closed, validation/publication, immutable references, exact Agent/Profile bindings, and separate qualification and enablement. Optional imports cannot bypass publication controls.
 - **Forge adapter:** qualify Gitea against the versioned forge-neutral contract, declared capabilities, traceable mappings, actor authentication, and authority boundary. Project migration and cross-forge synchronization remain separately scoped.
 - **Runner capabilities:** establish supported noninteractive behavior, options, tool boundaries, output contracts, cancellation, and cleanup for the declared execution combinations. One qualified path does not establish support for every requested runtime family.
 - **Controlled delivery:** exercise intake and clarification, specification and baseline approval, bounded implementation, independent review, authorized integration, fresh validation of the exact combined revision, and outcome acceptance under D-12.

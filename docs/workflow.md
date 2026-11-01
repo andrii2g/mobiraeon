@@ -293,6 +293,8 @@ Durable Artifacts and recorded handoffs retain produced progress, including unac
 
 Prepare an Agent through authorized Registry API operations and separately authorized access. The Python Registry module in `mobiraeon` retains configuration and immutable published revisions in SQLite independently of Gitea. The Agent's stable identity remains distinct from its Role, Profile, execution Worker, individual Runs, and any forge user. The Registry's [forge identities](agent-registry.md#forge-identities) define the account mappings and access boundary.
 
+Establish the first human administrator through the protected [access bootstrap](agent-registry.md#administrator-access-and-bootstrap-authority) before administering the catalog. Access initialization persists independently of Agent records; ordinary API and CLI operations check current permissions, and owner-controlled recovery keeps first-time bootstrap closed. Creating or publishing an Agent cannot grant administrative access.
+
 | Step | Preparation |
 | --- | --- |
 | 1. Define responsibilities and configuration | Through the Registry interface, select or define versioned Role instructions, shared rules, and a reusable Profile suitable for the intended work and governing permissions and limits. |
