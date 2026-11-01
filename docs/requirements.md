@@ -161,6 +161,8 @@ Changes to governing configuration or context trigger the reassessment required 
 
 The initial preferences are `gpt-6.1-sol` with Ultra for clarification, specification, and research, and a GPT-6-class model with Medium for implementation.
 
+For the [initial test catalog](initial-agent-configuration.md) delivered in accepted Increment 2, Orchestrator/Planner use Max; Ultra remains future intent. Developer uses Medium and independently configured Reviewer/Verifier use High. Limits are configured ceilings with unverified runtime enforcement; unprovisioned internal connection/credential references are explicitly initial-test declarations, not live connectivity.
+
 These labels preserve selection intent; they do not establish qualified provider-native combinations. D-08 confirms strong planning/reasoning Profiles, medium routine implementation Profiles, independent review configuration, and qualification of one primary execution path before the remaining requested integrations. Exact model identifiers, reasoning settings, runtime mappings, and account access still require the qualification evidence specified by F-09.
 
 ### Storage boundary

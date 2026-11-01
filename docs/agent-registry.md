@@ -2,11 +2,11 @@
 
 The Agent Registry is a **Python module in the `mobiraeon` repository and application**, with its own authenticated, versioned API and **SQLite persistence**. It is independent of Gitea and follows [D-05](decisions.md#d-05-registry), [D-11](decisions.md#d-11-implementation-technology-and-topology), and the approved [configuration contract](requirements.md#agent-configuration-contract). The initial catalog and preparation sequence below define the first Agents and their administrator-led setup.
 
-The application foundation is accepted; Registry business operations remain the next implementation increment. The [Increment 2 plan](implementation-plan.md#increment-2-agent-registry-and-bootstrap) records its agreed scope and six Tasks. The [developer brief](implementation-instructions.md) assigns concrete contracts and implementation under the ownership and onboarding rules below; actual bootstrap values still require selection before publication.
+The application foundation and Agent Registry increments are implemented, independently reviewed, and accepted by the human owner. The [Increment 2 plan](implementation-plan.md#increment-2-agent-registry-and-bootstrap) records the accepted scope and verification limits. The [operation contracts](registry-contracts.md) describe the implemented interfaces and persistence behavior; [initial Agent configuration](initial-agent-configuration.md) records the approved test settings. All five initial Agents remain disabled, and execution qualification remains unavailable.
 
 ## Registry ownership and interface
 
-Initially the Registry shares Möbiræon's Python application and local SQLite database with Coordination, retaining ownership of its tables and configuration operations. Its API manages creation, editing, validation, review/publication, enablement, retrieval, and versioned export/import. Describe the authenticated, versioned HTTP interface with OpenAPI; the administrator's CLI uses the same authorized application operations. Detailed endpoint contracts and schemas remain specifications.
+Initially the Registry shares Möbiræon's Python application and local SQLite database with Coordination, retaining ownership of its tables and configuration operations. Its implemented API manages creation, editing, validation, review/publication, current controls, retrieval and history. OpenAPI describes the authenticated, versioned HTTP interface; the administrator's CLI uses the same authorized application operations. Concrete endpoint/document contracts are recorded in [registry-contracts.md](registry-contracts.md). Authorized enablement reports unavailable until its qualification prerequisites can be verified; authorized disablement remains usable. Optional versioned export/import and other broader capabilities remain specifications.
 
 | Logical collection | Purpose |
 | --- | --- |
@@ -231,7 +231,7 @@ An established, authorized administrator prepares the initial catalog from one r
 | Governing definitions | Exact published references for capabilities, tool and authority policies, context/output contracts, and any permitted fallback. Reuse suitable definitions across Profiles. |
 | Preparation authority | The established administrator's applicable review and publication permissions. Credential values remain outside catalog content. |
 
-Reusable instruction snapshots are bootstrap inputs; project-specific Assignments and resolved Run context arrive later. Exact models, limits, connection references, and governing definitions still require selection. Required missing values keep affected definitions in draft. Test fixtures establish Registry mechanics separately from the complete candidate catalog.
+Reusable instruction snapshots are bootstrap inputs; project-specific Assignments and resolved Run context arrive later. The [initial Agent configuration](initial-agent-configuration.md) records the approved test models, limits and governing definitions. Internal nonsecret account/credential-reference names may be unprovisioned; external accounts and secret-manager integration do not block catalog publication. Required missing schema values remain draft. Unit fixtures remain separate from the actual published initial-test catalog and its restart/repeatability evidence.
 
 The [candidate specification](#bootstrap-candidate-specification) makes those inputs concrete before Task 5 publication.
 
@@ -256,11 +256,11 @@ Select and identify:
 - Explicit duration, retry, token, cost, and concurrency ceilings where applicable.
 - Captured instruction content and its source versions/provenance.
 
-Execution/account references, model mappings, governing definitions, and numeric budgets require selection before publication; fixtures cannot substitute for this input set. All five Agents remain disabled with no administrative grants. Catalog preparation requires no live provider call or qualification claim. Bootstrap inputs are explicit packaged or supplied inputs; an installed application must not silently read the checkout to obtain them.
+The owner-approved initial-test input set uses selected internal nonsecret reference names, Max for Orchestrator/Planner, medium Developer effort, high independent Reviewer/Verifier effort, configured ceilings with unverified enforcement, and no fallback. Actual external accounts or provisioned credentials are not Task 5 prerequisites; publication/persistence/repeatability evidence for the five disabled Agents is required. All five Agents remain disabled with no administrative grants. Catalog preparation requires no live provider call or qualification claim. Bootstrap inputs are explicit packaged or supplied inputs; an installed application must not silently read the checkout to obtain them.
 
 ## First-Agent preparation
 
-Apply the [onboarding model](workflow.md#agent-onboarding) through the following initial setup sequence. Concrete runtime/model values, numeric limits, exact lifecycle states, and API endpoints remain specifications.
+Apply the [onboarding model](workflow.md#agent-onboarding) through the following initial setup sequence. The [initial Agent configuration](initial-agent-configuration.md) supplies approved test runtime/model settings and numeric limits, and the [operation contracts](registry-contracts.md) define the implemented Registry endpoints and lifecycle behavior. Execution, integration and qualification contracts remain subject to their later increments.
 
 The [bootstrap inputs and evidence](#bootstrap-inputs-and-preparation-evidence) define Increment 2's disabled-catalog completion point. The sequence below also includes later integration and execution preparation; those stages retain their applicable increment boundaries.
 
@@ -283,3 +283,8 @@ After initial setup, create, configure, and enable additional Agents through the
 Configuration changes produce reviewed revisions for later selections. Existing Runs retain their exact configuration and context. Detailed schemas, model/provider choices, runtime versions, numeric limits, account names, and validation commands remain the next design layer. The [first-Agent preparation diagram](diagrams/first-agent-preparation.md) summarizes the setup sequence.
 
 Return to [Agent onboarding](workflow.md#agent-onboarding) or the [documentation guide](README.md).
+
+
+### Approved internal connection references (2026-11-01)
+
+The initial disabled catalog uses `openai-primary-account-v1` and `openai-primary-credential-v1`. These are application-owned logical identifiers, not external OpenAI IDs or provisioned credentials. They may be published while their external mappings and credential resolution remain unprovisioned/unverified. External mapping, provisioning, connectivity and qualification are execution-readiness requirements, not catalog-publication prerequisites. No secret manager is implemented. Future binding changes require explicit versioned configuration changes. Publication authorizes no execution, provider calls or enablement.

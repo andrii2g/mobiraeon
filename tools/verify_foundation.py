@@ -16,11 +16,22 @@ from pathlib import Path
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--uv", default="uv")
+    parser.add_argument(
+        "--increment", choices=["increment-1", "increment-2"], default="increment-2"
+    )
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
-    output = root / "submissions" / "increment-1"
+    output = root / "submissions" / args.increment
     uv = str(Path(args.uv).resolve()) if Path(args.uv).is_file() else args.uv
-    subprocess.run([sys.executable, str(root / "tools/capture_submission.py")], check=True)
+    subprocess.run(
+        [
+            sys.executable,
+            str(root / "tools/capture_submission.py"),
+            "--increment",
+            args.increment,
+        ],
+        check=True,
+    )
     manifest = json.loads((output / "source-manifest.json").read_text(encoding="utf-8"))
     reviewed_manifest = output / "archive/reviewed-49d811ca/source-manifest.json"
     environment = {k: v for k, v in os.environ.items() if not k.startswith("MOBIRAEON_")}
@@ -58,6 +69,18 @@ def main():
             str(output / "native-windows-interruption.json"),
         ],
     ]
+    commands.append(
+        [
+            uv,
+            "run",
+            "--locked",
+            "python",
+            str(root / "tools/verify_interruptions.py"),
+            "--api",
+            "--output",
+            str(output / "native-windows-api-interruption.json"),
+        ]
+    )
     for command in commands:
         result = subprocess.run(
             command,

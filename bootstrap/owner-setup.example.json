@@ -1,0 +1,83 @@
+{
+  "operation": "access.setup",
+  "target": {
+    "kind": "access",
+    "entity_kind": "installation",
+    "identity": "owner"
+  },
+  "inputs": {
+    "destination": "owner.token",
+    "lifetime_seconds": 2592000,
+    "allow_self_review": true,
+    "grants": [
+      {
+        "action": "access.grants",
+        "scope": "*"
+      },
+      {
+        "action": "access.issue",
+        "scope": "*"
+      },
+      {
+        "action": "access.reconcile",
+        "scope": "*"
+      },
+      {
+        "action": "access.revoke",
+        "scope": "*"
+      },
+      {
+        "action": "access.rotate",
+        "scope": "*"
+      },
+      {
+        "action": "registry.create",
+        "scope": "*"
+      },
+      {
+        "action": "registry.disable",
+        "scope": "*"
+      },
+      {
+        "action": "registry.discard",
+        "scope": "*"
+      },
+      {
+        "action": "registry.edit",
+        "scope": "*"
+      },
+      {
+        "action": "registry.enable",
+        "scope": "*"
+      },
+      {
+        "action": "registry.history",
+        "scope": "*"
+      },
+      {
+        "action": "registry.publish",
+        "scope": "*"
+      },
+      {
+        "action": "registry.read",
+        "scope": "*"
+      },
+      {
+        "action": "registry.reconcile",
+        "scope": "*"
+      },
+      {
+        "action": "registry.review",
+        "scope": "*"
+      },
+      {
+        "action": "registry.select",
+        "scope": "*"
+      },
+      {
+        "action": "registry.validate",
+        "scope": "*"
+      }
+    ]
+  }
+}

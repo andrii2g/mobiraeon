@@ -21,8 +21,9 @@ STORE_ID = "mobiraeon-foundation-v1"
 
 
 class TransactionFailure(Exception):
-    def __init__(self, *, rolled_back):
+    def __init__(self, *, rolled_back, reason=None):
         self.rolled_back = rolled_back
+        self.reason = reason
         super().__init__("transaction failed")
 
 
@@ -129,7 +130,7 @@ class Store:
                     yield Transaction(connection)
                 finally:
                     driver.set_authorizer(None)
-            except Exception:
+            except Exception as error:
                 if not driver.in_transaction:
                     raise TransactionFailure(rolled_back=False) from None
                 try:
@@ -138,7 +139,10 @@ class Store:
                         raise RuntimeError("rollback not established")
                 except Exception:
                     raise TransactionFailure(rolled_back=False) from None
-                raise TransactionFailure(rolled_back=True) from None
+                raise TransactionFailure(
+                    rolled_back=True,
+                    reason=error.reason if isinstance(error, SafeError) else None,
+                ) from None
             else:
                 if not driver.in_transaction:
                     raise TransactionFailure(rolled_back=False)

@@ -317,7 +317,7 @@ Increment 2 reaches the [prepared-catalog boundary](agent-registry.md#bootstrap-
 
 Preparation composes the [ordinary Registry operations](agent-registry.md#operation-contracts) with [per-operation persistence](agent-registry.md#persistence-and-failure-boundaries). Earlier committed steps remain after a later failure; resume inspects them rather than assuming the whole preparation rolled back. Uncertain effects require reconciliation before replay.
 
-Apply [retention and reconciliation](agent-registry.md#retention-and-reconciliation) without hard-deleting published history or required provenance in Increment 2. The [reviewed candidate input set](agent-registry.md#bootstrap-candidate-specification) supplies actual selected settings and exact references before publishing the five disabled Agents; fixtures and implicit checkout reads cannot complete that preparation.
+Apply [retention and reconciliation](agent-registry.md#retention-and-reconciliation) without hard-deleting published history or required provenance in Increment 2. The [initial test configuration](initial-agent-configuration.md) supplies selected settings and exact references for the five published, disabled Agents. External credentials are not required for catalog preparation; isolated mechanics fixtures alone do not establish that persistent result, and installed usage requires explicit inputs rather than implicit checkout reads.
 
 ## Closure rules
 

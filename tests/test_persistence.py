@@ -18,14 +18,14 @@ def scalar(store, sql):
 
 
 def test_initialize_repeat_open_missing_and_preserve_restart(store, tmp_path):
-    assert store.initialize() == "0001"
+    assert store.initialize() == "0002"
     with store.transaction() as tx:
         tx.execute(text("CREATE TABLE fixture (value TEXT)"))
         tx.execute(text("INSERT INTO fixture VALUES ('retained')"))
     path = store.path
     store.close()
     reopened = Store(path)
-    assert reopened.check() == "0001"
+    assert reopened.check() == "0002"
     assert scalar(reopened, "SELECT value FROM fixture") == "retained"
     reopened.close()
     absent = Store(tmp_path / "missing.db")
@@ -70,25 +70,25 @@ def test_unknown_newer_revision_never_changes_store(store, unknown):
 def test_supported_batch_upgrade_and_per_migration_failure(store, migrations):
     revision(
         migrations,
+        "0003",
         "0002",
-        "0001",
         """    op.create_table("fixture", sa.Column("value", sa.Text()))
     op.execute("INSERT INTO fixture VALUES ('preserved')")""",
     )
     revision(
         migrations,
+        "0004",
         "0003",
-        "0002",
         """    with op.batch_alter_table("fixture", recreate="always") as batch:
         batch.add_column(sa.Column("extra", sa.Text(), server_default="new"))""",
     )
-    assert store.upgrade(migration_path=migrations) == "0003"
+    assert store.upgrade(migration_path=migrations) == "0004"
     assert scalar(store, "SELECT value FROM fixture") == "preserved"
     assert scalar(store, "SELECT extra FROM fixture") == "new"
     revision(
         migrations,
+        "0005",
         "0004",
-        "0003",
         """    op.create_table("should_rollback", sa.Column("value", sa.Text()))
     op.execute("UPDATE fixture SET value='corrupted'")
     raise RuntimeError("SENSITIVE_MIGRATION_ERROR")""",
@@ -96,7 +96,7 @@ def test_supported_batch_upgrade_and_per_migration_failure(store, migrations):
     with pytest.raises(SafeError) as error:
         store.upgrade(migration_path=migrations)
     assert error.value.reason == Reason.MIGRATION_FAILED
-    assert scalar(store, "SELECT version_num FROM alembic_version") == "0003"
+    assert scalar(store, "SELECT version_num FROM alembic_version") == "0004"
     assert scalar(store, "SELECT value FROM fixture") == "preserved"
     assert scalar(store, "SELECT count(*) FROM sqlite_master WHERE name='should_rollback'") == 0
     assert (
@@ -111,12 +111,12 @@ def test_invalid_packaged_chain_fails_before_changes(store, migrations, fault):
     if fault == "missing_base":
         (migrations / "versions" / "0001_identity.py").unlink()
     elif fault == "missing_parent":
-        revision(migrations, "0003", "0002", "    pass")
+        revision(migrations, "0004", "0003", "    pass")
     elif fault == "heads":
-        revision(migrations, "0002", "0001", "    pass")
-        revision(migrations, "0003", "0001", "    pass")
+        revision(migrations, "0003", "0002", "    pass")
+        revision(migrations, "0004", "0002", "    pass")
     else:
-        revision(migrations, "0001", None, "    pass")
+        revision(migrations, "0002", None, "    pass")
     before = store.path.read_bytes()
     with pytest.raises(SafeError) as error:
         store.upgrade(migration_path=migrations)
@@ -142,44 +142,44 @@ def test_foreign_keys_every_connection_rollback_and_bounded_lock(store):
             store.upgrade()
         assert 0.05 < time.monotonic() - start < 2
         blocker.rollback()
-    assert store.check() == "0001"
+    assert store.check() == "0002"
 
 
 def test_requires_explicit_upgrade(store, migrations):
-    revision(migrations, "0002", "0001", "    pass")
+    revision(migrations, "0003", "0002", "    pass")
     with pytest.raises(SafeError) as error:
         store.check(migration_path=migrations)
     assert error.value.reason == Reason.UPGRADE_REQUIRED
-    assert scalar(store, "SELECT version_num FROM alembic_version") == "0001"
+    assert scalar(store, "SELECT version_num FROM alembic_version") == "0002"
 
 
 def test_prior_migration_commits_survive_later_failure_in_one_upgrade(store, migrations):
     revision(
         migrations,
+        "0003",
         "0002",
-        "0001",
         """    op.create_table(
         "prior_fixture", sa.Column("value", sa.Text()))
     op.execute("INSERT INTO prior_fixture VALUES ('retained')")""",
     )
     revision(
         migrations,
+        "0004",
         "0003",
-        "0002",
         """    op.execute("DELETE FROM prior_fixture")
     raise RuntimeError("SENSITIVE_FAILURE")""",
     )
     with pytest.raises(SafeError):
         store.upgrade(migration_path=migrations)
-    assert scalar(store, "SELECT version_num FROM alembic_version") == "0002"
+    assert scalar(store, "SELECT version_num FROM alembic_version") == "0003"
     assert scalar(store, "SELECT value FROM prior_fixture") == "retained"
 
 
 def test_concurrent_upgrade_steps_serialize_and_recheck_revision(store, migrations):
     revision(
         migrations,
+        "0003",
         "0002",
-        "0001",
         """    import time
     time.sleep(0.15)
     op.create_table("once_fixture", sa.Column("value", sa.Text()))
@@ -207,5 +207,5 @@ finally:
     for process in processes:
         stdout, stderr = process.communicate(timeout=15)
         assert process.returncode == 0, stderr
-        assert stdout.strip() == "0002"
+        assert stdout.strip() == "0003"
     assert scalar(store, "SELECT count(*) FROM once_fixture") == 1

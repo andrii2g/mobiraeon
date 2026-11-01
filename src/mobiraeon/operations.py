@@ -24,6 +24,8 @@ class Binding:
     handler: Callable | None = None
     transactional: bool = False
     requires_target: bool = False
+    validator: Callable | None = None
+    business: bool = False
 
 
 class OperationBoundary:
@@ -45,6 +47,7 @@ class OperationBoundary:
         invocation = uuid4()
         operation = None
         validated_target = None
+        data = None
 
         def result(outcome, reason):
             return OperationResult(
@@ -54,6 +57,7 @@ class OperationBoundary:
                 reason,
                 self._caller.actor if self._caller else None,
                 validated_target,
+                data=data if outcome == Outcome.SUCCESS else None,
             )
 
         try:
@@ -61,7 +65,12 @@ class OperationBoundary:
         except ValueError, TypeError:
             return result(Outcome.INVALID, Reason.INVALID_INPUT)
         binding = self._bindings.get(operation)
-        if inputs not in (None, {}) or (
+        if binding and binding.business:
+            try:
+                binding.validator(target, inputs)
+            except Exception:
+                return result(Outcome.INVALID, Reason.INVALID_INPUT)
+        elif inputs not in (None, {}) or (
             target is not None and not isinstance(target, RevisionRef)
         ):
             return result(Outcome.INVALID, Reason.INVALID_INPUT)
@@ -87,18 +96,34 @@ class OperationBoundary:
             if binding.transactional:
                 with self._store.transaction() as transaction:
                     # Restrictions may have changed while waiting for the writer lock.
-                    if (
-                        self._policy.permits(self._caller, operation, validated_target)
-                        is not True
-                    ):
+                    check = getattr(self._policy, "permits_in_transaction", None)
+                    allowed = (
+                        check(self._caller, operation, validated_target, transaction)
+                        if check
+                        else self._policy.permits(self._caller, operation, validated_target)
+                    )
+                    if allowed is not True:
                         return result(Outcome.REFUSED, Reason.REFUSED)
-                    binding.handler(transaction, validated_target)
+                    if binding.business:
+                        data = binding.handler(
+                            transaction, validated_target, inputs, invocation
+                        )
+                    else:
+                        binding.handler(transaction, validated_target)
             else:
                 binding.handler(None, validated_target)
             return result(Outcome.SUCCESS, Reason.OK)
         except TransactionAcquisitionFailure:
             return result(Outcome.UNAVAILABLE, Reason.STORAGE_FAILURE)
         except TransactionFailure as error:
+            if error.rolled_back and error.reason is not None:
+                outcome = {
+                    Reason.REFUSED: Outcome.REFUSED,
+                    Reason.AUTHENTICATION: Outcome.REFUSED,
+                    Reason.INVALID_INPUT: Outcome.INVALID,
+                    Reason.UNAVAILABLE: Outcome.UNAVAILABLE,
+                }.get(error.reason, Outcome.FAILURE)
+                return result(outcome, error.reason)
             return result(
                 Outcome.FAILURE if error.rolled_back else Outcome.UNCERTAIN,
                 Reason.ROLLED_BACK if error.rolled_back else Reason.UNCERTAIN,

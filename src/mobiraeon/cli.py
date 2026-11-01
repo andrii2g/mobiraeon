@@ -29,7 +29,25 @@ def parser():
     result.add_argument("--database", default=argparse.SUPPRESS)
     result.add_argument("--database-timeout-seconds", default=argparse.SUPPRESS)
     result.add_argument("--log-level", default=argparse.SUPPRESS)
-    result.add_argument("command", choices=["initialize", "upgrade", "check", "start"])
+    result.add_argument("--request-file", default=argparse.SUPPRESS)
+    result.add_argument("--input-file", default=argparse.SUPPRESS)
+    result.add_argument("--credential-name", default=argparse.SUPPRESS)
+    result.add_argument(
+        "command",
+        choices=[
+            "initialize",
+            "upgrade",
+            "check",
+            "start",
+            "provision",
+            "setup",
+            "recover",
+            "registry",
+            "remote",
+            "prepare",
+            "cleanup",
+        ],
+    )
     return result
 
 
@@ -71,6 +89,13 @@ def main(argv=None):
         if ready or result.outcome == Outcome.SUCCESS:
             output["foundation_ready"] = ready or command == "check"
             output["capabilities"] = CAPABILITIES
+        if command == "start" and application is not None:
+            output["listener_ready"] = bool(
+                ready
+                and application.configuration.api
+                and application.configuration.api["enabled"]
+            )
+            output["execution_eligible"] = False
         print(json.dumps(output, default=str), flush=True)
 
     try:
@@ -79,22 +104,66 @@ def main(argv=None):
         configuration = resolve_configuration(options=options)
         diagnostics = Diagnostics(sys.stderr, configuration.log_level)
         application = Application(configuration)
-        result = application.operations.invoke(command)
+        if command in {
+            "provision",
+            "setup",
+            "recover",
+            "registry",
+            "remote",
+            "prepare",
+            "cleanup",
+        }:
+            from mobiraeon.administration import administer
+
+            result = administer(application, options)
+        else:
+            result = application.operations.invoke(command)
         invocation = result.invocation_id
         metadata["schema_revision"] = application.store.recorded_revision()
-        exit_code = 0 if result.outcome == Outcome.SUCCESS else 1
+        exit_code = (
+            0
+            if result.outcome == Outcome.SUCCESS
+            else 2
+            if result.outcome == Outcome.INVALID
+            else 1
+        )
         if command == "start" and exit_code == 0:
             # This is an intermediate readiness observation, not command completion.
-            emit(ready=True)
-            diagnostics.event("foundation_ready", invocation)
+            def ready():
+                if configuration.api and configuration.api["enabled"]:
+                    with application.store.engine.connect() as connection:
+                        metadata["administrator_initialized"] = bool(
+                            connection.exec_driver_sql(
+                                "SELECT count(*) FROM access_installation"
+                            ).scalar()
+                        )
+                emit(ready=True)
+                diagnostics.event("foundation_ready", invocation)
+
             try:
-                serve()
+                if configuration.api and configuration.api["enabled"]:
+                    from mobiraeon.administration import service_for
+                    from mobiraeon.api import host
+
+                    host(service_for(application), configuration, ready)
+                else:
+                    ready()
+                    serve()
             except KeyboardInterrupt:
                 pass
     except SafeError as error:
-        result = replace(result, outcome=Outcome.INVALID, reason=error.reason)
+        outcome = Outcome.INVALID
+        if error.reason == Reason.DRAIN:
+            outcome = Outcome.UNCERTAIN
+        elif error.reason in {Reason.PROTECTION, Reason.AUTHENTICATION, Reason.REFUSED}:
+            outcome = Outcome.REFUSED
+        result = replace(
+            result,
+            outcome=outcome,
+            reason=error.reason,
+        )
         diagnostic_error = error
-        exit_code = 2
+        exit_code = 2 if outcome == Outcome.INVALID else 1
     except Exception:
         result = replace(result, outcome=Outcome.UNCERTAIN, reason=Reason.INTERNAL)
         exit_code = 1

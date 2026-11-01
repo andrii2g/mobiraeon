@@ -63,6 +63,9 @@ print(json.dumps({"platform": platform.platform(), "python": platform.python_ver
         ],
         [uv, "--version"],
     ]
+    commands.append(
+        [uv, "run", "--locked", "python", str(root / "tools/verify_interruptions.py"), "--api"]
+    )
     for command in commands:
         result = subprocess.run(
             command,

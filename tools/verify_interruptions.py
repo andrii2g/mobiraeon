@@ -19,12 +19,40 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 
-def exercise():
+def exercise(api=False, target_python=None):
+    target_python = target_python or sys.executable
     environment = {k: v for k, v in os.environ.items() if not k.startswith("MOBIRAEON_")}
     checks = []
     with tempfile.TemporaryDirectory(prefix="mobiraeon-interruption-") as temporary:
         database = Path(temporary) / "native.db"
-        base = [sys.executable, "-m", "mobiraeon", "--database", str(database)]
+        base = [target_python, "-m", "mobiraeon", "--database", str(database)]
+        if api:
+            import socket
+
+            from tls_fixture import certificate
+
+            from mobiraeon.private_state import PrivateState
+
+            outside = Path(temporary)
+            private = outside / "private"
+            database = private / "native.db"
+            PrivateState(private, database).provision()
+            cert, key = certificate(outside)
+            with socket.socket() as probe:
+                probe.bind(("127.0.0.1", 0))
+                port = probe.getsockname()[1]
+            config = outside / "api.toml"
+            config.write_text(f"""[database]
+path = {json.dumps(str(database))}
+[access]
+private_dir = {json.dumps(str(private))}
+[api]
+enabled = true
+port = {port}
+cert_file = {json.dumps(str(cert))}
+key_file = {json.dumps(str(key))}
+""")
+            base = [target_python, "-m", "mobiraeon", "--config", str(config)]
         initialized = subprocess.run(
             [*base, "initialize"],
             cwd=temporary,
@@ -126,13 +154,22 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--controller", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--api", action="store_true")
+    parser.add_argument("--target-python", default=sys.executable)
     options = parser.parse_args()
     if os.name == "nt" and not options.controller:
         startup = subprocess.STARTUPINFO()
         startup.dwFlags |= subprocess.STARTF_USESHOWWINDOW
         startup.wShowWindow = 0
         process = subprocess.run(
-            [sys.executable, str(Path(__file__).resolve()), "--controller"],
+            [
+                sys.executable,
+                str(Path(__file__).resolve()),
+                "--controller",
+                "--target-python",
+                options.target_python,
+                *(("--api",) if options.api else ()),
+            ],
             creationflags=subprocess.CREATE_NEW_CONSOLE,
             startupinfo=startup,
             capture_output=True,
@@ -150,7 +187,7 @@ def main():
             }
     else:
         try:
-            report = exercise()
+            report = exercise(options.api, options.target_python)
         except Exception as error:
             report = {"result": "failed", "error_type": type(error).__name__}
     report.update(
@@ -158,6 +195,7 @@ def main():
             "platform": platform.platform(),
             "python": platform.python_version(),
             "timestamp_utc": datetime.now(UTC).isoformat(),
+            "host": "direct_tls_api" if options.api else "foundation",
         }
     )
     if options.output:

@@ -7,7 +7,7 @@ from mobiraeon.operations import Binding, OperationBoundary
 from mobiraeon.persistence import Store
 
 CAPABILITIES = {
-    "registry_business_operations": "unavailable",
+    "registry_business_operations": "authenticated_administration",
     "coordination_workflows": "unavailable",
     "agent_execution": "unavailable",
     "forge_integration": "unavailable",

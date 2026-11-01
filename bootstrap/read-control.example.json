@@ -1,0 +1,9 @@
+{
+  "operation": "registry.read",
+  "target": {
+    "kind": "control",
+    "entity_kind": "agent",
+    "identity": "orchestrator-01"
+  },
+  "inputs": {}
+}

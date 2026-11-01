@@ -20,6 +20,17 @@ class Reason(StrEnum):
     UNCERTAIN = "effects_uncertain"
     INTERNAL = "internal_failure"
     CLEANUP_FAILED = "cleanup_failed"
+    CONFLICT = "version_conflict"
+    INCOMPLETE = "incomplete_definition"
+    NOT_FOUND = "reference_missing"
+    REVIEW = "review_inapplicable"
+    AUTHENTICATION = "authentication_required"
+    PROTECTION = "private_state_unprotected"
+    DELIVERY = "credential_delivery_failed"
+    LAST_ADMIN = "last_administrator_required"
+    AUDIT = "audit_unavailable"
+    TLS = "tls_configuration_invalid"
+    DRAIN = "drain_deadline_exceeded"
 
 
 class SafeError(Exception):

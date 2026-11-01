@@ -194,9 +194,9 @@ from mobiraeon.persistence import Store
 assert "100%valid" in mobiraeon.__file__
 store = Store(Path(sys.argv[2]))
 try:
-    assert store.initialize() == "0001"
-    assert store.upgrade() == "0001"
-    assert store.check() == "0001"
+    assert store.initialize() == "0002"
+    assert store.upgrade() == "0002"
+    assert store.check() == "0002"
 finally:
     store.close()
 """

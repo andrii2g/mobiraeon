@@ -18,6 +18,7 @@ def _token(value: str) -> None:
 
 class Owner(StrEnum):
     FOUNDATION = "foundation"
+    ACCESS = "access"
     REGISTRY = "registry"
     COORDINATION = "coordination"
 
@@ -111,6 +112,49 @@ class Operation(StrEnum):
     REGISTRY_READ = "registry.read"
     REGISTRY_USE = "registry.use"
     COORDINATION_WORK = "coordination.work"
+    CREATE = "registry.create"
+    EDIT = "registry.edit"
+    DISCARD = "registry.discard"
+    VALIDATE = "registry.validate"
+    REVIEW = "registry.review"
+    PUBLISH = "registry.publish"
+    HISTORY = "registry.history"
+    SELECT = "registry.select"
+    ENABLE = "registry.enable"
+    DISABLE = "registry.disable"
+    RECONCILE = "registry.reconcile"
+    SETUP = "access.setup"
+    RECOVER = "access.recover"
+    ISSUE = "access.issue"
+    ROTATE = "access.rotate"
+    GRANTS = "access.grants"
+    REVOKE = "access.revoke"
+    ACCESS_RECONCILE = "access.reconcile"
+
+
+@dataclass(frozen=True)
+class BusinessTarget:
+    kind: str
+    entity_kind: str
+    identity: str
+    revision: str | None = None
+
+    def __post_init__(self):
+        if self.kind not in {"entity", "draft", "publication", "control", "access", "audit"}:
+            raise ValueError("invalid target kind")
+        _token(self.entity_kind)
+        _token(self.identity)
+        if self.revision is not None:
+            _token(self.revision)
+
+
+@dataclass(frozen=True)
+class BusinessData:
+    records: tuple[dict, ...] = ()
+    reference: str | None = None
+    version: int | None = None
+    state: str | None = None
+    audit_status: str = "recorded"
 
 
 class Outcome(StrEnum):
@@ -124,7 +168,10 @@ class Outcome(StrEnum):
 
 class PermissionPolicy(Protocol):
     def permits(
-        self, caller: CallerContext, operation: Operation, target: RevisionRef | None
+        self,
+        caller: CallerContext,
+        operation: Operation,
+        target: RevisionRef | BusinessTarget | None,
     ) -> bool: ...
 
 
@@ -135,7 +182,8 @@ class OperationResult:
     outcome: Outcome
     reason: Reason
     actor: EntityId | None = None
-    target: RevisionRef | None = None
+    target: RevisionRef | BusinessTarget | None = None
     evidence: tuple[ArtifactRef, ...] = ()
+    data: BusinessData | None = None
 
     # No Run completion or acceptance field: neither follows from operation success.

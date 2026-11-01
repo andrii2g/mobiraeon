@@ -8,16 +8,26 @@ version = "0.1.0"
 description = "Möbiræon application foundation"
 readme = "README.md"
 requires-python = ">=3.14,<3.15"
-dependencies = ["SQLAlchemy>=2.0.46,<2.1", "alembic>=1.18,<2"]
+dependencies = [
+    "SQLAlchemy>=2.0.46,<2.1",
+    "alembic>=1.18,<2",
+    "fastapi==0.162.0",
+    "uvicorn==0.54.0",
+]
 
 [project.scripts]
 mobiraeon = "mobiraeon.cli:main"
 
 [dependency-groups]
-dev = ["pytest>=9,<10", "ruff>=0.15,<0.16"]
+dev = [
+    "cryptography>=50.0.2",
+    "httpx2>=2.16.0",
+    "pytest>=9,<10",
+    "ruff>=0.15,<0.16",
+]
 
 [tool.uv.build-backend]
-source-include = ["tests/**", "tools/**", "docs/**", "uv.lock", ".python-version"]
+source-include = ["tests/**", "tools/**", "docs/**", "uv.lock", ".python-version", "bootstrap/**"]
 source-exclude = ["/.tools", "/.venv", "/submissions", "/var", "/dist"]
 
 [tool.ruff]

@@ -44,4 +44,4 @@ The [retention and reconciliation rules](../agent-registry.md#retention-and-reco
 
 Reconciliation inspects exact revisions, control versions, and correlated audit records. Later state may differ from the result of an earlier operation, so current state alone may not establish its outcome. Preserve uncertainty when evidence is insufficient. Preparation compares already committed publications with reviewed inputs; credential registration is reconciled using its nonsecret identifier while the file remains protected. Physical tables, exact result mappings, cleanup procedures, and audit-outage details remain implementation contracts.
 
-Continue with [authoring and publication](registry-publication.md), [first-Agent preparation](first-agent-preparation.md), the [developer brief](../implementation-instructions.md), or the [diagram guide](README.md).
+Continue with [authoring and publication](registry-publication.md), [first-Agent preparation](first-agent-preparation.md), the [operation contracts](../registry-contracts.md), or the [diagram guide](README.md).

@@ -1,12 +1,12 @@
-# Möbiræon
+# MÃ¶birÃ¦on
 
-**Möbiræon** is inspired by **Möbius**, representing continuity and interconnected workflows, and **æon**, a word of Greek origin evoking vast spans of time. The name reflects a continuous cycle of planning, building, verifying, and improving software through coordinated AI agents. The **ö** and **æ** preserve these references visually, while the repository uses the ASCII spelling `mobiraeon`.
+**MÃ¶birÃ¦on** is inspired by **MÃ¶bius**, representing continuity and interconnected workflows, and **Ã¦on**, a word of Greek origin evoking vast spans of time. The name reflects a continuous cycle of planning, building, verifying, and improving software through coordinated AI agents. The **Ã¶** and **Ã¦** preserve these references visually, while the repository uses the ASCII spelling `mobiraeon`.
 
-Möbiræon is a platform for orchestrating and automating software development lifecycle activities through coordinated AI agents. It turns human intent into specifications, bounded assignments, and software changes assessed against explicit acceptance criteria.
+MÃ¶birÃ¦on is a platform for orchestrating and automating software development lifecycle activities through coordinated AI agents. It turns human intent into specifications, bounded assignments, and software changes assessed against explicit acceptance criteria.
 
 ## Purpose
 
-Möbiræon reduces repeated human coordination while preserving control over product intent, delivery quality, and resource use. Specialized agents perform assigned work, resolve questions within their authority, and continue when required inputs or decisions become available.
+MÃ¶birÃ¦on reduces repeated human coordination while preserving control over product intent, delivery quality, and resource use. Specialized agents perform assigned work, resolve questions within their authority, and continue when required inputs or decisions become available.
 
 The human owner supplies the initial brief, participates in clarification and early review, and resolves decisions outside the agents' authority. Human participation and agent autonomy follow the governing project policy.
 
@@ -36,7 +36,7 @@ Each request type has activities and acceptance criteria appropriate to its inte
 
 ## Engineering coverage
 
-Möbiræon coordinates work across:
+MÃ¶birÃ¦on coordinates work across:
 
 - **Data and persistence:** database architecture, schemas, migrations, Redis structures, and data access contracts.
 - **Domain:** constants, enumerations, models, DTOs, abstractions, and shared contracts.
@@ -58,7 +58,7 @@ Only the orchestrator creates requests requiring human decisions or intervention
 
 See the [documentation index](docs/README.md) for requirements, architecture, workflow, and decisions.
 
-The [Increment 2 developer brief](docs/implementation-instructions.md) assigns Agent Registry and bootstrap implementation on the accepted foundation.
+The [implementation plan](docs/implementation-plan.md) records the accepted foundation and Agent Registry increments, their verification limits, and the next Coordination increment.
 
 ## Application foundation (Increment 1)
 
@@ -66,10 +66,11 @@ Increment 1 is accepted for the independently reviewed foundation scope recorded
 the [implementation plan](docs/implementation-plan.md#increment-1-shared-contracts-and-application-foundation).
 
 The foundation provides shared contracts, a foreground local host, validated application
-configuration, controlled internal operations, and SQLite/Alembic persistence. Registry
-business operations, Coordination workflows, Agent execution, scheduling, HTTP APIs,
-and forge integration are unavailable. Foundation readiness does not qualify them or
-establish review or acceptance.
+configuration, controlled internal operations, and SQLite/Alembic persistence. The
+[accepted Registry increment](#agent-registry-increment-2) adds authenticated Registry
+operations and HTTP administration. Coordination workflows, Agent execution, scheduling,
+and forge integration remain unavailable; foundation readiness does not establish their
+qualification or acceptance.
 
 Use CPython **3.14.10** and **uv 0.13.6**. `.python-version` pins the interpreter;
 `pyproject.toml` pins `uv_build` and separates runtime dependencies from development
@@ -117,8 +118,8 @@ packaged migration chains block changes. Downgrades are unsupported.
 
 ### Configuration
 
-Settings resolve once per invocation: defaults → explicitly selected TOML file →
-recognized environment settings → explicitly supplied CLI options. Restart applies
+Settings resolve once per invocation: defaults â†’ explicitly selected TOML file â†’
+recognized environment settings â†’ explicitly supplied CLI options. Restart applies
 changes. No files are discovered automatically, and no `.env`, interpolation, or
 includes are loaded. Agent Profiles are separate Registry data.
 
@@ -142,7 +143,7 @@ uv run --locked mobiraeon --config app.toml start
 | --- | --- | --- | --- |
 | Config selector | `MOBIRAEON_CONFIG` | `--config` | Optional; CLI selects the file when both exist. |
 | Database path | `MOBIRAEON_DATABASE_PATH` | `--database` | Required; no default, memory database, URL, or SQLite URI. |
-| Lock wait | `MOBIRAEON_DATABASE_TIMEOUT_SECONDS` | `--database-timeout-seconds` | Default 5 seconds; positive finite number ≤60, excluding booleans. TOML requires a number. |
+| Lock wait | `MOBIRAEON_DATABASE_TIMEOUT_SECONDS` | `--database-timeout-seconds` | Default 5 seconds; positive finite number â‰¤60, excluding booleans. TOML requires a number. |
 | Log level | `MOBIRAEON_LOG_LEVEL` | `--log-level` | DEBUG, INFO, WARNING, ERROR, CRITICAL; case normalized; default INFO. |
 
 File-relative database paths resolve against the selected file's directory;
@@ -264,10 +265,150 @@ for performed checks and the Windows console-context and readiness-timing limits
 Linux is still the deployment target; Windows and WSL observations do not qualify a
 production Linux host.
 
-Verification tools write local source snapshots, manifests, handoffs and execution
-evidence under `submissions/increment-1/`, which is ignored by Git. These outputs are
+Verification tools default to `submissions/increment-2/`; `--increment increment-1` explicitly selects the earlier location. Existing Increment 1 evidence is preserved. Submission outputs are ignored by Git. These outputs are
 generated locally rather than distributed as repository documentation. The
 [implementation plan](docs/implementation-plan.md#verification-and-evidence) defines
 source identification, independent assessment, and evidence requirements for later
-increments. Increment 1's completed review and human acceptance are recorded in its
-accepted foundation scope; runtime readiness remains a separate observation.
+increments. Completed reviews and human acceptance for Increments 1 and 2 are recorded
+in the plan; runtime readiness remains a separate observation.
+
+
+## Agent Registry (Increment 2)
+
+Increment 2 is implemented, independently reviewed, and accepted by the human owner
+within the [recorded Registry scope and limitations](docs/implementation-plan.md#increment-2-agent-registry-and-bootstrap).
+The application provides authenticated Registry administration, exact immutable
+publications, versioned drafts/current controls, transactional audits and protected
+local owner setup/recovery. The five configured initial test Agents remain disabled.
+Authorized enablement reports unavailable while execution qualification is unavailable;
+authorized disablement remains usable. Coordination, Agent execution and forge
+integration remain unavailable. See the [operation contracts](docs/registry-contracts.md)
+and [initial Agent configuration](docs/initial-agent-configuration.md).
+
+Use CPython 3.14.10 and the locked dependencies:
+
+```text
+uv sync --locked
+uv run --locked mobiraeon --help
+```
+
+On this Windows checkout uv is `.tools/bin/uv.exe`; use that executable explicitly
+when uv is absent from PATH. For a new private installation, create its parent
+outside the checkout and select a **new** private directory. Example settings TOML
+(replace the example paths with the installation owner's paths):
+
+```toml
+[database]
+path = "C:/Users/OWNER/AppData/Local/Mobiraeon/initial-test/catalog.db"
+[access]
+private_dir = "C:/Users/OWNER/AppData/Local/Mobiraeon/initial-test"
+credential_file = "C:/Users/OWNER/AppData/Local/Mobiraeon/initial-test/credentials/owner.token"
+[api]
+enabled = false
+```
+
+On Linux use an owner-controlled parent, for example `$HOME/.local/share/mobiraeon`.
+The application protects its private root/files with Linux owner permissions or
+Windows owner/SYSTEM ACLs, records the actual OS principal, and requires the database
+directly inside that private root. Existing roots, links, unsafe ownership/protection
+and setup after initialization are refused. Foundation `initialize`/`upgrade` never
+grant Registry administrator authority.
+
+Review the explicit grants, 30-day lifetime and self-review policy in
+`bootstrap/owner-setup.example.json` before using it. This example grants the one
+human administrator all catalog/access actions; publishing Agents creates no grants.
+These local commands require no HTTP listener:
+
+```text
+uv run --locked mobiraeon --config settings.toml provision
+uv run --locked mobiraeon --config settings.toml initialize
+uv run --locked mobiraeon --config settings.toml --request-file bootstrap/owner-setup.example.json setup
+uv run --locked mobiraeon --config settings.toml --input-file bootstrap/initial-test.json prepare
+uv run --locked mobiraeon --config settings.toml --request-file bootstrap/read-control.example.json registry
+```
+
+An existing Increment 1 database requires explicit `upgrade`, never an implicit
+startup migration. Provision is for a new installation; do not overwrite an existing
+store to adopt it. Installations and credentials remain outside source captures.
+Malformed/unreadable package files and invalid package structure are rejected before preparation as `invalid_input` (exit 2), without catalog changes or sensitive diagnostics. Possible post-mutation failures retain uncertainty.
+
+`prepare` consumes the supplied input, publishes dependencies and five independently
+configured Agents, explicitly selects their published revisions administratively,
+and leaves all disabled. Repeat/resume compares exact content, versions, references
+and audit evidence; conflicts or unresolved uncertainty stop preparation. No fallback,
+real account binding or provider credential is supplied. The approved references
+`openai-primary-account-v1` and `openai-primary-credential-v1` are internal identifiers,
+with external mapping/resolution unprovisioned. Connectivity, limit enforcement and
+qualification remain unverified. Future changes require new reviewed revisions.
+
+Requests use `{operation,target,inputs}` as documented in the contracts. Raw credentials
+are generated into a new protected destination before registration, never printed or
+accepted as arguments. `access.issue`, `access.rotate`, `access.grants`, `access.revoke`
+and `access.reconcile` use the same `registry` command. `recover` accepts an
+`access.recover` request with explicit replacement grants/lifetime/destination and
+protected OS owner proof; recovery revokes previous credentials and preserves history.
+After failed/uncertain registration retain the delivered file and reconcile its ID.
+Never blindly replay uncertain mutations. `registry.reconcile` uses an audit target
+whose identity is the invocation UUID. Credential cleanup is a protected local
+`cleanup` command using an `access.reconcile` request plus `--credential-name NAME`;
+it refuses deletion of an active registered credential, verifies the delivered ID,
+and preserves nonsecret history. Filesystem/database completion is not atomic. Credential delivery/registration and cleanup now share a persistent protected OS lock across CLI/API processes. A pending registration makes cleanup unavailable (exit 1), with no file removed. After it finishes, reconcile afresh before cleanup; never remove `credential-lifecycle.lock`. Process exit releases the OS lock. The lock does not replace current authorization or last-administrator checks.
+
+For API hosting add operator-provided TLS paths; no certificate/trust provisioning is
+performed by the application:
+
+```toml
+[api]
+enabled = true
+host = "127.0.0.1"
+port = 8443
+allow_remote = false
+cert_file = "server-cert.pem"
+key_file = "server-key.pem"
+client_ca = "operator-ca.pem"
+client_url = "https://localhost:8443"
+startup_timeout_seconds = 10
+drain_timeout_seconds = 10
+```
+
+```text
+uv run --locked mobiraeon --config settings.toml start
+uv run --locked mobiraeon --config settings.toml --request-file bootstrap/read-control.example.json remote
+```
+
+`POST /v1/operations` and `GET /v1/openapi.json` require a current personal Bearer token
+and HTTPS. The client reads its protected file and verifies CA and hostname; it never
+follows redirects or disables verification. Setup/recovery stay local. A literal
+non-loopback bind requires `allow_remote=true`. No proxy header establishes identity.
+Listener readiness follows binding; administration remains locked until setup;
+execution eligibility is always false. Shutdown stops admission and drains within the
+configured deadline. Deadline exhaustion reports uncertain effects/nonzero; disconnect
+or cancellation cannot establish rollback. One final cleanup precedes terminal output.
+Do not interpret a ready event as command completion.
+
+Configuration retains defaults → selected TOML → recognized environment → CLI
+precedence, validates overridden values and resolves file paths relative to that
+TOML. Additional environment names use `MOBIRAEON_ACCESS_PRIVATE_DIR`,
+`MOBIRAEON_ACCESS_CREDENTIAL_FILE` and `MOBIRAEON_API_<UPPERCASE_KEY>` (for the keys
+above); boolean environment values are exactly `true`/`false`. Unknown settings fail
+safely. Secrets never belong in TOML, environment settings or request documents.
+
+Run the complete checks and outside-checkout installed package probes:
+
+```text
+uv sync --locked
+uv run --locked pytest
+uv run --locked ruff check .
+uv run --locked ruff format --check .
+uv build
+uv run --locked python tools/verify_wheel.py --uv .tools/bin/uv.exe
+uv run --locked python tools/verify_interruptions.py --api --output api-interruptions.json
+uv run --locked python tools/verify_foundation.py --increment increment-2 --uv .tools/bin/uv.exe
+```
+
+On Linux pass the available native uv path instead. Wheel checks install into a
+fresh `100%valid` path outside the checkout, consume explicit bootstrap inputs, run
+CLI and TLS probes and verify real SQLite persistence. Interruption probes exercise
+native Windows Ctrl+C/Ctrl+Break or Linux SIGINT/SIGTERM for both foundation and TLS
+hosts. Windows console-context and WSL observations do not qualify a production
+Linux deployment. No provider calls are made by these checks.

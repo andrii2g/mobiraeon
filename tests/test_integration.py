@@ -21,8 +21,8 @@ def test_real_host_refuses_pending_and_failed_upgrade_reports_resulting_version(
     )
     revision(
         migrations,
+        "0003",
         "0002",
-        "0001",
         """    op.create_table(
         "retained_fixture", sa.Column("value", sa.Text()))
     op.execute("INSERT INTO retained_fixture VALUES ('retained')")""",
@@ -36,8 +36,8 @@ def test_real_host_refuses_pending_and_failed_upgrade_reports_resulting_version(
     capsys.readouterr()
     revision(
         migrations,
+        "0004",
         "0003",
-        "0002",
         """    op.create_table(
         "rolled_back_fixture", sa.Column("value", sa.Text()))
     op.execute("UPDATE retained_fixture SET value='SENSITIVE_MUTATION'")
@@ -48,7 +48,7 @@ def test_real_host_refuses_pending_and_failed_upgrade_reports_resulting_version(
     assert "SENSITIVE" not in output.out + output.err
     result = json.loads(output.out)
     assert result["reason"] == "migration_failed"
-    assert result["schema_revision"] == "0002"
+    assert result["schema_revision"] == "0003"
     assert "foundation_ready" not in output.out + output.err
     with store.engine.connect() as connection:
         assert (
@@ -81,12 +81,12 @@ def test_migration_commit_ack_failure_preserves_uncertainty(
         original_commit(transaction)
         raise RuntimeError("SENSITIVE_COMMIT_ACK")
 
-    revision(migrations, "0002", "0001", "    pass")
+    revision(migrations, "0003", "0002", "    pass")
     monkeypatch.setattr(Transaction, "commit", commit_then_fail)
     assert cli.main(["--database", str(store.path), "upgrade"]) == 1
     output = capsys.readouterr()
     result = json.loads(output.out)
     assert result["outcome"] == "uncertain_effects"
     assert result["reason"] == "effects_uncertain"
-    assert result["schema_revision"] == "0002"
+    assert result["schema_revision"] == "0003"
     assert "SENSITIVE" not in output.out + output.err

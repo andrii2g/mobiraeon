@@ -26,6 +26,9 @@ def main():
         assert (
             "mobiraeon/persistence/migrations/versions/0001_identity.py" in archive.namelist()
         )
+        assert (
+            "mobiraeon/persistence/migrations/versions/0002_registry.py" in archive.namelist()
+        )
     environment = {k: v for k, v in os.environ.items() if not k.startswith("MOBIRAEON_")}
     environment.pop("PYTHONPATH", None)
     with tempfile.TemporaryDirectory(prefix="mobiraeon-wheel-") as temporary:
@@ -86,7 +89,7 @@ print(json.dumps({"module": mobiraeon.__file__, "python": platform.python_versio
         for command in ("initialize", "initialize", "upgrade", "check"):
             result = json.loads(run(console, "--database", database, command))
             assert result["outcome"] == "success"
-            assert result["schema_revision"] == "0001"
+            assert result["schema_revision"] == "0002"
         # The real installed foreground host; a fixture event supplies stop.
         host_output = run(
             python,
@@ -109,9 +112,38 @@ raise SystemExit(cli.main())
         assert started["phase"] == "ready"
         assert stopped["phase"] == "terminal" and stopped["outcome"] == "success"
         assert stopped["foundation_ready"] is False
-        assert set(started["capabilities"].values()) == {"unavailable"}
+        assert (
+            started["capabilities"]["registry_business_operations"]
+            == "authenticated_administration"
+        )
+        assert started["capabilities"]["agent_execution"] == "unavailable"
         run(console, "--database", database, "check")
-        print(json.dumps({"result": "passed", "installed": metadata}, indent=2))
+        from verify_registry import exercise
+
+        registry = exercise(python, root / "bootstrap/initial-test.json")
+        interruptions = [
+            json.loads(
+                run(
+                    sys.executable,
+                    root / "tools/verify_interruptions.py",
+                    "--target-python",
+                    python,
+                    *extra,
+                )
+            )
+            for extra in ((), ("--api",))
+        ]
+        print(
+            json.dumps(
+                {
+                    "result": "passed",
+                    "installed": metadata,
+                    "registry": registry,
+                    "installed_interruptions": interruptions,
+                },
+                indent=2,
+            )
+        )
 
 
 if __name__ == "__main__":

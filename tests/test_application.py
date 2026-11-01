@@ -36,7 +36,7 @@ def test_cli_lifecycle_and_restart_outside_checkout(tmp_path):
     for command in ("initialize", "initialize", "upgrade", "check"):
         result = run("--database", database, command, cwd=tmp_path)
         assert result.returncode == 0, result.stderr
-        assert json.loads(result.stdout)["schema_revision"] == "0001"
+        assert json.loads(result.stdout)["schema_revision"] == "0002"
     # A subprocess runs the real CLI/host with a controlled stop event on Windows,
     # where CI may lack a console for Ctrl+Break delivery. No production stop flag.
     script = """
@@ -72,7 +72,11 @@ raise SystemExit(cli.main())
         assert output["phase"] == "ready"
         assert terminal["phase"] == "terminal" and terminal["outcome"] == "success"
         assert terminal["foundation_ready"] is False
-        assert set(output["capabilities"].values()) == {"unavailable"}
+        assert (
+            output["capabilities"]["registry_business_operations"]
+            == "authenticated_administration"
+        )
+        assert output["capabilities"]["agent_execution"] == "unavailable"
         events = [json.loads(line)["event"] for line in process.stderr.splitlines()]
         assert events == ["foundation_ready", "stopped"]
     assert run("--database", database, "check", cwd=tmp_path).returncode == 0

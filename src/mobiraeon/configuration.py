@@ -12,6 +12,23 @@ ENV_SETTINGS = {
     "MOBIRAEON_LOG_LEVEL": "logging.level",
 }
 SCHEMA = {"database": {"path", "timeout_seconds"}, "logging": {"level"}}
+API_DEFAULTS = {
+    "enabled": False,
+    "host": "127.0.0.1",
+    "port": 8443,
+    "allow_remote": False,
+    "startup_timeout_seconds": 10.0,
+    "drain_timeout_seconds": 10.0,
+}
+SCHEMA.update(
+    {
+        "access": {"private_dir", "credential_file"},
+        "api": {*API_DEFAULTS, "cert_file", "key_file", "client_ca", "client_url"},
+    }
+)
+for _table in ("access", "api"):
+    for _key in SCHEMA[_table]:
+        ENV_SETTINGS[f"MOBIRAEON_{_table}_{_key}".upper()] = f"{_table}.{_key}"
 
 
 @dataclass(frozen=True)
@@ -19,11 +36,56 @@ class Configuration:
     database_path: Path
     timeout_seconds: float = 5.0
     log_level: str = "INFO"
+    private_dir: Path | None = None
+    credential_file: Path | None = None
+    api: dict | None = None
 
 
 def _validate(setting, value, source, directory):
     def invalid():
         raise SafeError(Reason.CONFIG_INVALID, source=source, setting=setting)
+
+    if setting.startswith(("access.", "api.")):
+        key = setting.split(".")[1]
+        if key in {"private_dir", "credential_file", "cert_file", "key_file", "client_ca"}:
+            if not isinstance(value, str) or not value.strip() or "\x00" in value:
+                invalid()
+            return (directory / value).resolve()
+        if key in {"enabled", "allow_remote"}:
+            if source == "environment" and value in {"true", "false"}:
+                return value == "true"
+            if type(value) is not bool:
+                invalid()
+            return value
+        if key in {"port", "startup_timeout_seconds", "drain_timeout_seconds"}:
+            if source == "environment":
+                try:
+                    value = int(value) if key == "port" else float(value)
+                except ValueError, OverflowError:
+                    invalid()
+            if type(value) not in (int, float) or not math.isfinite(value):
+                invalid()
+            if key == "port" and (type(value) is not int or not 1 <= value <= 65535):
+                invalid()
+            if key != "port" and not 0 < value <= 60:
+                invalid()
+            return value
+        if not isinstance(value, str) or not value.strip():
+            invalid()
+        if key == "client_url":
+            from urllib.parse import urlsplit
+
+            endpoint = urlsplit(value)
+            if (
+                endpoint.scheme != "https"
+                or not endpoint.hostname
+                or endpoint.username
+                or endpoint.password
+                or endpoint.query
+                or endpoint.fragment
+            ):
+                invalid()
+        return value
 
     if setting == "database.path":
         if (
@@ -105,5 +167,11 @@ def resolve_configuration(*, options, environ=None, cwd=None):
     if "database.path" not in values:
         raise SafeError(Reason.CONFIG_INVALID, source="effective", setting="database.path")
     return Configuration(
-        values["database.path"], values["database.timeout_seconds"], values["logging.level"]
+        values["database.path"],
+        values["database.timeout_seconds"],
+        values["logging.level"],
+        values.get("access.private_dir"),
+        values.get("access.credential_file"),
+        API_DEFAULTS
+        | {key.split(".")[1]: value for key, value in values.items() if key.startswith("api.")},
     )
