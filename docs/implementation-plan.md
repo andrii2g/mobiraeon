@@ -4,7 +4,7 @@ This is the single checklist for remaining specifications, implementation prepar
 
 ## Current position
 
-Increment 1 is implemented, independently reviewed, and accepted by the human owner within the [foundation scope below](#increment-1-shared-contracts-and-application-foundation). Increment 2, Agent Registry and bootstrap, is now in high-level planning; its proposed Task breakdown is below. Later increments remain planned.
+Increment 1 is implemented, independently reviewed, and accepted by the human owner within the [foundation scope below](#increment-1-shared-contracts-and-application-foundation). Increment 2, Agent Registry and bootstrap, has an agreed scope and six-Task breakdown; its detailed contracts are being refined before implementation. Later increments remain planned.
 
 The [architecture](architecture.md), [workflow](workflow.md), [forge-account policy](agent-registry.md#forge-identities), and [first-Agent preparation](agent-registry.md#first-agent-preparation) remain the design baseline. Registry business operations, Coordination workflows, supervised Agent execution, and integration qualification remain unfinished. The concrete repository and feature for end-to-end validation will be selected under D-12. Existing Gitea setup checks and operational gaps remain in the [infrastructure guide](infrastructure.md#verification-before-relying-on-the-instance).
 
@@ -53,9 +53,9 @@ The [D-11 technical baseline](decisions.md#d-11-implementation-technology-and-to
 
 ## Increment 2: Agent Registry and bootstrap
 
-The Registry ownership, configuration fields, authenticated/versioned HTTP API, administrator CLI, and initial five-Agent catalog are established by [D-05](decisions.md#d-05-registry), the [configuration contract](requirements.md#agent-configuration-contract), and the [Registry design](agent-registry.md). The bounded outcome and Task breakdown below are **proposed for discussion**. Implementation has not started.
+The Registry ownership, configuration fields, authenticated/versioned HTTP API, administrator CLI, and initial five-Agent catalog are established by [D-05](decisions.md#d-05-registry), the [configuration contract](requirements.md#agent-configuration-contract), and the [Registry design](agent-registry.md). The outcome, exclusions, and six-Task breakdown below define Increment 2's agreed scope. Detailed contracts remain to be settled before implementation, which has not started.
 
-### Proposed outcome and scope
+### Outcome and scope
 
 An authorized human administrator can prepare, validate, review, publish, and retrieve a persistent Agent catalog through the CLI and authenticated HTTP API. Published definitions and their exact dependencies remain retrievable after later edits or disablement. The five initial Agents can be prepared disabled; publication does not qualify or authorize execution.
 
@@ -63,7 +63,7 @@ Build on the accepted foundation and shared database, with Registry-owned record
 
 Do not implement scheduling, Assignments/Runs, Workers, actual runtime qualification, model invocation, live forge operations or account provisioning in this increment. Optional Git import/export is outside the required initial path. Project/forge integration details remain with their applicable later contracts; reusable catalog definitions must not depend on a live forge.
 
-### Proposed Tasks
+### Tasks
 
 | Task | Scope and deliverable | Completion evidence |
 | --- | --- | --- |
@@ -74,15 +74,19 @@ Do not implement scheduling, Assignments/Runs, Workers, actual runtime qualifica
 | 5. Prepare the initial catalog | Import reviewed Role/shared-rule snapshots with provenance and create the five named Agents disabled, bound to explicit Role-specific Profile revisions. | Repeated preparation avoids duplicate identities or silent overwrites and cannot enable Agents or dispatch work. No existing Orchestrator is required. |
 | 6. Verify and independently assess the Registry | Exercise the combined persistent catalog, API/CLI, publication, current controls, bootstrap, and failure paths. | Repeatable checks and independent review assess the same combined source. Retain Increment 1's evidence and identify Increment 2's snapshot/results separately; designated acceptance follows the established process. |
 
+### Authoring and publication baseline
+
+The [Registry authoring model](agent-registry.md#authoring-and-publication) governs Tasks 1–6: editable drafts, validation, review of exact candidates and dependencies, and immutable publication with no partial published result on failure. Candidate edits require renewed review. The same authorized human may author, review, and publish when policy permits. Publishing a Profile does not update dependent Agent bindings automatically; restoring earlier settings creates a new reviewed revision under current checks. Publication remains separate from qualification, enablement, and authorization for work.
+
 ### Boundaries to settle before implementation
 
-- **Authoring and publication:** define the minimum authoring/review/publication progression, exact-reference validation, current controls, permitted overrides, and stale-edit behavior.
+- **Authoring and publication contracts:** specify concrete operations, exact-reference validation, review applicability checks, current controls, permitted overrides, and stale-edit handling under the agreed high-level model.
 - **Administrator access:** define bootstrap authority and authenticated API/CLI behavior. The foundation's local OS operator grants and test policy doubles do not automatically grant Registry administration.
 - **Bootstrap inputs:** deliberately select complete nonsecret candidate Profile settings and their instruction/policy/capability references. Missing inputs cannot become published placeholders; fixture definitions prove tests without becoming qualified operational entries.
 - **Enablement and qualification:** initial Agents remain disabled. Administrative controls must respect qualification and governing authority; the Registry cannot own or fabricate Coordination's qualification evidence or authorize ordinary execution merely by publishing or enabling a definition.
-- **Implementation detail:** select the API framework, physical schema, concrete operation contracts, and bootstrap commands after the high-level scope is agreed. Live runtime/model values and operating profiles remain separately governed.
+- **Implementation detail:** select the API framework, physical schema, concrete operation contracts, and bootstrap commands after the high-level behavior and applicable contracts are agreed. Live runtime/model values and operating profiles remain separately governed.
 
-Start discussion with the outcome, exclusions, and Task breakdown, then authoring/publication and current-control behavior, administrator access, and bootstrap inputs/evidence. These proposals do not start implementation or approve unselected mechanisms.
+Administrator access and bootstrap authority are the next discussion, followed by bootstrap inputs/evidence and the remaining current-control and override contracts. Concrete mechanisms and operating values require their applicable agreements before implementation.
 
 ## Remaining specifications
 

@@ -9,7 +9,7 @@ config:
     wrappingWidth: 250
 ---
 flowchart TB
-    ADMIN["Authorized administrator<br/>Registry CLI"] --> API["Python Registry module and API<br/>Validate, publish and manage eligibility"]
+    ADMIN["Authorized administrator<br/>Registry CLI"] --> API["Python Registry module and API<br/>Author, validate, review and publish<br/>Manage current eligibility"]
     API <--> STORE[("Registry-owned SQLite persistence<br/>Agents, Profiles, instructions, policies<br/>publications and integration bindings")]
     COORD["Coordination<br/>Resolve exact revisions and current eligibility"] <--> API
     COORD --> ADAPTER["Forge adapter<br/>Versioned external account bindings"]
@@ -21,6 +21,6 @@ flowchart TB
     class ADMIN,ADAPTER,FORGE boundary;
 ```
 
-Registry and Coordination initially share the application and local SQLite database while owning separate tables and operations. Published configuration revisions are immutable; current administrative eligibility is checked before new dispatch. Versioned project bindings select external identities without granting authority beyond governing policy. The forge nodes show the adapter boundary; Gitea is the initial integration, and other adapters require their own qualification.
+Registry and Coordination initially share the application and local SQLite database while owning separate tables and operations. The focused [authoring and publication view](registry-publication.md) covers editable drafts, exact-content review, and immutable publications. Current administrative eligibility is checked before new dispatch. Versioned project bindings select external identities without granting authority beyond governing policy. The forge nodes show the adapter boundary; Gitea is the initial integration, and other adapters require their own qualification.
 
 Live work, qualification references, and immutable per-Run records belong to Coordination; substantial evidence belongs to Artifacts, and credential values to the secret-management mechanism. Git import/export is optional and does not become another authoritative Registry. Continue with [Agent setup and Gitea](agent-setup-and-gitea.md) or return to the [diagram guide](README.md).

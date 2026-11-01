@@ -18,6 +18,7 @@ These Mermaid sources summarize the design discussed in the governing documents.
 | [11. Agent setup and Gitea](agent-setup-and-gitea.md) | Agent onboarding and stable forge-identity relationship |
 | [12. Registry API and persistence](registry-organization.md) | Forge-independent Python/SQLite Registry and configuration ownership |
 | [13. First-Agent preparation](first-agent-preparation.md) | Administrator-led bootstrap and initial enablement |
+| [14. Registry authoring and publication](registry-publication.md) | Editable drafts, exact-content review, immutable publication, and later changes |
 
 ## Agreement legend
 
@@ -25,7 +26,7 @@ These Mermaid sources summarize the design discussed in the governing documents.
 - All current views describe the design baseline. Green nodes show processing and retained records; indigo nodes distinguish participants or context without implying an unconfirmed step.
 - Arrows show logical relationships or handoffs. They do not define API messages, transactional boundaries, exact lifecycle state names, or a mandatory total ordering of concurrent work. Polling, independent work, and supervised execution can overlap under the governing controls.
 
-Read the system view first, then use the focused workflow views as needed. Links at each boundary connect the parts without duplicating the shared Run lifecycle or drawing long feedback arrows across the whole delivery process. Review, verification, reasoning, and repair are all ordinary bounded Agent Runs; subsequent work re-enters the relevant view.
+Read the system view first, then use the focused workflow views as needed. Links at each boundary connect the parts without duplicating the shared Run lifecycle or drawing long feedback arrows across the whole delivery process. Delivery review, verification, reasoning, and repair performed by Agents use ordinary bounded Runs; subsequent work re-enters the relevant view. Registry authoring and review follow the authorized administrator path.
 
 The [architecture](../architecture.md), [workflow](../workflow.md), [requirements](../requirements.md), and [decision register](../decisions.md) govern the meaning of each view, including review, authority, and exact-revision evidence requirements.
 
