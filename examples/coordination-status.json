@@ -1,0 +1,5 @@
+{
+  "operation": "coordination.status",
+  "target": {"kind": "entity", "entity_kind": "task", "identity": "task-1"},
+  "inputs": {}
+}

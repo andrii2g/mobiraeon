@@ -17,11 +17,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--uv", default="uv")
     parser.add_argument(
-        "--increment", choices=["increment-1", "increment-2"], default="increment-2"
+        "--increment",
+        choices=["increment-1", "increment-2", "increment-3"],
+        default="increment-2",
     )
+    parser.add_argument("--output-directory", type=Path)
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
-    output = root / "submissions" / args.increment
+    output = (args.output_directory or root / "submissions" / args.increment).resolve()
+    if not output.is_relative_to(root / "submissions") or output == root / "submissions":
+        parser.error("output directory must be inside submissions")
     uv = str(Path(args.uv).resolve()) if Path(args.uv).is_file() else args.uv
     subprocess.run(
         [
@@ -29,6 +34,8 @@ def main():
             str(root / "tools/capture_submission.py"),
             "--increment",
             args.increment,
+            "--output-directory",
+            str(output),
         ],
         check=True,
     )
@@ -81,15 +88,55 @@ def main():
             str(output / "native-windows-api-interruption.json"),
         ]
     )
+    commands.append(
+        [
+            uv,
+            "run",
+            "--locked",
+            "python",
+            str(root / "tools/verify_coordination.py"),
+            "--input",
+            str(root / "examples/coordination.json"),
+            "--catalog-input",
+            str(root / "bootstrap/initial-test.json"),
+        ]
+    )
+    commands.append(
+        [
+            uv,
+            "run",
+            "--locked",
+            "python",
+            str(root / "tools/verify_registry.py"),
+            "--input",
+            str(root / "bootstrap/initial-test.json"),
+        ]
+    )
     for command in commands:
-        result = subprocess.run(
-            command,
-            cwd=root,
-            env=environment,
-            capture_output=True,
-            text=True,
-            timeout=180,
-        )
+        try:
+            result = subprocess.run(
+                command,
+                cwd=root,
+                env=environment,
+                capture_output=True,
+                text=True,
+                timeout=180,
+            )
+        except (subprocess.TimeoutExpired, OSError) as error:
+
+            def decoded(value):
+                return (
+                    value.decode(errors="replace") if isinstance(value, bytes) else value or ""
+                )
+
+            result = subprocess.CompletedProcess(
+                command,
+                -1,
+                decoded(getattr(error, "stdout", "")),
+                decoded(getattr(error, "stderr", ""))
+                + "\nEnvironment limitation: "
+                + type(error).__name__,
+            )
         report["checks"].append(
             {
                 "command": command,

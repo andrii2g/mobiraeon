@@ -109,6 +109,12 @@ def administer(application, options):
     else:
         raw = service.private.read_credential(config.credential_file)
         proof = credential_proof(raw)
+    if command == "coordination":
+        from mobiraeon.coordination import Coordinator
+
+        return Coordinator(application.store, service.private).invoke(
+            request["operation"], request["target"], request["inputs"], proof=proof
+        )
     if command == "remote":
         try:
             settings = config.api

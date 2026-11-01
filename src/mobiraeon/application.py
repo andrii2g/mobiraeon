@@ -8,7 +8,7 @@ from mobiraeon.persistence import Store
 
 CAPABILITIES = {
     "registry_business_operations": "authenticated_administration",
-    "coordination_workflows": "unavailable",
+    "coordination_workflows": "local_simulated_task_acceptance",
     "agent_execution": "unavailable",
     "forge_integration": "unavailable",
 }

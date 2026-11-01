@@ -1,6 +1,6 @@
 # Architecture and workflow diagrams
 
-These Mermaid sources summarize the design discussed in the governing documents. They describe intended behavior, not implemented or qualified capabilities.
+These Mermaid sources summarize the design baseline; they are not implementation or qualification evidence. The [implementation plan](../implementation-plan.md#current-position) records accepted increments, and the [Coordination contracts](../coordination-contracts.md) define the delivered local simulated slice. Broader service, Worker and forge views remain design direction.
 
 | View | Purpose |
 | --- | --- |
@@ -17,7 +17,7 @@ These Mermaid sources summarize the design discussed in the governing documents.
 | [10. Context and shared work](context-and-shared-work.md) | Context handoff and coordination of parallel Tasks |
 | [11. Agent setup and Gitea](agent-setup-and-gitea.md) | Agent onboarding and stable forge-identity relationship |
 | [12. Registry API and persistence](registry-organization.md) | Forge-independent Python/SQLite Registry and configuration ownership |
-| [13. First-Agent preparation](first-agent-preparation.md) | Actual reviewed candidate inputs, disabled catalog evidence, developer brief, and later onboarding handoff |
+| [13. First-Agent preparation](first-agent-preparation.md) | Actual reviewed candidate inputs, disabled catalog evidence, and later onboarding handoff |
 | [14. Registry authoring and publication](registry-publication.md) | Editable drafts, exact-content review, immutable publication, and later changes |
 | [15. Registry administrator access](registry-access.md) | Installation-owner proof, token handling, action/target grants, shared API/CLI checks, and recovery |
 | [16. Registry controls and overrides](registry-controls.md) | Current selection and enablement, reviewed ceiling reductions, and separate execution gates |

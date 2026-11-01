@@ -1,0 +1,49 @@
+{
+  "work": {
+    "project": "project-1",
+    "request": "request-1",
+    "initiative": "initiative-1",
+    "objective": "Supply a bounded synthetic greeting",
+    "scope": "One retained text deliverable and its exact verification evidence",
+    "exclusions": "No repository changes, provider calls, real Agent or parent acceptance",
+    "inputs": [
+      {
+        "identity": "brief",
+        "revision": "v1",
+        "sha256": "94f237e490d5c02ba08522c103cdc31bbbd9d42a52f400e555a85ee832795f74",
+        "content": "Produce Hello from the isolated simulation."
+      }
+    ],
+    "deliverables": [
+      "greeting"
+    ],
+    "criteria": {
+      "exact-greeting": {
+        "requirement": "The greeting deliverable at v1 exactly equals Hello from the isolated simulation. and the verification artifact identifies this exact submitted content.",
+        "evidence": "verification"
+      }
+    },
+    "role": {
+      "kind": "role",
+      "identity": "fixture-role",
+      "revision": "fixture-v1"
+    },
+    "project_context": "Synthetic text-only project; no external integrations",
+    "request_outcome": "Demonstrate one greeting delivery with independent assessment",
+    "initiative_outcome": "Retain the bounded greeting contribution; overall outcome remains unaccepted"
+  },
+  "artifacts": [
+    {
+      "identity": "greeting",
+      "revision": "v1",
+      "sha256": "0057738e22c93d43e2b1ee639ce264b4112349cb7b590989005acab8fdbe7765",
+      "content": "Hello from the isolated simulation."
+    },
+    {
+      "identity": "verification",
+      "revision": "v1",
+      "sha256": "7f32b03394d02372c0c085b486578710bb17a914056237f981d55f2993eea85e",
+      "content": "Synthetic check: greeting matches the supplied brief at v1."
+    }
+  ]
+}

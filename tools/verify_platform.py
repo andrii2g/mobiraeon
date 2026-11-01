@@ -66,15 +66,55 @@ print(json.dumps({"platform": platform.platform(), "python": platform.python_ver
     commands.append(
         [uv, "run", "--locked", "python", str(root / "tools/verify_interruptions.py"), "--api"]
     )
+    commands.append(
+        [
+            uv,
+            "run",
+            "--locked",
+            "python",
+            str(root / "tools/verify_coordination.py"),
+            "--input",
+            str(root / "examples/coordination.json"),
+            "--catalog-input",
+            str(root / "bootstrap/initial-test.json"),
+        ]
+    )
+    commands.append(
+        [
+            uv,
+            "run",
+            "--locked",
+            "python",
+            str(root / "tools/verify_registry.py"),
+            "--input",
+            str(root / "bootstrap/initial-test.json"),
+        ]
+    )
     for command in commands:
-        result = subprocess.run(
-            command,
-            cwd=root,
-            env=environment,
-            capture_output=True,
-            text=True,
-            timeout=240,
-        )
+        try:
+            result = subprocess.run(
+                command,
+                cwd=root,
+                env=environment,
+                capture_output=True,
+                text=True,
+                timeout=240,
+            )
+        except (subprocess.TimeoutExpired, OSError) as error:
+
+            def decoded(value):
+                return (
+                    value.decode(errors="replace") if isinstance(value, bytes) else value or ""
+                )
+
+            result = subprocess.CompletedProcess(
+                command,
+                -1,
+                decoded(getattr(error, "stdout", "")),
+                decoded(getattr(error, "stderr", ""))
+                + "\nEnvironment limitation: "
+                + type(error).__name__,
+            )
         report["checks"].append(
             {
                 "command": command,

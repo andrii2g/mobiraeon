@@ -112,6 +112,14 @@ class Operation(StrEnum):
     REGISTRY_READ = "registry.read"
     REGISTRY_USE = "registry.use"
     COORDINATION_WORK = "coordination.work"
+    SUPPLY = "coordination.supply"
+    ALLOCATE = "coordination.allocate"
+    DISPATCH = "coordination.dispatch"
+    OBSERVE = "coordination.observe"
+    SUBMIT = "coordination.submit"
+    ASSESS = "coordination.assess"
+    ACCEPT = "coordination.accept"
+    STATUS = "coordination.status"
     CREATE = "registry.create"
     EDIT = "registry.edit"
     DISCARD = "registry.discard"
@@ -146,6 +154,18 @@ class BusinessTarget:
         _token(self.identity)
         if self.revision is not None:
             _token(self.revision)
+
+
+WORKFLOW_ACTIONS = {
+    Operation.SUPPLY,
+    Operation.ALLOCATE,
+    Operation.DISPATCH,
+    Operation.OBSERVE,
+    Operation.SUBMIT,
+    Operation.ASSESS,
+    Operation.ACCEPT,
+    Operation.STATUS,
+}
 
 
 @dataclass(frozen=True)

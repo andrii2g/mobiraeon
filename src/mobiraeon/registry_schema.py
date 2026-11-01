@@ -6,7 +6,7 @@ import math
 import re
 from urllib.parse import urlsplit
 
-from mobiraeon.contracts import BusinessTarget, Operation, _token
+from mobiraeon.contracts import WORKFLOW_ACTIONS, BusinessTarget, Operation, _token
 from mobiraeon.errors import Reason, SafeError
 
 KINDS = {
@@ -49,7 +49,7 @@ ACCESS_ACTIONS = {
     Operation.REVOKE,
     Operation.ACCESS_RECONCILE,
 }
-GRANTABLE = CATALOG_ACTIONS | ACCESS_ACTIONS
+GRANTABLE = CATALOG_ACTIONS | ACCESS_ACTIONS | WORKFLOW_ACTIONS
 PROFILE_REFS = {
     "roleRef": "role",
     "contextPolicyRef": "context",
@@ -327,7 +327,7 @@ def validate_grants(grants):
             if not isinstance(scope, str) or scope.count(":") != 1:
                 invalid()
             kind, identity = scope.split(":")
-            if kind not in KINDS | {"credential", "audit"}:
+            if kind not in KINDS | {"credential", "audit", "task"}:
                 invalid()
             if identity != "*":
                 _token(identity)

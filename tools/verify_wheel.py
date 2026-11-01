@@ -29,6 +29,10 @@ def main():
         assert (
             "mobiraeon/persistence/migrations/versions/0002_registry.py" in archive.namelist()
         )
+        assert (
+            "mobiraeon/persistence/migrations/versions/0003_coordination.py"
+            in archive.namelist()
+        )
     environment = {k: v for k, v in os.environ.items() if not k.startswith("MOBIRAEON_")}
     environment.pop("PYTHONPATH", None)
     with tempfile.TemporaryDirectory(prefix="mobiraeon-wheel-") as temporary:
@@ -89,7 +93,7 @@ print(json.dumps({"module": mobiraeon.__file__, "python": platform.python_versio
         for command in ("initialize", "initialize", "upgrade", "check"):
             result = json.loads(run(console, "--database", database, command))
             assert result["outcome"] == "success"
-            assert result["schema_revision"] == "0002"
+            assert result["schema_revision"] == "0003"
         # The real installed foreground host; a fixture event supplies stop.
         host_output = run(
             python,
@@ -117,10 +121,20 @@ raise SystemExit(cli.main())
             == "authenticated_administration"
         )
         assert started["capabilities"]["agent_execution"] == "unavailable"
+        assert started["capabilities"]["forge_integration"] == "unavailable"
+        assert (
+            started["capabilities"]["coordination_workflows"]
+            == "local_simulated_task_acceptance"
+        )
         run(console, "--database", database, "check")
         from verify_registry import exercise
 
         registry = exercise(python, root / "bootstrap/initial-test.json")
+        from verify_coordination import exercise as coordination_exercise
+
+        coordination = coordination_exercise(
+            python, root / "examples/coordination.json", root / "bootstrap/initial-test.json"
+        )
         interruptions = [
             json.loads(
                 run(
@@ -139,6 +153,7 @@ raise SystemExit(cli.main())
                     "result": "passed",
                     "installed": metadata,
                     "registry": registry,
+                    "coordination": coordination,
                     "installed_interruptions": interruptions,
                 },
                 indent=2,

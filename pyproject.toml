@@ -27,7 +27,7 @@ dev = [
 ]
 
 [tool.uv.build-backend]
-source-include = ["tests/**", "tools/**", "docs/**", "uv.lock", ".python-version", "bootstrap/**"]
+source-include = ["tests/**", "tools/**", "docs/**", "uv.lock", ".python-version", "bootstrap/**", "examples/**"]
 source-exclude = ["/.tools", "/.venv", "/submissions", "/var", "/dist"]
 
 [tool.ruff]

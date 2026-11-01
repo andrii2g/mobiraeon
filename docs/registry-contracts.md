@@ -1,10 +1,10 @@
 # Agent Registry operation contracts
 
-These contracts describe the Registry delivered in [accepted Increment 2](implementation-plan.md#increment-2-agent-registry-and-bootstrap), under D-05/D-11 and the [Registry design](agent-registry.md). Authority is separate from catalog content; every protected operation rechecks current grants inside its transaction; publication changes neither selection nor enablement; no positive qualification path exists. Independent reassessment resolved the credential-cleanup and input-classification findings. The [initial Agent configuration](initial-agent-configuration.md) owns the approved test settings; later Coordination and execution contracts remain separate work.
+These contracts describe the Registry delivered in [accepted Increment 2](implementation-plan.md#increment-2-agent-registry-and-bootstrap), under D-05/D-11 and the [Registry design](agent-registry.md). Authority is separate from catalog content; every protected operation rechecks current grants inside its transaction; publication changes neither selection nor enablement; no positive qualification path exists. Independent reassessment resolved the credential-cleanup and input-classification findings. The [initial Agent configuration](initial-agent-configuration.md) owns the approved test settings; [Coordination contracts](coordination-contracts.md) cover the accepted local simulated workflow. Broader Coordination and execution contracts remain separate work.
 
 ## Operations, targets and results
 
-One shared OperationBoundary serves foundation and Registry adapters. Foundation
+The shared OperationBoundary serves foundation, Registry and Coordination adapters. Foundation
 commands retain their OS-operator scope. Registry services retain no mutable caller;
 each invocation constructs a frozen context from verified credentials or protected
 installation-owner proof. Neither JSON fields nor a Role establishes identity.

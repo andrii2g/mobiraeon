@@ -4,6 +4,8 @@ The logical architecture and delivery workflow include [waiting/recovery](workfl
 
 This document describes the system boundary, main parts, information ownership, and their relationships. [Definitions](definitions.md), [requirements](requirements.md), [decisions](decisions.md), and [responsibilities](responsibilities.md) remain the governing sources for terminology, required behavior, selected technologies, and actor responsibilities.
 
+The [accepted implementation](implementation-plan.md#current-position) comprises the foundation, Agent Registry and [local simulated Coordination workflow](coordination-contracts.md). The service, Worker and forge relationships below describe the broader design; their implementation and qualification remain later work.
+
 ## System boundary
 
 Möbiræon coordinates software delivery from a human Request to an accepted outcome. It connects clarification, planning, Agent assignments, production of Deliverables, independent assessment, and acceptance under the governing baseline and policy.

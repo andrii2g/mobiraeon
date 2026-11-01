@@ -58,7 +58,7 @@ Only the orchestrator creates requests requiring human decisions or intervention
 
 See the [documentation index](docs/README.md) for requirements, architecture, workflow, and decisions.
 
-The [implementation plan](docs/implementation-plan.md) records the accepted foundation and Agent Registry increments, their verification limits, and the next Coordination increment.
+The [implementation plan](docs/implementation-plan.md) records the accepted foundation, Agent Registry and minimum Coordination increments, their verification limits, and the remaining roadmap.
 
 ## Application foundation (Increment 1)
 
@@ -68,8 +68,8 @@ the [implementation plan](docs/implementation-plan.md#increment-1-shared-contrac
 The foundation provides shared contracts, a foreground local host, validated application
 configuration, controlled internal operations, and SQLite/Alembic persistence. The
 [accepted Registry increment](#agent-registry-increment-2) adds authenticated Registry
-operations and HTTP administration. Coordination workflows, Agent execution, scheduling,
-and forge integration remain unavailable; foundation readiness does not establish their
+operations and HTTP administration. The [local simulated Coordination slice](#local-coordination-increment-3)
+is available; Agent execution and forge integration remain unavailable. Foundation readiness does not establish their
 qualification or acceptance.
 
 Use CPython **3.14.10** and **uv 0.13.6**. `.python-version` pins the interpreter;
@@ -184,7 +184,7 @@ existing-file-only opening and `NullPool`; transactions close their connections 
 shutdown disposes the engine. WAL conversion, runtime migration checksums, production
 backup/recovery qualification, and automatic retries are outside this increment.
 
-Registry and Coordination own their operations and future records. Internal
+Registry and Coordination own their operations, tables and business records. Internal
 participants receive a shared transaction handle without commit/rollback methods;
 the application coordinates commit. SQLite's authorizer denies participant transaction
 and savepoint-control SQL; finalization also checks the driver's transaction state.
@@ -194,11 +194,11 @@ an ambiguous commit acknowledgement remains uncertain. This is a trusted module 
 isolation against hostile Python code. No transaction spans a model, forge, process,
 or human wait, including the foreground host's idle wait.
 
-Local commands trust the OS user's access to the process and database and identify
+Local foundation commands trust the OS user's access to the process and database and identify
 that boundary as `local-os-operator`, without claiming a verified personal username.
 They grant only initialization, upgrade, local checks, and foreground startup.
-They grant no Agent administration or workflow authority. Later authenticated
-adapters must supply trusted caller/policy context to the same operation boundary;
+They grant no Agent administration or workflow authority. Authenticated business
+adapters supply trusted caller/policy context to the same operation boundary;
 request fields and Role labels cannot confer it. Both authorization checks require
 the literal boolean `True`; malformed policy results are non-grants. Test-only handlers demonstrate
 module mutations and current restrictions; none are deployed as commands. Operation
@@ -281,8 +281,9 @@ The application provides authenticated Registry administration, exact immutable
 publications, versioned drafts/current controls, transactional audits and protected
 local owner setup/recovery. The five configured initial test Agents remain disabled.
 Authorized enablement reports unavailable while execution qualification is unavailable;
-authorized disablement remains usable. Coordination, Agent execution and forge
-integration remain unavailable. See the [operation contracts](docs/registry-contracts.md)
+authorized disablement remains usable. Agent execution and forge integration remain
+unavailable. Coordination is limited to the [isolated local slice](#local-coordination-increment-3).
+See the [operation contracts](docs/registry-contracts.md)
 and [initial Agent configuration](docs/initial-agent-configuration.md).
 
 Use CPython 3.14.10 and the locked dependencies:
@@ -403,7 +404,7 @@ uv run --locked ruff format --check .
 uv build
 uv run --locked python tools/verify_wheel.py --uv .tools/bin/uv.exe
 uv run --locked python tools/verify_interruptions.py --api --output api-interruptions.json
-uv run --locked python tools/verify_foundation.py --increment increment-2 --uv .tools/bin/uv.exe
+uv run --locked python tools/verify_foundation.py --increment increment-2 --output-directory submissions/increment-2/local-verification --uv .tools/bin/uv.exe
 ```
 
 On Linux pass the available native uv path instead. Wheel checks install into a
@@ -412,3 +413,92 @@ CLI and TLS probes and verify real SQLite persistence. Interruption probes exerc
 native Windows Ctrl+C/Ctrl+Break or Linux SIGINT/SIGTERM for both foundation and TLS
 hosts. Windows console-context and WSL observations do not qualify a production
 Linux deployment. No provider calls are made by these checks.
+
+## Local Coordination (Increment 3)
+
+Increment 3 is implemented, independently reassessed, and accepted by the human
+owner within its [recorded scope and limitations](docs/implementation-plan.md#increment-3-coordination-and-scheduling).
+The accepted repaired snapshot resolves I3-R1; independent checks reproduced
+207 Windows and 206 Linux/WSL tests, with the same 19 regression cases producing
+six expected failures on the original snapshot and all passing after repair.
+The bounded local workflow supplies one
+Request/Initiative/Task within a Project, records an authorized Assignment, reserves
+one simulated attempt, observes its result, submits exact artifacts, records an
+independent synthetic human assessment, and explicitly accepts that Task.
+The Request stays open and the Initiative stays unaccepted. No Agent runs.
+
+[Coordination contracts](docs/coordination-contracts.md) define strict actions,
+current workflow authority, exact references, lifecycle and uncertainty behavior.
+Forward migration `0003` preserves the accepted migrations and Registry records.
+Existing installations require explicit `upgrade` before using normal operations.
+
+Run this scripted demonstration with explicit scenario and catalog inputs. Choose
+a **new absolute private directory outside the checkout**; its parent must exist.
+Replace `SCENARIO_DIRECTORY` below with that path. Commands work after wheel
+installation as well (`python` refers to that installation's interpreter):
+
+```text
+uv run --locked python -m mobiraeon.scenario run --directory SCENARIO_DIRECTORY --input examples/coordination.json --catalog-input bootstrap/initial-test.json
+uv run --locked python -m mobiraeon.scenario status --directory SCENARIO_DIRECTORY
+```
+
+`run` creates a disposable protected installation, synthetic author/assessor
+credentials, a separate trusted simulator configuration and the unchanged disabled
+five-Agent catalog. It refuses an existing directory. `status` opens it in another
+process without dispatching. The driver composes synthetic human identities only
+inside this isolated installation. This assessment demonstrates the gate and is
+not independent review or acceptance of the Increment 3 implementation.
+Synthetic credentials expire after one hour; no real accounts or provider access
+are required. Input contents and hashes, exact links and all stage facts are retained.
+
+Normal local CLI actions use the existing protected credential file:
+
+```text
+uv run --locked mobiraeon --config settings.toml --request-file examples/coordination-status.json coordination
+```
+
+The config selects the store/private directory and protected credential path just
+as for Registry administration. Requests use `{operation,target,inputs}`; target
+is `{kind:"entity",entity_kind:"task",identity:"task-1"}`. The contracts table
+lists every action and its inputs. `coordination.status` returns readable JSON
+state, exact evidence, current version and ordered attributable history. Supply
+requests carry `work` from `examples/coordination.json`; result submissions carry
+its `artifacts`. The scripted driver is the runnable example for all eight actions.
+
+Add each workflow grant explicitly through existing `access.issue` or `access.grants`
+with scopes `task:task-1`, `task:*` or `*`. Registry-only grants and OS ownership
+give no workflow authority. Necessary Registry reads need their own scoped grants.
+All ordinary tokens identify the same human; a second token cannot independently
+assess that human's work. Ordinary allocation cannot execute real or fixture Agents.
+Identity injection and qualification overrides are absent from normal CLI/API inputs.
+Coordination actions are rejected by the existing Registry HTTP routes.
+
+Mutation `operation_id` identifies full inputs/action/target/actor; identical
+authorized repetitions return the receipt. A changed ID cannot repeat a stage.
+Dispatch first commits an unresolved reservation; only a new acknowledged reservation
+allows the driver to create its exclusive simulated marker. Restart never creates
+that marker or automatically accepts. Unknown observations stay unresolved. Unknown
+commits without a receipt proving the original operation's exact provenance are
+fenced by retained uncertainty history when
+storage permits. If that separate recording is unavailable, `audit_status=unavailable`
+requires inspection of storage and external evidence; absence is not permission to
+retry. No automated reconciliation/retry or general multi-user administration exists.
+
+Run all regression, installed-wheel (including literal percent paths), TLS and
+native interruption checks and capture a source-bound Increment 3 submission:
+
+```text
+uv run --locked python tools/verify_foundation.py --increment increment-3 --output-directory submissions/increment-3/local-verification --uv .tools/bin/uv.exe
+uv run --locked python tools/verify_coordination.py --input examples/coordination.json --catalog-input bootstrap/initial-test.json
+```
+
+Use a native uv path on Linux and choose a separate output directory beneath
+`submissions/` for a new verification. Keep accepted submissions and review evidence
+unchanged. Capture archives existing files within the selected output directory
+before replacing them. Exact-source Linux/WSL
+checks use `tools/verify_platform.py` on the extracted archive with `--manifest`,
+`--output` and `--uv`. Capability reporting is
+`coordination_workflows=local_simulated_task_acceptance`, with Agent execution and
+forge integration still unavailable. No background Coordinator, HTTP surface,
+provider/Worker/forge integration, multi-Task scheduler, recovery controls,
+Initiative acceptance or Request closure is delivered by this slice.
