@@ -91,9 +91,13 @@ Worker inventory, availability, Task ownership, scheduling, waiting conditions, 
 | --- | --- | --- |
 | `identity` | Stable identifier and display name. Registered Agent identity is distinct from reusable Profile identity. | F-01, F-07 |
 | `revision` | Immutable configuration revision with change provenance and retrievable history. | F-07, F-08 |
-| `enabled` | Administrative eligibility for selection for new work. Enablement does not establish authority, qualification, or Task readiness. | F-01, F-07, F-09, F-14 |
+| `enabled` | Current administrative eligibility for selection for new work. Historical values cannot bypass current disablement. Enablement does not establish authority, qualification, or Task readiness. | F-01, F-07, F-09, F-14 |
 | `profileRef` | For a registered Agent, the exact reusable Profile revision it uses. | F-07, F-08 |
-| `overrides` | Explicitly permitted changes to Profile defaults, retained in the registered Agent’s revision. Overrides cannot expand governing permissions or limits. | F-07, F-08, F-25 |
+| `overrides` | Explicitly permitted changes to Profile defaults, retained in the registered Agent's revision. Overrides cannot expand governing permissions or limits. | F-07, F-08, F-25 |
+
+Current selection explicitly identifies a published Agent revision for future work. Publication does not automatically select or enable it. Current selection and enablement are authorized, auditable, persistent controls distinct from immutable history; historical enabled values cannot establish current permission. See [current controls](agent-registry.md#current-controls).
+
+Initially, Agent overrides may only lower explicitly declared execution ceilings for duration, retries, tokens, cost, or applicable concurrency. Retain each validated, reviewed override in the Agent revision. Other execution, instruction, Role, and governing-policy changes use a new reviewed Profile revision. Overrides cannot reset consumed budgets or introduce silent substitutions. See [permitted overrides](agent-registry.md#permitted-overrides).
 
 ### Profile configuration
 
@@ -121,6 +125,8 @@ Worker inventory, availability, Task ownership, scheduling, waiting conditions, 
 ### Resolution and dispatch
 
 All references must resolve to specific revisions before dispatch. Requested configuration is validated against the selected runtime, provider, model, capability definitions, and applicable qualification evidence.
+
+Respect every applicable numeric ceiling and governing policy. Reject unknown overrides, conflicting references, and incompatible execution choices rather than concealing conflicts in an automatic merge. A permitted override still requires applicable qualification. Ordinary configuration changes affect future selections; existing Run records stay pinned, while current revocations and stop controls follow the established enforcement and recovery rules.
 
 Unsupported or unrecognized settings and combinations are rejected. Runtime flags, option values, model aliases, and reasoning settings are interpreted through the selected integration; they are not assumed interchangeable.
 

@@ -305,7 +305,11 @@ Establish the first human administrator through the protected [access bootstrap]
 
 Publication, qualification, administrative enablement, and permission to perform particular work are separate determinations. Publishing a definition establishes none of the others by itself. The Coordinator rechecks current enablement, authority, and qualification before dispatch; an older enabled revision cannot bypass current disablement or revoked access. Disabling new selection and controlling active Runs are distinct operations under the existing control rules.
 
+An authorized administrator explicitly selects the published Agent revision for future work under the [current controls](agent-registry.md#current-controls). Initial [Agent overrides](agent-registry.md#permitted-overrides) only lower declared execution ceilings and remain in reviewed Agent revisions. Other changes to Profile settings use new reviewed Profile revisions. Every governing constraint and applicable qualification still applies; current revocations and stop controls govern active work while its original records remain intact.
+
 Changes produce new reviewed Registry revisions and apply through explicit authorized selection; publishing a Profile does not automatically change Agents bound to earlier revisions. Returning to earlier settings uses a new reviewed revision under current checks. Existing Run configuration, integration attribution, and history remain intact. Git imports and exports use the same validation and publication path. The [first-Agent preparation](agent-registry.md#first-agent-preparation) defines administrator-led creation, Role-specific Profiles, initial disablement, publication, qualification, and enablement. Exact state names and API operations remain later specifications.
+
+Increment 2 reaches the [prepared-catalog boundary](agent-registry.md#bootstrap-inputs-and-preparation-evidence): five reviewed, published Agents remain disabled, with exact retrieval, provenance, restart, repeat/resume, conflict, and controlled-failure evidence. Later onboarding continues through its integration, qualification, enablement, and execution contracts.
 
 ## Closure rules
 

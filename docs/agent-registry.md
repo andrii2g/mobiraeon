@@ -16,7 +16,7 @@ Initially the Registry shares Möbiræon's Python application and local SQLite d
 | Revisions and publications | Immutable published configurations, exact dependency references, review/change provenance, and audit history. |
 | Project integration bindings | Project selection and policy references, plus external forge account and repository mappings separate from Agent and Profile identity. |
 
-These collections describe ownership, not physical tables, package names, or exact API resources. Keep reusable definitions in one catalog. A Project selects eligible definitions and binds its integrations without duplicating Agents or silently broadening governing permissions or limits. Schema design and override precedence remain later specifications.
+These collections describe ownership, not physical tables, package names, or exact API resources. Keep reusable definitions in one catalog. A Project selects eligible definitions and binds its integrations without duplicating Agents or silently broadening governing permissions or limits. Physical schemas and concrete validation contracts follow the [agreed control and override rules](#current-controls).
 
 Registry persistence is the authoritative publication source. Git may supply reviewed import inputs or receive exports through the same validation process; it is not a second independently editable Registry. A separate Gitea Registry repository is unnecessary. Structured configuration and Markdown instruction content remain supported without making Git commits their identity.
 
@@ -55,6 +55,29 @@ Publication does not cascade changes to dependent definitions. A new Profile rev
 
 Returning to earlier settings creates a new reviewed revision, potentially reusing earlier published dependencies after current checks. Preserve history and reassess qualification where the change requires it. The [authoring and publication diagram](diagrams/registry-publication.md) summarizes this model without defining exact states or API operations.
 
+## Current controls
+
+Keep the selected published Agent revision and present administrative enablement distinct from immutable publication history. These current decisions are authorized, auditable, and persistent; historical values cannot establish current permission.
+
+| Control | Behavior |
+| --- | --- |
+| Selected revision | Explicitly choose a published Agent revision for future work. Publishing another revision does not automatically select or enable it. |
+| Enablement | Current disablement prevents new selection and dispatch. Historical enabled values cannot bypass it; enablement alone does not authorize execution. |
+| Execution gates | Coordination checks current authority, qualification, readiness, holds, capacity, and remaining budgets. Registry eligibility satisfies only one condition. |
+| Active Runs | Ordinary configuration changes affect future selections. Existing Runs retain their pinned configuration; revocations and stop controls follow the established enforcement and recovery rules. |
+
+Disabling an Agent and stopping active work remain separate authorized controls. Immutable Run records preserve history without preserving revoked permission. The [controls and overrides diagram](diagrams/registry-controls.md) shows the Registry boundary and later Coordination checks.
+
+## Permitted overrides
+
+Initially, an Agent may override only explicitly declared execution ceilings by lowering them, such as duration, retries, tokens, cost, or applicable concurrency. Each override is explicit, validated, reviewed, and retained in the Agent revision. It cannot expand governing permissions or limits, reset consumed budgets, or introduce a silent substitution.
+
+Changes to Role, instructions, runtime, transport, provider/account, model, reasoning, execution options, or governing policies and contracts use a new reviewed Profile revision. Unknown override fields, conflicting references, and unsupported combinations are rejected.
+
+Resolve configuration against every applicable constraint: numeric ceilings must remain within all governing ceilings, permissions must satisfy all governing policies, and incompatible execution choices require correction. No automatic merge may conceal a conflict. For example, a declared lower Agent token ceiling may be permitted, while changing its model requires a reviewed Profile change.
+
+A permitted override still needs applicable qualification. Registry validation checks the definition; Coordination checks whether the resolved configuration may execute. The [configuration contract](requirements.md#agent-configuration-contract) governs the fields and retained requested/effective settings; concrete supported override fields and validation rules remain implementation contracts.
+
 ## Forge identities
 
 Use one stable Gitea automation account for each registered Agent that acts in the forge, plus a separate Coordination service account. Accounts attach to Agent identities rather than Roles, Profile revisions, Workers, or individual Runs. An Agent performing no forge operations need not acquire a forge account merely to execute.
@@ -91,9 +114,34 @@ The Coordination service account is separate from the Agent catalog, and the hum
 
 Five registered Agents do not require five concurrent processes or a Run for every Role on every Task. In particular, separate Verifier/QA Runs follow the contract and policy; ordinary tool-based checks still produce evidence without requiring another reasoning Run.
 
+## Bootstrap inputs and preparation evidence
+
+An established, authorized administrator prepares the initial catalog from one reviewed set of inputs through the normal [authoring and publication path](#authoring-and-publication).
+
+| Input | Required content |
+| --- | --- |
+| Agent catalog | The five [agreed identities](#initial-agent-catalog) mapped to Role-specific Profiles, all initially disabled and carrying no administrative grants. |
+| Instructions | Snapshots of the [shared operating rules](roles/_shared/OPERATING_RULES.md) and applicable [Role instructions](roles/README.md), with their source version and provenance. |
+| Candidate Profiles | Complete required runtime, transport, provider/account references, model, reasoning, options, and limits for one primary execution path. Preserve [D-08's selection intent](decisions.md#d-08-initial-profiles) and independent review configuration. |
+| Governing definitions | Exact published references for capabilities, tool and authority policies, context/output contracts, and any permitted fallback. Reuse suitable definitions across Profiles. |
+| Preparation authority | The established administrator's applicable review and publication permissions. Credential values remain outside catalog content. |
+
+Reusable instruction snapshots are bootstrap inputs; project-specific Assignments and resolved Run context arrive later. Exact models, limits, connection references, and governing definitions still require selection. Required missing values keep affected definitions in draft. Test fixtures establish Registry mechanics separately from the complete candidate catalog.
+
+Preparation evidence demonstrates:
+
+- **Exact retrieval:** all five published Agent/Profile revisions, their exact dependencies, current disabled state, instruction provenance, and attributable review/publication records are retrievable.
+- **Persistence:** restart preserves the publications, bindings, and current controls.
+- **Repeatability:** repeating or resuming preparation creates no duplicate identities or silent overwrites. Conflicting inputs require explicit reconciliation and reviewed changes.
+- **Controlled failures:** representative missing-reference, invalid-setting, unauthorized or stale-change, and failed-publication cases produce truthful outcomes. A failed publication leaves no partial published result for that operation.
+
+Retain a concise generated preparation record with Increment 2's submission evidence, identifying application and input versions, performed checks, results, and limitations. Preparation completes with a reviewed, published, persistent five-Agent catalog, all disabled. Runtime qualification, enablement, execution, project/forge bindings, and external account provisioning follow their later contracts.
+
 ## First-Agent preparation
 
 Apply the [onboarding model](workflow.md#agent-onboarding) through the following initial setup sequence. Concrete runtime/model values, numeric limits, exact lifecycle states, and API endpoints remain specifications.
+
+The [bootstrap inputs and evidence](#bootstrap-inputs-and-preparation-evidence) define Increment 2's disabled-catalog completion point. The sequence below also includes later integration and execution preparation; those stages retain their applicable increment boundaries.
 
 | Stage | Preparation |
 | --- | --- |

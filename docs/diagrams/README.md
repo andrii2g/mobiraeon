@@ -17,9 +17,10 @@ These Mermaid sources summarize the design discussed in the governing documents.
 | [10. Context and shared work](context-and-shared-work.md) | Context handoff and coordination of parallel Tasks |
 | [11. Agent setup and Gitea](agent-setup-and-gitea.md) | Agent onboarding and stable forge-identity relationship |
 | [12. Registry API and persistence](registry-organization.md) | Forge-independent Python/SQLite Registry and configuration ownership |
-| [13. First-Agent preparation](first-agent-preparation.md) | Administrator-led bootstrap and initial enablement |
+| [13. First-Agent preparation](first-agent-preparation.md) | Reviewed inputs, the persistent disabled catalog, preparation evidence, and later onboarding handoff |
 | [14. Registry authoring and publication](registry-publication.md) | Editable drafts, exact-content review, immutable publication, and later changes |
 | [15. Registry administrator access](registry-access.md) | First-owner bootstrap, shared API/CLI permission checks, revocation, and owner-controlled recovery |
+| [16. Registry controls and overrides](registry-controls.md) | Current selection and enablement, reviewed ceiling reductions, and separate execution gates |
 
 ## Agreement legend
 
