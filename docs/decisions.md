@@ -142,7 +142,13 @@ Changes to scope, authority, infrastructure, or spending outside delegation requ
 
 Implement the first release in **Python**, with one active Coordinator/Scheduler service and supervised, isolated Agent runner processes.
 
+Target **CPython 3.14**, initially pinning **3.14.10**, with `requires-python = ">=3.14,<3.15"`. Package one installable `mobiraeon` distribution under `src/mobiraeon`, with a separate test tree. Use `pyproject.toml`, **uv**, the **uv_build** backend, and a committed `uv.lock`; keep runtime and development dependencies separate. Use **pytest** and **Ruff** for development checks. Record tool versions and control dependency updates; expand the Python target range after verification.
+
 Use **SQLite on local persistent disk** for authoritative Registry definitions and durable coordination state. The first deployment shares one application and database: the Registry module owns catalog changes through its authorized API, while the Coordinator controls authoritative workflow changes. Runners submit results through authorized operations. Retain substantial artifacts separately with durable, versioned references.
+
+Use synchronous **SQLAlchemy Core** with Python's `sqlite3` driver and **Alembic** for one application-level migration sequence. Keep domain contracts independent of storage types. Explicit creation and upgrades are separate from ordinary startup, which validates an existing store. Preserve atomic migration/revision updates and module transaction ownership. Start with SQLite's rollback journal. The [foundation guide](../README.md#storage-and-authorization-boundaries) details the storage and authorization contract.
+
+The first foundation uses a foreground local application host and CLI. Authenticated HTTP API hosting follows with the Registry; its framework remains to be selected. These stack choices keep the initial package small while providing established dependency and schema-migration tooling.
 
 Integrate Gitea through the forge-adapter contract.
 
@@ -176,7 +182,7 @@ Implementation preparation supplies:
 
 - detailed workflow states, transitions, acceptance gates, and recovery procedures;
 - Registry API and persistence contracts, schemas, publication and concurrent-edit rules, and override resolution;
-- the Python framework, packaging, exact execution versions, and isolation controls;
+- the authenticated API framework, remaining dependency and execution versions, and isolation controls under D-11's selected foundation baseline;
 - numeric operating limits, recovery targets, retention rules, and verification methods;
 - concrete delegation rules, authorized identities, operations, and targets;
 - the executable pilot contract and integration qualification evidence.

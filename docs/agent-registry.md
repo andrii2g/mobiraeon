@@ -2,6 +2,8 @@
 
 The Agent Registry is a **Python module in the `mobiraeon` repository and application**, with its own authenticated, versioned API and **SQLite persistence**. It is independent of Gitea and follows [D-05](decisions.md#d-05-registry), [D-11](decisions.md#d-11-implementation-technology-and-topology), and the approved [configuration contract](requirements.md#agent-configuration-contract). The initial catalog and preparation sequence below define the first Agents and their administrator-led setup.
 
+The application foundation is accepted; Registry business operations remain the next implementation increment. The [Increment 2 planning proposal](implementation-plan.md#increment-2-agent-registry-and-bootstrap) outlines the outcome and Tasks under discussion. The ownership and onboarding rules below remain the governing baseline.
+
 ## Registry ownership and interface
 
 Initially the Registry shares Möbiræon's Python application and local SQLite database with Coordination, retaining ownership of its tables and configuration operations. Its API manages creation, editing, validation, review/publication, enablement, retrieval, and versioned export/import. Describe the authenticated, versioned HTTP interface with OpenAPI; the administrator's CLI uses the same authorized application operations. Detailed endpoint contracts and schemas remain specifications.
