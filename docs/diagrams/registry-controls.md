@@ -20,10 +20,12 @@ flowchart TB
 
 Publication does not automatically select or enable a revision. Current selection and enablement are auditable controls; a historical enabled value cannot bypass current disablement. Coordination also checks current authority, qualification, readiness, holds, capacity, and remaining budgets. Registry eligibility supplies only one condition for execution.
 
+In Increment 2, the [qualification-check boundary is unavailable](registry-enablement.md): an authorized enable request leaves current enablement unchanged, while authorized disablement remains available. The execution path above describes later operation under implemented Coordination gates. Qualification becoming available never enables an Agent automatically.
+
 Initially, Agent overrides may only lower explicitly declared execution ceilings, such as duration, retries, tokens, cost, or applicable concurrency. Overrides are explicit, validated, reviewed, and retained in the Agent revision. They cannot expand governing limits or permissions, reset consumed budgets, or introduce silent substitutions. Changes to Role, instructions, runtime, transport, provider/account, model, reasoning, or governing policies use a new reviewed Profile revision.
 
 Resolution respects every applicable numeric ceiling and governing policy. Reject unknown fields, conflicting references, unsupported combinations, and incompatible execution choices. A permitted override still requires applicable qualification; Registry validation checks the definition, and Coordination checks whether the resolved configuration may execute.
 
-Ordinary configuration changes affect future selections. Existing Runs retain their pinned configuration records. Disablement prevents new selection and dispatch; stopping active work remains a separate authorized control. Current revocations and stop controls follow the established enforcement and recovery rules.
+Ordinary configuration changes affect future selections. Existing Runs retain their pinned configuration records. Disablement prevents selection for ordinary work and dispatch; administrative revision selection for a disabled Agent remains available. Stopping active work remains a separate authorized control. Current revocations and stop controls follow the established enforcement and recovery rules.
 
 Continue with [authoring and publication](registry-publication.md), [Run lifecycle](run-lifecycle.md), or the [diagram guide](README.md).

@@ -58,6 +58,8 @@ Only the orchestrator creates requests requiring human decisions or intervention
 
 See the [documentation index](docs/README.md) for requirements, architecture, workflow, and decisions.
 
+The [Increment 2 developer brief](docs/implementation-instructions.md) assigns Agent Registry and bootstrap implementation on the accepted foundation.
+
 ## Application foundation (Increment 1)
 
 Increment 1 is accepted for the independently reviewed foundation scope recorded in

@@ -61,7 +61,7 @@ See [waiting and recovery](workflow.md#waiting-and-recovery) and [human controls
 
 ## Review, acceptance, and integration
 
-Independent review uses a separate Assignment and Run under the configured independence policy. Changing the author’s Role or Profile alone does not establish independence. The same model may perform authoring and review when the policy’s independence conditions are satisfied.
+Independent Agent delivery review uses a separate Assignment and Run under the configured independence policy. Changing the author’s Role or Profile alone does not establish independence. The same model may perform authoring and review when the policy’s independence conditions are satisfied. Registry administrative review follows the [authoring and publication rules](agent-registry.md#authoring-and-publication), including same-human authoring/review/publication where policy permits, without an Agent Run.
 
 Review and verification provide assessments and evidence. Acceptance requires the designated authority and applicable gates; policy may explicitly grant acceptance authority to an eligible reviewer.
 

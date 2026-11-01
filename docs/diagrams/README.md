@@ -17,10 +17,14 @@ These Mermaid sources summarize the design discussed in the governing documents.
 | [10. Context and shared work](context-and-shared-work.md) | Context handoff and coordination of parallel Tasks |
 | [11. Agent setup and Gitea](agent-setup-and-gitea.md) | Agent onboarding and stable forge-identity relationship |
 | [12. Registry API and persistence](registry-organization.md) | Forge-independent Python/SQLite Registry and configuration ownership |
-| [13. First-Agent preparation](first-agent-preparation.md) | Reviewed inputs, the persistent disabled catalog, preparation evidence, and later onboarding handoff |
+| [13. First-Agent preparation](first-agent-preparation.md) | Actual reviewed candidate inputs, disabled catalog evidence, developer brief, and later onboarding handoff |
 | [14. Registry authoring and publication](registry-publication.md) | Editable drafts, exact-content review, immutable publication, and later changes |
-| [15. Registry administrator access](registry-access.md) | First-owner bootstrap, shared API/CLI permission checks, revocation, and owner-controlled recovery |
+| [15. Registry administrator access](registry-access.md) | Installation-owner proof, token handling, action/target grants, shared API/CLI checks, and recovery |
 | [16. Registry controls and overrides](registry-controls.md) | Current selection and enablement, reviewed ceiling reductions, and separate execution gates |
+| [17. Registry API hosting](registry-hosting.md) | Tested dependencies, direct TLS/trust, isolated callers, shared configuration, and coordinated lifecycle |
+| [18. Registry operations and persistence](registry-operations.md) | Targets, protected mutation/audit, resumable preparation, retention, and evidence-based reconciliation |
+| [19. Registry enablement boundary](registry-enablement.md) | Unavailable qualification, unchanged enablement, safe disablement, and explicit later enablement |
+| [20. Protected credential delivery](registry-credential-delivery.md) | Durable protected delivery before activation, truthful separate effects, rotation, and reconciliation |
 
 ## Agreement legend
 

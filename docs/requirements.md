@@ -97,6 +97,8 @@ Worker inventory, availability, Task ownership, scheduling, waiting conditions, 
 
 Current selection explicitly identifies a published Agent revision for future work. Publication does not automatically select or enable it. Current selection and enablement are authorized, auditable, persistent controls distinct from immutable history; historical enabled values cannot establish current permission. See [current controls](agent-registry.md#current-controls).
 
+Application operations distinguish stable-identity, draft, publication, current-control, and access targets. Mutable edit versions remain separate from immutable publication references; updates based on observed state carry expected versions checked within the protected transaction. Exact resolution never silently chooses latest content. Validated operation-specific inputs and safe read/business results retain the same logical outcomes across API and CLI; credential verification material is excluded. See [operation contracts](agent-registry.md#operation-contracts).
+
 Initially, Agent overrides may only lower explicitly declared execution ceilings for duration, retries, tokens, cost, or applicable concurrency. Retain each validated, reviewed override in the Agent revision. Other execution, instruction, Role, and governing-policy changes use a new reviewed Profile revision. Overrides cannot reset consumed budgets or introduce silent substitutions. See [permitted overrides](agent-registry.md#permitted-overrides).
 
 ### Profile configuration
@@ -133,6 +135,8 @@ Unsupported or unrecognized settings and combinations are rejected. Runtime flag
 Ollama-based implementation Runs require an explicitly configured coding-tool harness. Generated model text alone is not evidence that implementation actions occurred or that implementation is complete.
 
 Enablement and a valid Profile do not authorize dispatch. The Coordinator enforces authority and workflow state; the deterministic Scheduler dispatches only ready, qualified, authorized work within applicable limits. The Orchestrator Agent proposes actions through those controls.
+
+For Increment 2, the [qualification-check boundary](agent-registry.md#enablement-before-coordination-qualification) is unavailable in production. An authorized enable request reports unavailable without changing current enablement; unauthorized requests are refused. Authorized disablement remains independent of qualification availability. The Registry creates no qualification records or manual qualification bypass. Later enablement requires an explicit request and fresh checks of the exact selected configuration. Stored enabled values and isolated test doubles cannot establish production qualification.
 
 ### Per-Run configuration record
 

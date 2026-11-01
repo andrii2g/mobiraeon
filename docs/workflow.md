@@ -87,7 +87,7 @@ If no eligible Agent configuration exists, preserve the Task and record the miss
 
 ### Handoff and reassignment
 
-One Task can use separate Assignments for implementation, review, and verification. Review requires a separate Assignment and Run with the applicable independence checks; a different Role, Profile, or Agent name alone does not establish independence. The same model remains permissible when policy allows.
+One Task can use separate Assignments for implementation, review, and verification. Agent delivery review requires a separate Assignment and Run with the applicable independence checks; a different Role, Profile, or Agent name alone does not establish independence. The same model remains permissible when policy allows. Registry administrative review follows its [human authoring and publication path](agent-registry.md#authoring-and-publication).
 
 Retries and reassignment retain Task identity and preserve previous allocations, results, and evidence. Record a changed authorized allocation without overwriting the former one, and reject updates from superseded execution ownership. A change to configuration already bound to a Run requires a new authorized, validated Run; it cannot rewrite the old attempt's configuration. Exact assignment transitions and recovery mechanisms follow in the detailed workflow specification.
 
@@ -293,7 +293,9 @@ Durable Artifacts and recorded handoffs retain produced progress, including unac
 
 Prepare an Agent through authorized Registry API operations and separately authorized access. The Python Registry module in `mobiraeon` retains configuration and immutable published revisions in SQLite independently of Gitea. The Agent's stable identity remains distinct from its Role, Profile, execution Worker, individual Runs, and any forge user. The Registry's [forge identities](agent-registry.md#forge-identities) define the account mappings and access boundary.
 
-Establish the first human administrator through the protected [access bootstrap](agent-registry.md#administrator-access-and-bootstrap-authority) before administering the catalog. Access initialization persists independently of Agent records; ordinary API and CLI operations check current permissions, and owner-controlled recovery keeps first-time bootstrap closed. Creating or publishing an Agent cannot grant administrative access.
+Establish the first human administrator through the protected [local CLI setup](agent-registry.md#authentication-and-protected-first-owner-setup) before administering the catalog. Verify installation-owner access, establish the owner and initial grants, and durably close bootstrap; no HTTP server or Agent Run is required. Personal access tokens identify the administrator for API and local CLI operations, which check the same current permissions. Access initialization persists independently of Agent records, and protected local recovery keeps first-time bootstrap closed. Creating or publishing an Agent cannot grant administrative access.
+
+The [credential delivery procedure](agent-registry.md#protected-credential-delivery) saves a new protected credential before activating its verifier/access changes and audit. Delivery failure cannot activate it; uncertain database registration requires reconciliation while retaining the protected file. Setup and recovery use the actual OS owner and resource protections rather than caller-supplied identity.
 
 | Step | Preparation |
 | --- | --- |
@@ -303,13 +305,19 @@ Establish the first human administrator through the protected [access bootstrap]
 | 4. Validate and publish | Follow the [Registry authoring and publication path](agent-registry.md#authoring-and-publication): validate and review the exact candidate and dependencies, then publish an immutable, retrievable Registry revision in SQLite. Record provenance and audit history; reject stale edits and inconsistent references. |
 | 5. Qualify and enable selection | Record qualification of the execution combination for its supported scope and enable the Agent through the authorized configuration process. Assignments and dispatch still require current readiness, authority, and execution capacity and limits. |
 
-Publication, qualification, administrative enablement, and permission to perform particular work are separate determinations. Publishing a definition establishes none of the others by itself. The Coordinator rechecks current enablement, authority, and qualification before dispatch; an older enabled revision cannot bypass current disablement or revoked access. Disabling new selection and controlling active Runs are distinct operations under the existing control rules.
+Publication, qualification, administrative enablement, and permission to perform particular work are separate determinations. Publishing a definition establishes none of the others by itself. The Coordinator rechecks current enablement, authority, and qualification before dispatch; an older enabled revision cannot bypass current disablement or revoked access. Disabling selection for ordinary work and controlling active Runs are distinct operations under the existing control rules.
 
 An authorized administrator explicitly selects the published Agent revision for future work under the [current controls](agent-registry.md#current-controls). Initial [Agent overrides](agent-registry.md#permitted-overrides) only lower declared execution ceilings and remain in reviewed Agent revisions. Other changes to Profile settings use new reviewed Profile revisions. Every governing constraint and applicable qualification still applies; current revocations and stop controls govern active work while its original records remain intact.
+
+Before Coordination qualification is implemented, [authorized enable requests report unavailable](agent-registry.md#enablement-before-coordination-qualification) and leave current enablement unchanged; authorized disablement remains independent of qualification availability. The production path accepts no manual qualification assertion or forced enablement. Later qualification availability triggers no automatic enablement: an explicit request must pass fresh exact-configuration checks.
 
 Changes produce new reviewed Registry revisions and apply through explicit authorized selection; publishing a Profile does not automatically change Agents bound to earlier revisions. Returning to earlier settings uses a new reviewed revision under current checks. Existing Run configuration, integration attribution, and history remain intact. Git imports and exports use the same validation and publication path. The [first-Agent preparation](agent-registry.md#first-agent-preparation) defines administrator-led creation, Role-specific Profiles, initial disablement, publication, qualification, and enablement. Exact state names and API operations remain later specifications.
 
 Increment 2 reaches the [prepared-catalog boundary](agent-registry.md#bootstrap-inputs-and-preparation-evidence): five reviewed, published Agents remain disabled, with exact retrieval, provenance, restart, repeat/resume, conflict, and controlled-failure evidence. Later onboarding continues through its integration, qualification, enablement, and execution contracts.
+
+Preparation composes the [ordinary Registry operations](agent-registry.md#operation-contracts) with [per-operation persistence](agent-registry.md#persistence-and-failure-boundaries). Earlier committed steps remain after a later failure; resume inspects them rather than assuming the whole preparation rolled back. Uncertain effects require reconciliation before replay.
+
+Apply [retention and reconciliation](agent-registry.md#retention-and-reconciliation) without hard-deleting published history or required provenance in Increment 2. The [reviewed candidate input set](agent-registry.md#bootstrap-candidate-specification) supplies actual selected settings and exact references before publishing the five disabled Agents; fixtures and implicit checkout reads cannot complete that preparation.
 
 ## Closure rules
 

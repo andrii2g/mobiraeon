@@ -14,7 +14,8 @@ The product requirements and D-01 through D-12 form the design baseline. The hig
 | [Mermaid diagrams](diagrams/README.md) | High-level system and focused workflow views, with agreement markers |
 | [Decision register](decisions.md) | Confirmed decisions, remaining details, and their consequences |
 | [Implementation plan](implementation-plan.md) | Accepted increments, current planning, remaining specifications, and verification gates |
-| [Agent Registry](agent-registry.md) | Registry ownership, administrator access, publication, current controls/overrides, forge identities, and first-Agent preparation evidence |
+| [Increment 2 developer brief](implementation-instructions.md) | Active six-Task assignment, contract examples, required checks, bootstrap input gates, and review evidence |
+| [Agent Registry](agent-registry.md) | Registry ownership, protected credential delivery, authentication/hosting, operations/persistence, publication, controls/overrides, and first-Agent preparation evidence |
 | [Infrastructure](infrastructure.md) | Gitea/PostgreSQL Compose setup in WSL, local configuration, verification, and backup/restore procedures |
 
 ## Agreement and change rules
@@ -34,4 +35,4 @@ The requested execution paths are Codex CLI, Claude Code CLI, and an Ollama-back
 
 Increment 1's Python application foundation is implemented, independently reviewed, and accepted within its [recorded scope and limitations](implementation-plan.md#increment-1-shared-contracts-and-application-foundation). The [root README](../README.md#application-foundation-increment-1) owns the current setup, configuration, storage, operation, and verification guide. The completed implementation assignment has been retired from the active documentation; its reviewed source archives retain the original brief.
 
-[Increment 2](implementation-plan.md#increment-2-agent-registry-and-bootstrap) has an agreed scope and Task breakdown; its detailed contracts remain under discussion. Registry business operations, Coordinator/Scheduler workflows, and the Worker runtime remain to be implemented and qualified. Recorded Gitea setup checks and remaining operational verification are covered by the [infrastructure guide](infrastructure.md#verification-before-relying-on-the-instance).
+[Increment 2](implementation-plan.md#increment-2-agent-registry-and-bootstrap) has an agreed scope and an active [developer brief](implementation-instructions.md). Concrete contracts precede their dependent code; actual candidate values are required before bootstrap publication. Registry business operations, Coordinator/Scheduler workflows, and the Worker runtime remain to be implemented and qualified. Recorded Gitea setup checks and remaining operational verification are covered by the [infrastructure guide](infrastructure.md#verification-before-relying-on-the-instance).
