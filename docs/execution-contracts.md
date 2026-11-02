@@ -70,7 +70,12 @@ An absent container is insufficient proof of safe cleanup when a create/start re
 
 ## Stopping, interruption and truthful completion
 
-Ordinary interruption requests the same bounded stop path where possible. Persistent stop intent is ordered against durable start authorization as defined above. If sealed authoritative terminal Run completion, including required cleanup and artifact applicability, commits before stop intent, preserve that fact. Receipt of exit 0 alone is not terminal completion. Otherwise a later zero exit cannot erase the accepted stop or become successful Task evidence. Record race ordering and actual observations rather than inventing a completed cancellation.
+Ordinary interruption requests the same bounded stop path where possible. Persistent stop intent is ordered against durable start authorization as defined above. If sealed authoritative terminal Run completion, including required cleanup and artifact applicability, commits before stop intent, preserve that fact. Receipt of exit 0 alone is not terminal completion. Attachment exit/EOF is a
+transport observation: success requires an established non-running container with
+finished execution and zero exit, successful attachment exit and complete capture
+before cleanup. Retain `completion_state` and `attachment_exit_code` separately
+from cleanup's `runtime_state`. Missing completion remains unknown, even if cleanup
+observes zero and releases capacity after verified retirement. Otherwise a later zero exit cannot erase the accepted stop or become successful Task evidence. Record race ordering and actual observations rather than inventing a completed cancellation.
 
 Request graceful termination, escalate within the configured grace, then verify Run-owned descendant cleanup within the cleanup deadline. The parent process's exit or a successful stop-command exit is insufficient alone. Until verified cleanup, affected capacity remains unavailable. Effective containment requires retained trusted evidence; the initial implementation may conservatively keep capacity held whenever cleanup is not established.
 

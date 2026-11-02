@@ -77,7 +77,14 @@ def test_capture_error_never_seals_success(
             return Process(json.dumps(summary(self.handoff["input"]["content"])).encode())
 
         def inspect(self, handoff, identity=None, timeout=None):
-            return {"State": {"StartedAt": "2026-11-02T00:00:00Z", "ExitCode": 0}}
+            return {
+                "State": {
+                    "StartedAt": "2026-11-02T00:00:00Z",
+                    "FinishedAt": "2026-11-02T00:00:01Z",
+                    "Running": False,
+                    "ExitCode": 0,
+                }
+            }
 
         def cleanup(self, handoff, record):
             return cleaned

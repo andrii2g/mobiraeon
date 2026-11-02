@@ -69,6 +69,7 @@ def administer(application, options):
                 ),
             )
         except PreparationStopped as stopped:
+            # The facade retains safe child attribution and partial progress.
             return stopped.result
     try:
         if command in {"coordination", "execution"}:

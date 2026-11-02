@@ -12,6 +12,8 @@ import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
 
+from source_integrity import verify_source as check_source
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -24,10 +26,7 @@ def main():
     manifest = json.loads(options.manifest.read_text(encoding="utf-8"))
 
     def verify_source():
-        for name, entry in manifest["files"].items():
-            assert hashlib.sha256((root / name).read_bytes()).hexdigest() == entry["sha256"], (
-                name
-            )
+        check_source(root, manifest)
 
     verify_source()
     uv = str(Path(options.uv).resolve())
@@ -46,6 +45,7 @@ def main():
         [uv, "run", "--locked", "ruff", "check", "."],
         [uv, "run", "--locked", "ruff", "format", "--check", "."],
         [uv, "build"],
+        [uv, "run", "--locked", "python", str(root / "tools/verify_fr_repairs.py")],
         [uv, "run", "--locked", "python", str(root / "tools/verify_wheel.py"), "--uv", uv],
         [uv, "run", "--locked", "python", str(root / "tools/verify_interruptions.py")],
         [

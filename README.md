@@ -1,12 +1,12 @@
-# MÃ¶birÃ¦on
+# Möbiræon
 
-**MÃ¶birÃ¦on** is inspired by **MÃ¶bius**, representing continuity and interconnected workflows, and **Ã¦on**, a word of Greek origin evoking vast spans of time. The name reflects a continuous cycle of planning, building, verifying, and improving software through coordinated AI agents. The **Ã¶** and **Ã¦** preserve these references visually, while the repository uses the ASCII spelling `mobiraeon`.
+**Möbiræon** is inspired by **Möbius**, representing continuity and interconnected workflows, and **æon**, a word of Greek origin evoking vast spans of time. The name reflects a continuous cycle of planning, building, verifying, and improving software through coordinated AI agents. The **ö** and **æ** preserve these references visually, while the repository uses the ASCII spelling `mobiraeon`.
 
-MÃ¶birÃ¦on is a platform for orchestrating and automating software development lifecycle activities through coordinated AI agents. It turns human intent into specifications, bounded assignments, and software changes assessed against explicit acceptance criteria.
+Möbiræon is a platform for orchestrating and automating software development lifecycle activities through coordinated AI agents. It turns human intent into specifications, bounded assignments, and software changes assessed against explicit acceptance criteria.
 
 ## Purpose
 
-MÃ¶birÃ¦on reduces repeated human coordination while preserving control over product intent, delivery quality, and resource use. Specialized agents perform assigned work, resolve questions within their authority, and continue when required inputs or decisions become available.
+Möbiræon reduces repeated human coordination while preserving control over product intent, delivery quality, and resource use. Specialized agents perform assigned work, resolve questions within their authority, and continue when required inputs or decisions become available.
 
 The human owner supplies the initial brief, participates in clarification and early review, and resolves decisions outside the agents' authority. Human participation and agent autonomy follow the governing project policy.
 
@@ -36,7 +36,7 @@ Each request type has activities and acceptance criteria appropriate to its inte
 
 ## Engineering coverage
 
-MÃ¶birÃ¦on coordinates work across:
+Möbiræon coordinates work across:
 
 - **Data and persistence:** database architecture, schemas, migrations, Redis structures, and data access contracts.
 - **Domain:** constants, enumerations, models, DTOs, abstractions, and shared contracts.
@@ -59,6 +59,12 @@ Only the orchestrator creates requests requiring human decisions or intervention
 See the [documentation index](docs/README.md) for requirements, architecture, workflow, and decisions.
 
 The [implementation plan](docs/implementation-plan.md) records the accepted foundation, Agent Registry, minimum Coordination and supervised fixture execution increments, their verification limits, and the remaining roadmap.
+
+The [repository repair pass](docs/reviews/2026-11-02-repairs-acceptance.md) is accepted:
+FR-01–FR-05, residual FR-02-R1 and FR-06 are resolved. Its latest independent checks
+passed 338 Windows tests and 336 Linux/WSL tests plus one skip, with all 14 commands
+passing on each platform, including clean installed wheels and real Linux
+source/installed Worker suites. The existing fixture and qualification limits remain.
 
 ## Application foundation (Increment 1)
 
@@ -119,8 +125,8 @@ packaged migration chains block changes. Downgrades are unsupported.
 
 ### Configuration
 
-Settings resolve once per invocation: defaults â†’ explicitly selected TOML file â†’
-recognized environment settings â†’ explicitly supplied CLI options. Restart applies
+Settings resolve once per invocation: defaults → explicitly selected TOML file →
+recognized environment settings → explicitly supplied CLI options. Restart applies
 changes. No files are discovered automatically, and no `.env`, interpolation, or
 includes are loaded. Agent Profiles are separate Registry data.
 
@@ -144,7 +150,7 @@ uv run --locked mobiraeon --config app.toml start
 | --- | --- | --- | --- |
 | Config selector | `MOBIRAEON_CONFIG` | `--config` | Optional; CLI selects the file when both exist. |
 | Database path | `MOBIRAEON_DATABASE_PATH` | `--database` | Required; no default, memory database, URL, or SQLite URI. |
-| Lock wait | `MOBIRAEON_DATABASE_TIMEOUT_SECONDS` | `--database-timeout-seconds` | Default 5 seconds; positive finite number â‰¤60, excluding booleans. TOML requires a number. |
+| Lock wait | `MOBIRAEON_DATABASE_TIMEOUT_SECONDS` | `--database-timeout-seconds` | Default 5 seconds; positive finite number ≤60, excluding booleans. TOML requires a number. |
 | Log level | `MOBIRAEON_LOG_LEVEL` | `--log-level` | DEBUG, INFO, WARNING, ERROR, CRITICAL; case normalized; default INFO. |
 
 File-relative database paths resolve against the selected file's directory;
@@ -332,7 +338,14 @@ uv run --locked mobiraeon --config settings.toml --request-file bootstrap/read-c
 An existing Increment 1 database requires explicit `upgrade`, never an implicit
 startup migration. Provision is for a new installation; do not overwrite an existing
 store to adopt it. Installations and credentials remain outside source captures.
-Malformed/unreadable package files and invalid package structure are rejected before preparation as `invalid_input` (exit 2), without catalog changes or sensitive diagnostics. Possible post-mutation failures retain uncertainty.
+Malformed/unreadable packages and unresolved package-local publication references
+are rejected before preparation as `invalid_input` (exit 2), without catalog changes.
+Stopped preparation returns `data.state="preparation_stopped"` with safe publications,
+per-operation progress, the failed definition/step and `reconciliation_required`.
+Acknowledged mutations followed by a known failure return `known_failure` (exit 1);
+genuinely uncertain mutations retain `uncertain_effects`. Child attribution and
+unavailable audit information remain explicit. Inspect this progress and retained
+audits before deliberate resume; no automatic retry is introduced.
 
 `prepare` consumes the supplied input, publishes dependencies and five independently
 configured Agents, explicitly selects their published revisions administratively,
@@ -508,8 +521,9 @@ Initiative acceptance or Request closure is delivered by this slice.
 
 Increment 4 is implemented, independently reassessed, and accepted by the human
 owner within its [recorded scope and limitations](docs/implementation-plan.md#increment-4-supervised-execution).
-I4-R1–R3, including the residual I4-R2 nested-signal defect, are resolved. Independent
-checks reproduced 271 Windows tests and 269 Linux/WSL tests plus one platform skip,
+I4-R1–R3, including the residual I4-R2 nested-signal defect, are resolved. At its
+original acceptance, independent checks reproduced 271 Windows tests and 269
+Linux/WSL tests plus one platform skip,
 with passing source/installed-wheel signal and Linux Docker Worker regressions.
 
 The Linux-only foreground supervisor runs the packaged fixed fixture in one
@@ -640,3 +654,14 @@ not a measured natural occurrence rate. Source tests and clean-wheel verificatio
 include these checks. Independent reassessment reproduced the baseline deadlock
 and verified the repaired cases on both platforms; prior reviews and evidence
 remain preserved.
+
+Source captures retain present bytes in `files` and sorted tracked deletions in
+`deleted_paths`, covering staged and unstaged changes without altering Git. Frozen
+verification requires those deleted paths to remain absent; older manifests imply
+no deletions. Failed reads or private inputs do not publish a completed manifest.
+
+Foreground foundation SIGINT/SIGTERM/Windows SIGBREAK callbacks only record a
+pending boolean; normal bounded wait flow signals the stop event and restores
+previous handlers, including on failure. Supervised success additionally requires
+terminal-zero container evidence and successful attachment capture **before**
+cleanup; attachment EOF or cleanup exit zero alone cannot establish success.

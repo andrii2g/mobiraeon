@@ -91,10 +91,24 @@ commit acknowledgement failure remains uncertain. Refused/failed attempts use a
 separate audit transaction; outage is reported as `data.audit_status=unavailable`, never hidden
 or permission-granting. Audit carries operation/actor/target/ref/version/outcome and
 invocation ID, not request bodies or credentials. Preparation commits per operation;
-previous publications survive later failure. There is no universal replay guarantee.
+previous publications survive later failure. Stopped preparation is a CLI facade,
+not a new generic operation outcome or an orchestration audit. Its
+`data.state="preparation_stopped"` record contains `stage="initial_test"`,
+`execution_eligible=false`, `publications` (kind/identity/revision/disposition),
+`steps` (definition/action/operation/invocation_id/outcome/reason, established
+actor/target, reference/version/audit_status), `failed` (definition/action/reason)
+and `reconciliation_required`. It excludes package documents and credentials.
+Preflight rejects malformed or unavailable package-local references before mutation.
+Known partial completion returns known failure; genuinely uncertain affected
+mutations require reconciliation. Exact matching atomic audit can establish an
+already committed operation on deliberate resume. There is no automatic retry or
+universal replay guarantee.
 Provisioning precedes database creation and reports `audit_status=not_applicable`;
 preparation reports `operations_recorded` for its separately audited child operations.
 Neither claims an orchestration-level database audit that does not exist.
+A failed child with no business data retains the service's default `recorded`
+audit meaning; absence of data alone is not an outage. Explicit child
+`unavailable` metadata is retained in its step and the preparation aggregate.
 
 ## Owner, tokens, delivery and recovery
 

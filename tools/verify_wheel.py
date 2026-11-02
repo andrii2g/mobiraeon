@@ -93,6 +93,27 @@ print(json.dumps({"module": mobiraeon.__file__, "python": platform.python_versio
             )
         )
         assert str(root).lower() not in metadata["module"].lower()
+        # Test-only tools are pinned by the same unchanged lock. Application code
+        # remains solely the noneditable wheel, with no source PYTHONPATH.
+        test_constraints = run(
+            uv, "export", "--locked", "--no-emit-project", "--no-hashes", cwd=root
+        )
+        (outside / "test-constraints.txt").write_text(test_constraints, encoding="utf-8")
+        run(
+            uv,
+            "pip",
+            "install",
+            "--python",
+            python,
+            "--constraint",
+            outside / "test-constraints.txt",
+            "pytest",
+            "httpx2",
+        )
+        from verify_fr_repairs import exercise as repair_exercise
+
+        repairs = repair_exercise(python, root, include_tools=False)
+        assert repairs["result"] == "passed", repairs
         database = outside / "wheel.sqlite3"
         assert run(console, "--version").strip() == "0.1.0"
         run(python, "-m", "mobiraeon", "--help")
@@ -171,6 +192,7 @@ raise SystemExit(cli.main())
                 {
                     "result": "passed",
                     "installed": metadata,
+                    "fr_repairs": repairs,
                     "registry": registry,
                     "coordination": coordination,
                     "fixture_execution": execution,

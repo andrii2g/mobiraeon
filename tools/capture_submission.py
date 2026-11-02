@@ -14,6 +14,8 @@ import zipfile
 from datetime import UTC, datetime
 from pathlib import Path
 
+from source_integrity import source_path
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -47,30 +49,47 @@ def main():
         )
         - {""}
     )
-    manifest = {}
-    with zipfile.ZipFile(
-        output / "source.zip", "w", compression=zipfile.ZIP_DEFLATED
-    ) as archive:
-        for name in paths:
-            if name.startswith("submissions/"):
-                continue
-            data = (root / name).read_bytes()
-            if Path(name).suffix.lower() in {".pem", ".key", ".token", ".sqlite", ".db"}:
-                raise RuntimeError("private input must not enter source capture")
-            if re.search(rb"mbr_[a-f0-9]{32}_[A-Za-z0-9_-]{43}", data) or re.search(
-                rb"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----", data
-            ):
-                raise RuntimeError("private material must not enter source capture")
-            manifest[name] = {"sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data)}
-            info = zipfile.ZipInfo(name, date_time=(2026, 11, 1, 0, 0, 0))
-            info.compress_type = zipfile.ZIP_DEFLATED
-            archive.writestr(info, data)
+    tracked = set(git("ls-tree", "-r", "--name-only", "-z", "HEAD").decode().split("\0"))
+    tracked.update(git("ls-files", "--cached", "-z").decode().split("\0"))
+    paths = sorted(set(paths) | (tracked - {""}))
+    manifest, deleted = {}, []
+    pending = output / "source.zip.pending"
+    try:
+        with zipfile.ZipFile(pending, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            for name in paths:
+                if name.startswith("submissions/"):
+                    continue
+                path = source_path(root, name)
+                try:
+                    data = path.read_bytes()
+                except FileNotFoundError:
+                    if name not in tracked or path.is_symlink():
+                        raise
+                    deleted.append(name)
+                    continue
+                if path.suffix.lower() in {".pem", ".key", ".token", ".sqlite", ".db"}:
+                    raise RuntimeError("private input must not enter source capture")
+                if re.search(rb"mbr_[a-f0-9]{32}_[A-Za-z0-9_-]{43}", data) or re.search(
+                    rb"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----", data
+                ):
+                    raise RuntimeError("private material must not enter source capture")
+                manifest[name] = {
+                    "sha256": hashlib.sha256(data).hexdigest(),
+                    "bytes": len(data),
+                }
+                info = zipfile.ZipInfo(name, date_time=(2026, 11, 1, 0, 0, 0))
+                info.compress_type = zipfile.ZIP_DEFLATED
+                archive.writestr(info, data)
+        pending.replace(output / "source.zip")
+    finally:
+        pending.unlink(missing_ok=True)
     snapshot_hash = hashlib.sha256((output / "source.zip").read_bytes()).hexdigest()
     report = {
         "base_revision": git("rev-parse", "HEAD").decode().strip(),
         "archive_sha256": snapshot_hash,
         "excludes": ["submissions/", "ignored/generated files"],
         "files": manifest,
+        "deleted_paths": sorted(deleted),
         "captured_git_status": git("status", "--short").decode(),
         "starting_state": (
             json.loads((output / "starting-state.json").read_text(encoding="utf-8-sig"))

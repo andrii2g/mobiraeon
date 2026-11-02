@@ -58,9 +58,11 @@ def serve(stop=None):
     """Foreground only; SIGINT/SIGTERM (and Windows Ctrl+Break) stop cleanly."""
     stop = stop or threading.Event()
     previous = {}
+    pending = False
 
     def request_stop(signum, frame):
-        stop.set()
+        nonlocal pending
+        pending = True
 
     try:
         for signum in (signal.SIGINT, signal.SIGTERM):
@@ -70,7 +72,8 @@ def serve(stop=None):
         # Windows SIGBREAK can remain pending during an indefinite lock wait.
         # Bounded waits let Python dispatch it and request the same clean stop.
         while not stop.wait(0.2):
-            pass
+            if pending:
+                stop.set()
     finally:
         for signum, handler in previous.items():
             signal.signal(signum, handler)

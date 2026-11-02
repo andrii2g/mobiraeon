@@ -74,7 +74,14 @@ def test_capture_close_and_preseal_interruption_remain_fenced(allocated, monkeyp
             return True
 
         def inspect(self, handoff, identity=None, timeout=None):
-            return {"State": {"StartedAt": "2026-11-02T00:00:00Z", "ExitCode": 0}}
+            return {
+                "State": {
+                    "StartedAt": "2026-11-02T00:00:00Z",
+                    "FinishedAt": "2026-11-02T00:00:01Z",
+                    "Running": False,
+                    "ExitCode": 0,
+                }
+            }
 
     def hook(phase):
         if case == "before_seal" and phase == "before_seal":

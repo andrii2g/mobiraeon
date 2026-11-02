@@ -467,6 +467,8 @@ class ExecutionService:
         channels = {name: "pending" for name in buffers}
         capture_lock = threading.Lock()
         outcome = "unknown"
+        completion_state = None
+        attachment_exit = None
         state = None
         startup_end = time.monotonic() + s["startup_seconds"]
 
@@ -629,13 +631,22 @@ class ExecutionService:
                     break
                 if capture_failed.is_set():
                     raise CaptureFailure
-                if process.poll() is not None:
+                attachment_exit = process.poll()
+                if attachment_exit is not None:
                     state = worker.inspect(
                         handoff, identity, timeout=max(0.05, deadline - time.monotonic())
                     )
-                    if state is None:
-                        break
-                    outcome = "succeeded" if state["State"]["ExitCode"] == 0 else "failed"
+                    observed = state["State"] if state else {}
+                    finished = observed.get("FinishedAt")
+                    if (
+                        observed.get("Running") is False
+                        and isinstance(finished, str)
+                        and finished
+                        and not finished.startswith("0001")
+                        and type(observed.get("ExitCode")) is int
+                    ):
+                        completion_state = dict(observed)
+                        outcome = "succeeded" if observed["ExitCode"] == 0 else "failed"
                     break
                 if time.monotonic() >= deadline:
                     outcome = "timeout"
@@ -675,12 +686,14 @@ class ExecutionService:
                             capture_channels = dict(channels)
                             capture_complete = (
                                 bool(process)
+                                and attachment_exit == 0
+                                and completion_state is not None
                                 and all(not t.is_alive() for t in readers)
                                 and all(value == "eof" for value in capture_channels.values())
                             )
                             raw = bytes(buffers["stdout"])
                             stderr = bytes(buffers["stderr"])
-                        if not capture_complete and outcome != "unknown":
+                        if not capture_complete and outcome == "succeeded":
                             outcome = "capture_failed"
                         if overflow.is_set():
                             outcome = "output_limit"
@@ -764,6 +777,8 @@ class ExecutionService:
                                 "retired": cleaned,
                                 "seal": uuid4().hex,
                                 "runtime_state": state["State"] if state else None,
+                                "completion_state": completion_state,
+                                "attachment_exit_code": attachment_exit,
                             },
                             "sealed",
                         )

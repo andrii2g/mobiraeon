@@ -12,6 +12,8 @@ from datetime import UTC, datetime
 from importlib.metadata import distributions
 from pathlib import Path
 
+from source_integrity import verify_source
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -168,8 +170,7 @@ def main():
         (output / "verification.json").write_text(
             json.dumps(report, indent=2) + "\n", encoding="utf-8"
         )
-    for name, entry in manifest["files"].items():
-        assert hashlib.sha256((root / name).read_bytes()).hexdigest() == entry["sha256"], name
+    verify_source(root, manifest)
     report["source_unchanged_after_checks"] = True
     report["artifacts"] = {
         file.name: hashlib.sha256(file.read_bytes()).hexdigest()

@@ -34,7 +34,15 @@ class Diagnostics:
         if isinstance(error, SafeError):
             if error.source in {"file", "environment", "cli", "selector", "effective"}:
                 fields["source"] = error.source
-            if error.setting in {"database.path", "database.timeout_seconds", "logging.level"}:
+            if error.setting in {
+                "database.path",
+                "database.timeout_seconds",
+                "logging.level",
+                "api.client_url",
+                "api.port",
+                "api.startup_timeout_seconds",
+                "api.drain_timeout_seconds",
+            }:
                 fields["setting"] = error.setting
         if event == "command_error":
             fields["action"] = (

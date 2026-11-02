@@ -6,6 +6,8 @@ This is the single checklist for remaining specifications, implementation prepar
 
 Increments 1–4 are implemented, independently reviewed, and accepted by the human owner within their recorded scopes below. The application includes the foundation, authenticated persistent Agent Registry with its disabled initial test catalog, [minimum local simulated Coordination workflow](#increment-3-coordination-and-scheduling), and [supervised fixture execution](#increment-4-supervised-execution) through one local Linux Docker Worker. Increment 4's I4-R1–R3 findings, including residual I4-R2, are resolved. Its completed implementation brief is retired; the maintained [execution contracts](execution-contracts.md) and [application guide](../README.md#supervised-fixture-execution-increment-4) describe the delivered interface.
 
+The [repository repair pass](#repository-repairs-after-increment-4) is implemented, independently reassessed, and accepted by the human owner. FR-01–FR-05, residual FR-02-R1 and FR-06 are resolved within the reviewed scope. The [acceptance record](reviews/2026-11-02-repairs-acceptance.md) identifies the exact repaired snapshot and preserved review chain. Completed repair instructions are retired from active documentation; their original text and all prior evidence remain preserved.
+
 [Increment 5](#increment-5-gitea-integration) now enters high-level planning. The minimum Gitea bridge below is a proposal for discussion, not a confirmed implementation assignment. Broader Coordination, ordinary Agent execution, forge integration and execution qualification remain unfinished. All five actual Registry Agents remain disabled and unqualified.
 
 The [architecture](architecture.md), [workflow](workflow.md), [forge-account policy](agent-registry.md#forge-identities), and [first-Agent preparation](agent-registry.md#first-agent-preparation) remain the design baseline. The concrete repository and feature for end-to-end validation will be selected under D-12. Existing Gitea setup checks and operational gaps remain in the [infrastructure guide](infrastructure.md#verification-before-relying-on-the-instance).
@@ -148,6 +150,31 @@ Acceptance retains these limits:
 The original submission/review, `repair-i4-r1-r3/final-01`, `repair-i4-r2-nested-signal/final-01`, and separate independent reassessments remain preserved under ignored `submissions/increment-4/`. The final independent report is `submissions/increment-4/independent-reassessment-i4-r2-20261102-01/reassessment.md`. This acceptance identifies the exact repaired snapshot; documentation finalization does not rewrite historical evidence or claim that updated documentation retains its original hashes.
 
 The [execution contracts](execution-contracts.md), [Coordination contracts](coordination-contracts.md), and [application guide](../README.md#supervised-fixture-execution-increment-4) own the maintained behavior and operating instructions. The completed implementation brief is retired from active documentation; its exact text remains in the reviewed source archives.
+
+## Repository repairs after Increment 4
+
+**Accepted by the human owner.** Acceptance covers the independently reassessed 143-file `submissions/repair-fr02-r1-fr06/final-01` snapshot with archive SHA-256:
+
+```text
+b36f8afa6eb0bc212d2ce87e37727b8daed25f8210443a4daa86c2e0eed72464
+```
+
+Its manifest SHA-256 is `9b39407591171d71b9e933fa0755d95db389586f9863ed88c37ef8ccaad04ef4`; declared deletions are empty. The [acceptance record](reviews/2026-11-02-repairs-acceptance.md) connects this snapshot to the original findings, separate reassessments and retained evidence. This is a repair of the accepted foundation and fixture scope, not a new increment or broader execution qualification.
+
+| Finding | Accepted repair |
+| --- | --- |
+| FR-01 | Successful execution requires authoritative terminal-zero completion, valid complete capture and verified cleanup; attachment loss or cleanup cannot manufacture success. |
+| FR-02 and FR-02-R1 | Bootstrap retains effect-aware partial progress and receipts, with truthful recorded/unavailable child audit metadata and aggregate status. |
+| FR-03 | Foundation signal callbacks record lock-free stop intent; synchronized shutdown occurs in normal control flow. |
+| FR-04 | Invalid API configuration stays inside safe validation with narrow source/setting attribution. |
+| FR-05 | Source capture records combined checkout deletions explicitly, and verification checks both present files and declared absence. |
+| FR-06 | A failed required standalone signal probe fails the repair verifier and propagates through wheel/platform verification while retaining child evidence. |
+
+The [first repair reassessment](reviews/2026-11-02-reassessment/REVIEW.md) resolved FR-01, FR-03, FR-04 and FR-05 and identified residual FR-02-R1 and new FR-06. The [final reassessment](reviews/2026-11-02-fr02-r1-fr06-reassessment/REVIEW.md) resolved FR-02-R1 and FR-06 with no additional actionable finding. Independent reproduction passed all 14 commands on each platform: 338 Windows tests and 336 Linux/WSL tests plus one skip, locked checks, lint/formatting, builds, source and clean installed-wheel verification, Registry/TLS, Coordination and interruption checks. The same final regression assertions reproduced four baseline failures and 63 passing controls per platform, then passed all 67 source and 42 installed application cases. Real Linux source/installed Worker suites each passed 76 records, including seven retained Increment 4 repair cases.
+
+Acceptance retains the existing fixture, authority, storage and platform limits. All five actual Registry Agents remain disabled and unqualified; no ordinary Agent, provider/model, forge or production Linux capability is qualified by these repairs. Automatic recovery/resumption, hostile interference, power-loss durability and disaster recovery remain outside the tested scope. The controlled FR-06 failures verify aggregation; actual signal observations passed.
+
+Original reviews, handoffs, frozen source archives and raw evidence remain preserved. Completed repair briefs are retired from active documentation, with their exact text retained in the reviewed archives. Acceptance and documentation finalization do not rewrite historical results or claim that the updated documentation retains the accepted archive's original hashes. Increment 5 remains a high-level proposal below.
 
 ## Increment 5: Gitea integration
 

@@ -2,8 +2,10 @@
 
 import copy
 import json
+from dataclasses import asdict, replace
+from uuid import uuid4
 
-from mobiraeon.contracts import Outcome, _token
+from mobiraeon.contracts import BusinessData, OperationResult, Outcome, _token
 from mobiraeon.errors import Reason, SafeError
 from mobiraeon.registry_schema import KINDS, SCHEMAS, fields
 
@@ -11,17 +13,85 @@ from mobiraeon.registry_schema import KINDS, SCHEMAS, fields
 def prepare(service, package, proof):
     validate_package_structure(package)
     references, receipts = {}, []
+    steps, publications = [], []
+    definition = None
+    action = "resolve"
+    mutated = False
+    uncertain = False
+
+    def stopped(result):
+        outcome = result.outcome
+        if uncertain:
+            outcome = Outcome.UNCERTAIN
+        elif mutated:
+            outcome = Outcome.FAILURE
+        progress = {
+            "stage": "initial_test",
+            "execution_eligible": False,
+            "publications": publications,
+            "steps": steps,
+            "failed": {
+                "definition": definition,
+                "action": action,
+                "reason": result.reason.value,
+            },
+            "reconciliation_required": uncertain,
+        }
+        raise PreparationStopped(
+            replace(
+                result,
+                outcome=outcome,
+                data=BusinessData(
+                    (progress,),
+                    state="preparation_stopped",
+                    audit_status="unavailable"
+                    if any(step["audit_status"] == "unavailable" for step in steps)
+                    else "operations_recorded",
+                ),
+            ),
+            receipts,
+        )
+
+    def invoke(operation, kind, identity, inputs=None, target_kind="entity"):
+        nonlocal action, mutated, uncertain
+        action = operation
+        mutation = operation not in {"registry.history", "registry.read", "registry.validate"}
+        try:
+            result = service.invoke(
+                operation,
+                {"kind": target_kind, "entity_kind": kind, "identity": identity},
+                inputs or {},
+                proof=proof,
+            )
+        except Exception:
+            uncertain = uncertain or mutation
+            raise
+        mutated = mutated or (mutation and result.outcome == Outcome.SUCCESS)
+        uncertain = uncertain or (mutation and result.outcome == Outcome.UNCERTAIN)
+        steps.append(
+            {
+                "definition": definition,
+                "action": operation,
+                "operation": result.operation.value if result.operation else None,
+                "invocation_id": str(result.invocation_id),
+                "outcome": result.outcome.value,
+                "reason": result.reason.value,
+                "actor": asdict(result.actor) if result.actor else None,
+                "target": asdict(result.target) if result.target else None,
+                "reference": result.data.reference if result.data else None,
+                "version": result.data.version if result.data else None,
+                # Failed operations can have no business data after their
+                # separate attempt audit committed. Only explicit metadata
+                # establishes an actual audit outage.
+                "audit_status": (result.data or BusinessData()).audit_status,
+            }
+        )
+        return result
 
     def call(operation, kind, identity, inputs=None, target_kind="entity"):
-        result = service.invoke(
-            operation,
-            {"kind": target_kind, "entity_kind": kind, "identity": identity},
-            inputs or {},
-            proof=proof,
-        )
+        result = invoke(operation, kind, identity, inputs, target_kind)
         if result.outcome != Outcome.SUCCESS:
-            # In particular, never retry uncertain mutations automatically.
-            raise PreparationStopped(result, receipts)
+            stopped(result)
         return result.data
 
     def resolve(value):
@@ -35,94 +105,120 @@ def prepare(service, package, proof):
             return [resolve(x) for x in value]
         return value
 
-    for definition in package["definitions"]:
-        fields(definition, {"kind", "identity", "document"}, {"kind", "identity", "document"})
-        kind, identity = definition["kind"], definition["identity"]
-        document = resolve(copy.deepcopy(definition["document"]))
-        result = service.invoke(
-            "registry.history",
-            {"kind": "entity", "entity_kind": kind, "identity": identity},
-            {},
-            proof=proof,
-        )
-        if result.reason == Reason.NOT_FOUND:
-            version = call("registry.create", kind, identity, {"document": document}).version
-            records = []
-        elif result.outcome == Outcome.SUCCESS:
-            records = result.data.records
-            latest = max(
-                (x for x in records if x["record_type"] == "draft"), key=lambda x: x["version"]
-            )
-            if latest["discarded"] or latest["document"] != document:
-                raise SafeError(Reason.CONFLICT)
-            version = latest["version"]
-            events = [x for x in records if x["record_type"] == "audit"]
-            successes = {x["invocation"] for x in events if x["outcome"] == "success"}
-            if any(
-                x["outcome"] == "uncertain_effects" and x["invocation"] not in successes
-                for x in events
-            ):
-                # Current state alone does not establish ambiguous earlier effects.
-                raise SafeError(Reason.UNAVAILABLE)
-        else:
-            raise PreparationStopped(result, receipts)
-        published = [
-            x for x in records if x["record_type"] == "publication" and x["version"] == version
-        ]
-        if published:
-            revision = published[0]["id"]
-        else:
-            call("registry.validate", kind, identity, {"expected_version": version}, "draft")
-            existing = [
-                x for x in records if x["record_type"] == "review" and x["version"] == version
+    try:
+        for item in package["definitions"]:
+            definition = {"kind": item["kind"], "identity": item["identity"]}
+            action = "resolve"
+            fields(item, {"kind", "identity", "document"}, {"kind", "identity", "document"})
+            kind, identity = item["kind"], item["identity"]
+            document = resolve(copy.deepcopy(item["document"]))
+            result = invoke("registry.history", kind, identity)
+            if result.reason == Reason.NOT_FOUND:
+                version = call(
+                    "registry.create", kind, identity, {"document": document}
+                ).version
+                records = []
+            elif result.outcome == Outcome.SUCCESS:
+                records = result.data.records
+                latest = max(
+                    (x for x in records if x["record_type"] == "draft"),
+                    key=lambda x: x["version"],
+                )
+                if latest["discarded"] or latest["document"] != document:
+                    raise SafeError(Reason.CONFLICT)
+                version = latest["version"]
+                events = [x for x in records if x["record_type"] == "audit"]
+                successes = {x["invocation"] for x in events if x["outcome"] == "success"}
+                if any(
+                    x["outcome"] == "uncertain_effects" and x["invocation"] not in successes
+                    for x in events
+                ):
+                    # Current state alone does not establish ambiguous earlier effects.
+                    uncertain = True
+                    raise SafeError(Reason.UNAVAILABLE)
+            else:
+                stopped(result)
+            published = [
+                x
+                for x in records
+                if x["record_type"] == "publication" and x["version"] == version
             ]
-            review = (
-                None
-                if existing
-                else call(
-                    "registry.review",
+            if published:
+                revision = published[0]["id"]
+            else:
+                call(
+                    "registry.validate", kind, identity, {"expected_version": version}, "draft"
+                )
+                existing = [
+                    x
+                    for x in records
+                    if x["record_type"] == "review" and x["version"] == version
+                ]
+                review = (
+                    None
+                    if existing
+                    else call(
+                        "registry.review",
+                        kind,
+                        identity,
+                        {
+                            "expected_version": version,
+                            "decision": "approve",
+                            "rationale": "Owner approved initial test configuration; "
+                            "unprovisioned and unqualified; no execution authority.",
+                        },
+                        "draft",
+                    )
+                )
+                revision = call(
+                    "registry.publish",
                     kind,
                     identity,
                     {
                         "expected_version": version,
-                        "decision": "approve",
-                        "rationale": "Owner approved initial test configuration; unprovisione"
-                        "d and unqualified; no execution authority.",
+                        "review_id": existing[-1]["id"] if existing else review.reference,
                     },
                     "draft",
-                )
+                ).reference
+            references[f"{kind}:{identity}"] = {
+                "kind": kind,
+                "identity": identity,
+                "revision": revision,
+            }
+            receipt = {"kind": kind, "identity": identity, "revision": revision}
+            receipts.append(receipt)
+            publications.append(
+                receipt | {"disposition": "reused" if published else "published"}
             )
-            revision = call(
-                "registry.publish",
-                kind,
-                identity,
-                {
-                    "expected_version": version,
-                    "review_id": existing[-1]["id"] if existing else review.reference,
-                },
-                "draft",
-            ).reference
-        references[f"{kind}:{identity}"] = {
-            "kind": kind,
-            "identity": identity,
-            "revision": revision,
-        }
-        if kind == "agent":
-            control = call("registry.read", kind, identity, target_kind="control")
-            if control.records[0]["enabled"]:
-                raise SafeError(Reason.CONFLICT)
-            selected = control.records[0]["selected"]
-            if selected is None:
-                call(
-                    "registry.select",
-                    kind,
-                    identity,
-                    {"expected_version": control.version, "revision": revision},
-                    "control",
-                )
-            elif selected != revision:
-                raise SafeError(Reason.CONFLICT)
-        receipts.append({"kind": kind, "identity": identity, "revision": revision})
+            if kind == "agent":
+                control = call("registry.read", kind, identity, target_kind="control")
+                if control.records[0]["enabled"]:
+                    raise SafeError(Reason.CONFLICT)
+                selected = control.records[0]["selected"]
+                if selected is None:
+                    call(
+                        "registry.select",
+                        kind,
+                        identity,
+                        {"expected_version": control.version, "revision": revision},
+                        "control",
+                    )
+                elif selected != revision:
+                    raise SafeError(Reason.CONFLICT)
+    except PreparationStopped:
+        raise
+    except SafeError as error:
+        stopped(OperationResult(uuid4(), None, Outcome.FAILURE, error.reason))
+    except Exception:
+        stopped(
+            OperationResult(
+                uuid4(),
+                None,
+                Outcome.UNCERTAIN if uncertain else Outcome.FAILURE,
+                Reason.INTERNAL,
+            )
+        )
+
     return {"stage": "initial_test", "publications": receipts, "execution_eligible": False}
 
 
@@ -137,6 +233,7 @@ def validate_package_structure(package):
         or not isinstance(package["provenance"], dict)
     ):
         raise SafeError(Reason.INVALID_INPUT)
+    available = set()
     for definition in package["definitions"]:
         fields(definition, {"kind", "identity", "document"}, {"kind", "identity", "document"})
         if not isinstance(definition["kind"], str) or definition["kind"] not in KINDS:
@@ -146,12 +243,32 @@ def validate_package_structure(package):
         except ValueError:
             raise SafeError(Reason.INVALID_INPUT) from None
         fields(definition["document"], SCHEMAS[definition["kind"]])
+        identity = f"{definition['kind']}:{definition['identity']}"
+        if identity in available:
+            raise SafeError(Reason.CONFLICT)
+
+        def references(value):
+            if isinstance(value, dict):
+                if "published" in value:
+                    if set(value) != {"published"} or not isinstance(value["published"], str):
+                        raise SafeError(Reason.INVALID_INPUT)
+                    if value["published"] not in available:
+                        raise SafeError(Reason.NOT_FOUND)
+                else:
+                    for item in value.values():
+                        references(item)
+            elif isinstance(value, list):
+                for item in value:
+                    references(item)
+
+        references(definition["document"])
+        available.add(identity)
 
 
-class PreparationStopped(Exception):
+class PreparationStopped(SafeError):
     def __init__(self, result, receipts):
         self.result, self.receipts = result, receipts
-        super().__init__("preparation_stopped")
+        super().__init__(result.reason)
 
 
 def read_package(path):

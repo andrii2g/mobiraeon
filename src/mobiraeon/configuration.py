@@ -70,7 +70,12 @@ def _validate(setting, value, source, directory):
                     value = int(value) if key == "port" else float(value)
                 except ValueError, OverflowError:
                     invalid()
-            if type(value) not in (int, float) or not math.isfinite(value):
+            if type(value) not in (int, float):
+                invalid()
+            try:
+                if not math.isfinite(value):
+                    invalid()
+            except OverflowError, ValueError:
                 invalid()
             if key == "port" and (type(value) is not int or not 1 <= value <= 65535):
                 invalid()
@@ -82,10 +87,15 @@ def _validate(setting, value, source, directory):
         if key == "client_url":
             from urllib.parse import urlsplit
 
-            endpoint = urlsplit(value)
+            try:
+                endpoint = urlsplit(value)
+                hostname = endpoint.hostname
+                _ = endpoint.port  # Validate deferred URL port parsing too.
+            except ValueError, OverflowError:
+                invalid()
             if (
                 endpoint.scheme != "https"
-                or not endpoint.hostname
+                or not hostname
                 or endpoint.username
                 or endpoint.password
                 or endpoint.query
