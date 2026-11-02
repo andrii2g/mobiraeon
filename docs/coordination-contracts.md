@@ -6,6 +6,11 @@ the accepted foundation and Registry. These contracts own its local simulated
 scope. The broader [workflow](workflow.md) remains design direction; acceptance of
 this slice does not qualify live Agent execution or later Coordination capabilities.
 
+The accepted [Increment 4 execution contracts](execution-contracts.md) define the
+implemented supervised-fixture extension and its trusted observation/artifact
+bridge. These local simulated contracts retain their original meaning; the
+separate extension adds one bounded Linux Docker Worker without enabling real Agents.
+
 ## Contract selected before dependent implementation
 
 Use `coordination.supply`, `.allocate`, `.dispatch`, `.observe`, `.submit`,

@@ -47,8 +47,10 @@ def parser():
             "remote",
             "prepare",
             "cleanup",
+            "execution",
         ],
     )
+    result.add_argument("execution_action", nargs="?", choices=["run", "status", "stop"])
     return result
 
 
@@ -102,6 +104,8 @@ def main(argv=None):
     try:
         options = vars(parser().parse_args(argv))
         command = options["command"]
+        if (command == "execution") != bool(options.get("execution_action")):
+            raise SafeError(Reason.INVALID_INPUT)
         configuration = resolve_configuration(options=options)
         diagnostics = Diagnostics(sys.stderr, configuration.log_level)
         application = Application(configuration)
@@ -114,6 +118,7 @@ def main(argv=None):
             "remote",
             "prepare",
             "cleanup",
+            "execution",
         }:
             from mobiraeon.administration import administer
 

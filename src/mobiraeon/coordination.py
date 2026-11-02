@@ -43,11 +43,67 @@ def operation_fingerprint(operation, target, actor, inputs):
 
 
 class Coordinator:
-    def __init__(self, store, private, *, access=None, configuration_source=None):
+    def __init__(
+        self, store, private, *, access=None, configuration_source=None, content_limits=None
+    ):
         self.store = store
         self.access = access if access is not None else Access(store, private)
         # Trusted in-process composition only. Ordinary CLI has no simulation switch.
         self.configuration_source = configuration_source
+        self.execution_dispatch = False
+        self.content_limits = content_limits or {}
+
+    def _validator(self, operation, target, inputs):
+        from mobiraeon.execution_schema import supervised
+
+        work = inputs.get("work") if isinstance(inputs, dict) else None
+        if work is None and isinstance(target, BusinessTarget):
+            with self.store.engine.connect() as tx:
+                row = one(
+                    tx,
+                    "SELECT record FROM coordination_facts WHERE task=:task AND stage='supply'",
+                    {"task": target.identity},
+                )
+                work = json.loads(row["record"])["inputs"]["work"] if row else None
+        if supervised(work):
+            limits = self.content_limits
+            if operation in {Operation.SUBMIT, Operation.ASSESS}:
+                with self.store.engine.connect() as tx:
+                    assignment = self._fact(tx, target.identity, "allocate")
+                    if operation == Operation.SUBMIT:
+                        attempt = inputs.get("attempt_id")
+                    else:
+                        submission = self._fact(tx, target.identity, "submit")["inputs"]
+                        require(
+                            submission["submission_id"] == inputs.get("submission_id"),
+                            Reason.REFUSED,
+                        )
+                        attempt = submission["attempt_id"]
+                    row = one(
+                        tx,
+                        "SELECT handoff FROM execution_runs WHERE task=:task",
+                        {"task": target.identity},
+                    )
+                    require(row is not None, Reason.REFUSED)
+                    handoff = json.loads(row["handoff"])
+                    require(
+                        handoff["task"] == target.identity
+                        and handoff["attempt"] == attempt
+                        and handoff["assignment"] == assignment["inputs"]["assignment_id"],
+                        Reason.REFUSED,
+                    )
+                    limits = handoff["settings"]
+            groups = [(inputs.get("work", {}).get("inputs"), "input_bytes")]
+            groups += [(inputs.get(key), "result_bytes") for key in ("artifacts", "evidence")]
+            for artifacts, limit in groups:
+                if isinstance(artifacts, list):
+                    for item in artifacts:
+                        if isinstance(item, dict) and isinstance(item.get("content"), str):
+                            require(
+                                len(item["content"].encode()) <= limits.get(limit, 131072),
+                                Reason.INVALID_INPUT,
+                            )
+        validate(operation, target, inputs, supervised=supervised(work))
 
     def invoke(self, code, target=None, inputs=None, *, proof=None):
         operation, caller = None, None
@@ -56,7 +112,7 @@ class Coordinator:
             operation = Operation(code)
             if isinstance(target, dict):
                 target = BusinessTarget(**target)
-            validate(operation, target, inputs)
+            self._validator(operation, target, inputs)
             self.store.check()
             caller = self.access.caller(proof)
             policy = CurrentAccessPolicy(self.access, proof)
@@ -66,7 +122,7 @@ class Coordinator:
                     partial(self._handle, action, caller, proof),
                     True,
                     True,
-                    partial(validate, action),
+                    partial(self._validator, action),
                     True,
                 )
                 for action in WORKFLOW_ACTIONS
@@ -361,6 +417,50 @@ class Coordinator:
                 record["owner"] = actor
             elif operation in {Operation.DISPATCH, Operation.OBSERVE, Operation.SUBMIT}:
                 assignment = self._fact(tx, task, "allocate")
+                if assignment["snapshot"].get("mode") == "supervised-fixture-v1":
+                    if operation == Operation.DISPATCH:
+                        require(self.execution_dispatch is True, Reason.REFUSED)
+                    else:
+                        sealed = one(
+                            tx,
+                            "SELECT handoff,record FROM execution_runs WHERE task=:task",
+                            {"task": task},
+                        )
+                        require(sealed is not None, Reason.REFUSED)
+                        execution = json.loads(sealed["record"])
+                        handoff = json.loads(sealed["handoff"])
+                        require(
+                            execution.get("terminal") is True
+                            and execution.get("cleanup") == "verified"
+                            and execution.get("outcome") != "unknown"
+                            and execution.get("seal")
+                            and handoff["attempt"] == inputs["attempt_id"],
+                            Reason.REFUSED,
+                        )
+                        successful = (
+                            execution.get("outcome") == "succeeded"
+                            and execution.get("artifact_valid") is True
+                        )
+                        artifact = execution.get("artifact")
+                        if successful:
+                            from pathlib import Path
+
+                            require(
+                                Path(execution["artifact_path"]).read_bytes()
+                                == artifact["content"].encode(),
+                                Reason.REFUSED,
+                            )
+                        if operation == Operation.OBSERVE:
+                            require(
+                                inputs["observation"]
+                                == ("succeeded" if successful else "failed")
+                                and inputs["detail"] == execution["seal"],
+                                Reason.REFUSED,
+                            )
+                        else:
+                            require(
+                                successful and inputs["artifacts"] == [artifact], Reason.REFUSED
+                            )
                 require(inputs["attempt_id"] == assignment["inputs"]["attempt_id"])
                 require(actor == assignment["owner"], Reason.REFUSED)
                 self._current(tx, assignment["authority"], Operation.ALLOCATE, target)

@@ -7,6 +7,7 @@ from mobiraeon.operations import Binding, OperationBoundary
 from mobiraeon.persistence import Store
 
 CAPABILITIES = {
+    "fixture_execution": "supervised_fixture_only",
     "registry_business_operations": "authenticated_administration",
     "coordination_workflows": "local_simulated_task_acceptance",
     "agent_execution": "unavailable",

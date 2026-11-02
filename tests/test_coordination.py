@@ -672,6 +672,7 @@ def test_accepted_registry_store_forward_upgrade_preserves_all_records(tmp_path)
     legacy = tmp_path / "legacy"
     shutil.copytree(files("mobiraeon.persistence").joinpath("migrations"), legacy)
     (legacy / "versions/0003_coordination.py").unlink()
+    (legacy / "versions/0004_execution.py").unlink()
     store = Store(tmp_path / "accepted-registry.db")
     store.path.touch(mode=0o600)
     try:
@@ -701,7 +702,7 @@ def test_accepted_registry_store_forward_upgrade_preserves_all_records(tmp_path)
                     "registry_audit",
                 )
             }
-        assert store.upgrade() == "0003"
+        assert store.upgrade() == "0004"
         with store.engine.connect() as tx:
             for name, rows in before.items():
                 assert tx.exec_driver_sql("SELECT * FROM " + name).fetchall() == rows

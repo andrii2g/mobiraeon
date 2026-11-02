@@ -5,6 +5,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from mobiraeon.errors import Reason, SafeError
+from mobiraeon.execution_settings import KEYS as EXECUTION_KEYS
+from mobiraeon.execution_settings import effective
+from mobiraeon.execution_settings import setting as execution_setting
 
 ENV_SETTINGS = {
     "MOBIRAEON_DATABASE_PATH": "database.path",
@@ -24,9 +27,10 @@ SCHEMA.update(
     {
         "access": {"private_dir", "credential_file"},
         "api": {*API_DEFAULTS, "cert_file", "key_file", "client_ca", "client_url"},
+        "execution": EXECUTION_KEYS,
     }
 )
-for _table in ("access", "api"):
+for _table in ("access", "api", "execution"):
     for _key in SCHEMA[_table]:
         ENV_SETTINGS[f"MOBIRAEON_{_table}_{_key}".upper()] = f"{_table}.{_key}"
 
@@ -39,12 +43,15 @@ class Configuration:
     private_dir: Path | None = None
     credential_file: Path | None = None
     api: dict | None = None
+    execution: dict | None = None
 
 
 def _validate(setting, value, source, directory):
     def invalid():
         raise SafeError(Reason.CONFIG_INVALID, source=source, setting=setting)
 
+    if setting.startswith("execution."):
+        return execution_setting(setting.split(".")[1], value, source, directory)
     if setting.startswith(("access.", "api.")):
         key = setting.split(".")[1]
         if key in {"private_dir", "credential_file", "cert_file", "key_file", "client_ca"}:
@@ -174,4 +181,11 @@ def resolve_configuration(*, options, environ=None, cwd=None):
         values.get("access.credential_file"),
         API_DEFAULTS
         | {key.split(".")[1]: value for key, value in values.items() if key.startswith("api.")},
+        effective(
+            {
+                key.split(".")[1]: value
+                for key, value in values.items()
+                if key.startswith("execution.")
+            }
+        ),
     )

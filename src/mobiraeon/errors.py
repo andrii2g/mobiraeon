@@ -2,6 +2,7 @@ from enum import StrEnum
 
 
 class Reason(StrEnum):
+    EXECUTION_FAILED = "execution_failed"
     OK = "ok"
     INVALID_INPUT = "invalid_input"
     CONFIG_INVALID = "configuration_invalid"

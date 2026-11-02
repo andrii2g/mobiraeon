@@ -16,6 +16,7 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--fixture-image-id")
     parser.add_argument("--uv", default="uv")
     options = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
@@ -33,6 +34,11 @@ def main():
             "mobiraeon/persistence/migrations/versions/0003_coordination.py"
             in archive.namelist()
         )
+        assert (
+            "mobiraeon/persistence/migrations/versions/0004_execution.py" in archive.namelist()
+        )
+        for name in ("Dockerfile", "program.py", "guard.py"):
+            assert "mobiraeon/fixture_assets/" + name in archive.namelist()
     environment = {k: v for k, v in os.environ.items() if not k.startswith("MOBIRAEON_")}
     environment.pop("PYTHONPATH", None)
     with tempfile.TemporaryDirectory(prefix="mobiraeon-wheel-") as temporary:
@@ -93,7 +99,7 @@ print(json.dumps({"module": mobiraeon.__file__, "python": platform.python_versio
         for command in ("initialize", "initialize", "upgrade", "check"):
             result = json.loads(run(console, "--database", database, command))
             assert result["outcome"] == "success"
-            assert result["schema_revision"] == "0003"
+            assert result["schema_revision"] == "0004"
         # The real installed foreground host; a fixture event supplies stop.
         host_output = run(
             python,
@@ -121,6 +127,7 @@ raise SystemExit(cli.main())
             == "authenticated_administration"
         )
         assert started["capabilities"]["agent_execution"] == "unavailable"
+        assert started["capabilities"]["fixture_execution"] == "supervised_fixture_only"
         assert started["capabilities"]["forge_integration"] == "unavailable"
         assert (
             started["capabilities"]["coordination_workflows"]
@@ -134,6 +141,18 @@ raise SystemExit(cli.main())
 
         coordination = coordination_exercise(
             python, root / "examples/coordination.json", root / "bootstrap/initial-test.json"
+        )
+        from verify_execution import exercise as execution_exercise
+
+        signal_regressions = json.loads(
+            run(python, "-m", "mobiraeon.execution_signal_verification")
+        )
+        assert signal_regressions["result"] == "passed"
+        execution = execution_exercise(
+            python,
+            root / "examples/execution.json",
+            root / "bootstrap/initial-test.json",
+            options.fixture_image_id,
         )
         interruptions = [
             json.loads(
@@ -154,6 +173,8 @@ raise SystemExit(cli.main())
                     "installed": metadata,
                     "registry": registry,
                     "coordination": coordination,
+                    "fixture_execution": execution,
+                    "execution_signal_regressions": signal_regressions,
                     "installed_interruptions": interruptions,
                 },
                 indent=2,

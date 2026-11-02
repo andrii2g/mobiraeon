@@ -15,10 +15,11 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--fixture-image-id")
     parser.add_argument("--uv", default="uv")
     parser.add_argument(
         "--increment",
-        choices=["increment-1", "increment-2", "increment-3"],
+        choices=["increment-1", "increment-2", "increment-3", "increment-4"],
         default="increment-2",
     )
     parser.add_argument("--output-directory", type=Path)
@@ -112,6 +113,24 @@ def main():
             str(root / "bootstrap/initial-test.json"),
         ]
     )
+    if args.fixture_image_id:
+        for command in commands:
+            if any(str(part).endswith("verify_wheel.py") for part in command):
+                command.extend(["--fixture-image-id", args.fixture_image_id])
+    commands.append(
+        [
+            uv,
+            "run",
+            "--locked",
+            "python",
+            str(root / "tools/verify_execution.py"),
+            "--input",
+            str(root / "examples/execution.json"),
+            "--catalog-input",
+            str(root / "bootstrap/initial-test.json"),
+            *(["--image-id", args.fixture_image_id] if args.fixture_image_id else []),
+        ]
+    )
     for command in commands:
         try:
             result = subprocess.run(
@@ -120,7 +139,7 @@ def main():
                 env=environment,
                 capture_output=True,
                 text=True,
-                timeout=180,
+                timeout=1200,
             )
         except (subprocess.TimeoutExpired, OSError) as error:
 

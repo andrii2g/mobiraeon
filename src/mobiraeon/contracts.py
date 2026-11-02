@@ -120,6 +120,9 @@ class Operation(StrEnum):
     ASSESS = "coordination.assess"
     ACCEPT = "coordination.accept"
     STATUS = "coordination.status"
+    EXECUTION_RUN = "execution.run"
+    EXECUTION_STATUS = "execution.status"
+    EXECUTION_STOP = "execution.stop"
     CREATE = "registry.create"
     EDIT = "registry.edit"
     DISCARD = "registry.discard"
@@ -165,6 +168,12 @@ WORKFLOW_ACTIONS = {
     Operation.ASSESS,
     Operation.ACCEPT,
     Operation.STATUS,
+}
+
+EXECUTION_ACTIONS = {
+    Operation.EXECUTION_RUN,
+    Operation.EXECUTION_STATUS,
+    Operation.EXECUTION_STOP,
 }
 
 

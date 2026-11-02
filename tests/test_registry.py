@@ -543,6 +543,7 @@ def test_real_increment_one_upgrade_preserves_identity(tmp_path):
     shutil.copytree(source, legacy)
     (legacy / "versions/0002_registry.py").unlink()
     (legacy / "versions/0003_coordination.py").unlink()
+    (legacy / "versions/0004_execution.py").unlink()
     store = Store(tmp_path / "legacy.db", 0.1)
     store.path.touch(mode=0o600)
     assert store.upgrade(migration_path=legacy, _new=True) == "0001"
@@ -550,7 +551,7 @@ def test_real_increment_one_upgrade_preserves_identity(tmp_path):
         before = tx.execute(text("SELECT * FROM foundation_identity")).fetchall()
     with pytest.raises(SafeError):
         store.check()
-    assert store.upgrade() == "0003"
+    assert store.upgrade() == "0004"
     with store.engine.connect() as tx:
         assert tx.execute(text("SELECT * FROM foundation_identity")).fetchall() == before
         assert tx.execute(text("SELECT count(*) FROM access_installation")).scalar() == 0

@@ -36,7 +36,7 @@ def test_cli_lifecycle_and_restart_outside_checkout(tmp_path):
     for command in ("initialize", "initialize", "upgrade", "check"):
         result = run("--database", database, command, cwd=tmp_path)
         assert result.returncode == 0, result.stderr
-        assert json.loads(result.stdout)["schema_revision"] == "0003"
+        assert json.loads(result.stdout)["schema_revision"] == "0004"
     # A subprocess runs the real CLI/host with a controlled stop event on Windows,
     # where CI may lack a console for Ctrl+Break delivery. No production stop flag.
     script = """

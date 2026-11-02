@@ -19,7 +19,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--increment",
-        choices=["increment-1", "increment-2", "increment-3"],
+        choices=["increment-1", "increment-2", "increment-3", "increment-4"],
         default="increment-2",
     )
     parser.add_argument("--output-directory", type=Path)

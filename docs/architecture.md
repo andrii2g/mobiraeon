@@ -4,7 +4,7 @@ The logical architecture and delivery workflow include [waiting/recovery](workfl
 
 This document describes the system boundary, main parts, information ownership, and their relationships. [Definitions](definitions.md), [requirements](requirements.md), [decisions](decisions.md), and [responsibilities](responsibilities.md) remain the governing sources for terminology, required behavior, selected technologies, and actor responsibilities.
 
-The [accepted implementation](implementation-plan.md#current-position) comprises the foundation, Agent Registry and [local simulated Coordination workflow](coordination-contracts.md). The service, Worker and forge relationships below describe the broader design; their implementation and qualification remain later work.
+The [accepted implementation](implementation-plan.md#current-position) comprises the foundation, Agent Registry, [local simulated Coordination workflow](coordination-contracts.md) and [supervised fixture execution](execution-contracts.md). One local Linux Docker Worker can execute the bounded fixture; all five real Registry Agents remain disabled and unqualified. The broader service, ordinary Agent execution and forge relationships below remain design direction for later increments.
 
 ## System boundary
 

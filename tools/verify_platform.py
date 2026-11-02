@@ -15,6 +15,7 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--fixture-image-id")
     parser.add_argument("--uv", required=True)
     parser.add_argument("--manifest", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
@@ -90,6 +91,24 @@ print(json.dumps({"platform": platform.platform(), "python": platform.python_ver
             str(root / "bootstrap/initial-test.json"),
         ]
     )
+    if options.fixture_image_id:
+        for command in commands:
+            if any(str(part).endswith("verify_wheel.py") for part in command):
+                command.extend(["--fixture-image-id", options.fixture_image_id])
+    commands.append(
+        [
+            uv,
+            "run",
+            "--locked",
+            "python",
+            str(root / "tools/verify_execution.py"),
+            "--input",
+            str(root / "examples/execution.json"),
+            "--catalog-input",
+            str(root / "bootstrap/initial-test.json"),
+            *(["--image-id", options.fixture_image_id] if options.fixture_image_id else []),
+        ]
+    )
     for command in commands:
         try:
             result = subprocess.run(
@@ -98,7 +117,7 @@ print(json.dumps({"platform": platform.platform(), "python": platform.python_ver
                 env=environment,
                 capture_output=True,
                 text=True,
-                timeout=240,
+                timeout=1200,
             )
         except (subprocess.TimeoutExpired, OSError) as error:
 

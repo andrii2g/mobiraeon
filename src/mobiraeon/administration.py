@@ -71,7 +71,12 @@ def administer(application, options):
         except PreparationStopped as stopped:
             return stopped.result
     try:
-        request = load_json(Path(options["request_file"]).read_bytes())
+        if command in {"coordination", "execution"}:
+            from mobiraeon.execution_schema import decode
+
+            request = decode(Path(options["request_file"]).read_bytes())
+        else:
+            request = load_json(Path(options["request_file"]).read_bytes())
     except OSError, KeyError, ValueError, TypeError:
         raise SafeError(Reason.INVALID_INPUT) from None
     fields(request, {"operation", "target", "inputs"}, {"operation", "target", "inputs"})
@@ -112,8 +117,26 @@ def administer(application, options):
     if command == "coordination":
         from mobiraeon.coordination import Coordinator
 
-        return Coordinator(application.store, service.private).invoke(
-            request["operation"], request["target"], request["inputs"], proof=proof
+        return Coordinator(
+            application.store, service.private, content_limits=config.execution
+        ).invoke(request["operation"], request["target"], request["inputs"], proof=proof)
+    if command == "execution":
+        from dataclasses import asdict
+
+        from mobiraeon.execution import ExecutionService
+
+        if request["operation"] != "execution." + options["execution_action"]:
+            raise SafeError(Reason.INVALID_INPUT)
+
+        def progress(result):
+            print(json.dumps(asdict(result) | {"phase": "progress"}, default=str), flush=True)
+
+        return ExecutionService(application.store, service.private, config.execution).invoke(
+            request["operation"],
+            request["target"],
+            request["inputs"],
+            proof=proof,
+            progress=progress,
         )
     if command == "remote":
         try:

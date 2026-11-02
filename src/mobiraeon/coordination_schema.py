@@ -71,7 +71,11 @@ def work_contract(work):
         _token(item["evidence"])
 
 
-def validate(operation, target, inputs):
+def validate(operation, target, inputs, *, supervised=False):
+    if supervised:
+        from mobiraeon.execution_schema import bridge_metadata
+
+        inputs = bridge_metadata(inputs)
     if operation not in WORKFLOW_ACTIONS or not isinstance(target, BusinessTarget):
         invalid()
     if (target.kind, target.entity_kind, target.revision) != ("entity", "task", None):

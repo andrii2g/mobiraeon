@@ -6,7 +6,13 @@ import math
 import re
 from urllib.parse import urlsplit
 
-from mobiraeon.contracts import WORKFLOW_ACTIONS, BusinessTarget, Operation, _token
+from mobiraeon.contracts import (
+    EXECUTION_ACTIONS,
+    WORKFLOW_ACTIONS,
+    BusinessTarget,
+    Operation,
+    _token,
+)
 from mobiraeon.errors import Reason, SafeError
 
 KINDS = {
@@ -49,7 +55,7 @@ ACCESS_ACTIONS = {
     Operation.REVOKE,
     Operation.ACCESS_RECONCILE,
 }
-GRANTABLE = CATALOG_ACTIONS | ACCESS_ACTIONS | WORKFLOW_ACTIONS
+GRANTABLE = CATALOG_ACTIONS | ACCESS_ACTIONS | WORKFLOW_ACTIONS | EXECUTION_ACTIONS
 PROFILE_REFS = {
     "roleRef": "role",
     "contextPolicyRef": "context",

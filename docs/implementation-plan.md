@@ -4,9 +4,11 @@ This is the single checklist for remaining specifications, implementation prepar
 
 ## Current position
 
-Increments 1–3 are implemented, independently reviewed, and accepted by the human owner within their recorded scopes below. The application includes the foundation, authenticated persistent Agent Registry with its disabled initial test catalog, and the [minimum local simulated Coordination workflow](#increment-3-coordination-and-scheduling). Supervised execution remains the next planned roadmap area; its small implementation boundary has not yet been selected. Broader Coordination capabilities remain deferred to later increments.
+Increments 1–4 are implemented, independently reviewed, and accepted by the human owner within their recorded scopes below. The application includes the foundation, authenticated persistent Agent Registry with its disabled initial test catalog, [minimum local simulated Coordination workflow](#increment-3-coordination-and-scheduling), and [supervised fixture execution](#increment-4-supervised-execution) through one local Linux Docker Worker. Increment 4's I4-R1–R3 findings, including residual I4-R2, are resolved. Its completed implementation brief is retired; the maintained [execution contracts](execution-contracts.md) and [application guide](../README.md#supervised-fixture-execution-increment-4) describe the delivered interface.
 
-The [architecture](architecture.md), [workflow](workflow.md), [forge-account policy](agent-registry.md#forge-identities), and [first-Agent preparation](agent-registry.md#first-agent-preparation) remain the design baseline. The local simulated Coordination slice is implemented; broader Coordination workflows, supervised Agent execution, forge integration, and execution qualification remain unfinished. The concrete repository and feature for end-to-end validation will be selected under D-12. Existing Gitea setup checks and operational gaps remain in the [infrastructure guide](infrastructure.md#verification-before-relying-on-the-instance).
+[Increment 5](#increment-5-gitea-integration) now enters high-level planning. The minimum Gitea bridge below is a proposal for discussion, not a confirmed implementation assignment. Broader Coordination, ordinary Agent execution, forge integration and execution qualification remain unfinished. All five actual Registry Agents remain disabled and unqualified.
+
+The [architecture](architecture.md), [workflow](workflow.md), [forge-account policy](agent-registry.md#forge-identities), and [first-Agent preparation](agent-registry.md#first-agent-preparation) remain the design baseline. The concrete repository and feature for end-to-end validation will be selected under D-12. Existing Gitea setup checks and operational gaps remain in the [infrastructure guide](infrastructure.md#verification-before-relying-on-the-instance).
 
 ## Implementation increments
 
@@ -17,8 +19,8 @@ Use the following work breakdown to turn the agreed components into bounded impl
 | 1. Shared contracts and application foundation | Accepted | Python application, minimum shared contracts, configuration/diagnostics, SQLite migrations and transactions, and controlled operation boundaries. | Independent reassessment resolved R1–R5; Windows and Linux/WSL checks passed; the human owner accepted the identified snapshot with recorded limitations. |
 | 2. Agent Registry and bootstrap | Accepted | SQLite-backed Registry API/CLI, immutable publication and reference resolution, protected administrator setup, and the disabled initial test Agent catalog. | Independent reassessment resolved I2-R1/I2-R2; Windows and Linux/WSL checks passed; the human owner accepted the identified repaired snapshot with its execution-readiness limitations. |
 | 3. Minimum Coordination workflow | Accepted | One locally supplied Request/Initiative/Task, authorized Assignment and simulated Run, result, independent assessment and explicit Task acceptance, with persistent status/history and basic duplicate protection. | Independent reassessment resolved I3-R1; Windows and Linux/WSL checks passed; the human owner accepted the identified repaired snapshot within its local simulation and storage limits. |
-| 4. Supervised execution | Planned | Worker and Runner Adapter contracts implemented with bounded execution, input/output capture, trusted permission enforcement, cancellation, and cleanup or containment. | Process, workspace, tool, resource, and secret boundaries pass the applicable acceptance checks before privileged or provider-backed operation. |
-| 5. Gitea integration | Planned | Forge adapter, polling and publication, authenticated project mappings, and retry-safe or reconciled external operations. | Managed observations and authorized updates remain traceable; duplicates and interrupted operations do not create duplicate work or bypass authority. |
+| 4. Supervised execution | Accepted | One supervised fixture Run at a time in one local isolated Linux/container Worker, with bounded input/output, stopping, cleanup and persistent Coordination reporting. | Independent reassessments resolved I4-R1–R3, including residual I4-R2; Windows and Linux/WSL checks passed, including real source/installed Docker suites; the human owner accepted the exact repaired snapshot within its fixture limits. |
+| 5. Gitea integration | Planning; minimum slice proposed | One configured repository, explicit synchronization, persistent work-item mappings and controlled status/evidence publication through a forge adapter. | Proposed: duplicate observations do not duplicate local work; publication respects field authority and reconciles uncertain external effects before retry. Final scope and contracts remain to be agreed. |
 | 6. Primary execution qualification | Planned | One concrete runtime/provider/model/environment combination, declared capability scope, and independently configured review. | Authorized qualification checks pass with versioned configuration, operating limits, evidence, and limitations; only qualified scope becomes eligible for ordinary work. |
 | 7. End-to-end delivery validation | Planned | One bounded change in a prepared existing repository selected through the D-12 validation contract. | The complete delivery, acceptance, waiting, recovery, duplicate, and stale-result scenarios pass for identified revisions. |
 
@@ -114,9 +116,65 @@ The original archive/review, repaired submission under `submissions/increment-3/
 
 The [Coordination contracts](coordination-contracts.md) and [application guide](../README.md#local-coordination-increment-3) own the maintained interface and operation details. The completed developer brief is retired from active documentation; its exact text remains in the reviewed archives. Select the next small delivery boundary before preparing another implementation assignment.
 
+## Increment 4: supervised execution
+
+**Accepted by the human owner.** Acceptance covers Tasks 1–5 of the independently reassessed, repaired 129-file supervised fixture snapshot with archive SHA-256:
+
+```text
+15ab37802b6b523a01475a356b4c4830799959ee71914c56f317bb6d386b1517
+```
+
+I4-R1 and I4-R3 were resolved in the first independent reassessment; the separate residual-I4-R2 reassessment resolves the nested-signal defect with no new material findings. Independent verification reproduced 271 passing tests on Windows and 269 passing tests plus one skip on Ubuntu 24.04/WSL2. Both platform runners completed all 13 commands successfully, covering locked dependencies, lint, formatting, builds, clean installed wheels beneath a percent-containing path, Registry/TLS, Coordination and native interruption checks.
+
+The real Linux Docker source and installed suites each passed 76 driver records, including seven repair cases. Separate source/installed signal probes passed all nine cases on each platform. The same probe reproduced all four nested-signal deadlocks on the prior baseline; the repair required actual depth-two delivery, both handler returns, pending intent and handler restoration. Spaced real CLI signal cases separately verified stop intent and descendant/container retirement. These results establish the tested fixture scope, not ordinary Agent or production qualification.
+
+| Task | Accepted result |
+| --- | --- |
+| 1. Execution handoff | Authenticated run/status/stop actions, current scoped authority, exact Task/Assignment/attempt ownership and immutable inputs/settings before launch. |
+| 2. Worker and fixture Runner Adapter | One local Linux Docker Worker and packaged deterministic fixture/build assets, non-root isolation, bounded resources/storage/output, no external fixture network or credentials, and pinned image/Engine provenance. |
+| 3. Supervision and stopping | Separate startup/execution deadlines, bounded stop/escalation, ordinary and nested interruption handling, independent lifetime guard, fenced cleanup and capacity retention until verified retirement. |
+| 4. Persistent reporting | Short reservation/history transactions, exclusive fenced external actuation, duplicate/stale protection, authoritative capture state and sealed artifact provenance, including pinned assessment allowances. |
+| 5. Combined verification and handoff | Source-bound developer evidence, preserved original reviews, independent before/after regressions and reassessments, and human acceptance of this bounded result. |
+
+Acceptance retains these limits:
+
+- One predefined fixture Run at a time in the tested local Linux Docker environment. All five actual Registry Agents remain disabled and unqualified. No provider/model, forge, arbitrary command/image, remote/multiple Worker or background scheduler capability is enabled.
+- Startup and execution defaults are 100 seconds each, with 5 seconds graceful stopping and 10 seconds forced cleanup/verification. Resource defaults remain 1 CPU, 256 MiB RAM/no swap, 32 processes/threads, 64 KiB input/result each, 256 KiB combined capture and 32 MiB writable scratch. Effective supported values are configured, validated and pinned per Run; later edits apply to future Runs.
+- Status is read-only after supervisor loss. Authorized stop may take fenced cleanup control of the existing attempt; it cannot relaunch or resume it. Unknown effects or unverified cleanup keep capacity held. Automatic retries remain zero; broader recovery and human controls remain deferred.
+- Capture errors or incomplete writers cannot establish valid successful output. Existing artifacts retain their pinned assessment allowances after configuration changes. Stale or untrusted reports cannot advance Coordination.
+- Synthetic independent assessment and explicit Task acceptance demonstrate the application flow. The Request stays open and the Initiative stays unaccepted; these demonstrations do not establish independent acceptance of other work.
+- Native Windows Worker execution is explicitly unavailable. Windows interruption evidence retains its exercised console/context limits, and Linux/WSL does not qualify production deployment, hostile interference, power-loss durability or disaster recovery.
+
+The original submission/review, `repair-i4-r1-r3/final-01`, `repair-i4-r2-nested-signal/final-01`, and separate independent reassessments remain preserved under ignored `submissions/increment-4/`. The final independent report is `submissions/increment-4/independent-reassessment-i4-r2-20261102-01/reassessment.md`. This acceptance identifies the exact repaired snapshot; documentation finalization does not rewrite historical evidence or claim that updated documentation retains its original hashes.
+
+The [execution contracts](execution-contracts.md), [Coordination contracts](coordination-contracts.md), and [application guide](../README.md#supervised-fixture-execution-increment-4) own the maintained behavior and operating instructions. The completed implementation brief is retired from active documentation; its exact text remains in the reviewed source archives.
+
+## Increment 5: Gitea integration
+
+**Proposed for high-level discussion.** Start with a minimum bridge between one configured Gitea repository and the accepted local Coordination flow. A human explicitly runs one synchronization cycle, observes one prepared managed Task and its local mapping, and publishes a narrow Coordinator-owned status/evidence projection. Repeating a cycle or restarting must not duplicate work or external updates. This is a proposed slice of D-07, not a confirmed Task assignment.
+
+Keep the Coordinator authoritative for workflow state, permissions and acceptance. Gitea is the human-facing work surface; a label or issue closure alone cannot authorize allocation, execution or acceptance. Reuse existing local run/status/stop operations under their own grants. Import does not automatically start a Run or enable an Agent.
+
+| Proposed Task | High-level result |
+| --- | --- |
+| 1. Define the minimum forge boundary | A small forge-neutral adapter contract, explicit managed-item identity and field ownership, current authority, and the chosen mapping into the existing one-Task workflow. |
+| 2. Configure one project connection | Explicit repository/project binding and a least-privilege Coordination transport account, using protected local credential references. Agent/Profile definitions remain forge-independent; individual Agent forge accounts are deferred. |
+| 3. Observe and map prepared work | One explicit synchronization cycle validates managed input and durably records external identity, observed revision and local work mapping. Incomplete or conflicting input stays blocked; repeated observations do not duplicate Tasks. |
+| 4. Publish controlled progress | Publish only the agreed status/evidence projection. Retain an outbound operation identity and reconcile uncertain delivery before retry; preserve human-owned content and refuse unauthorized progression. |
+| 5. Verify the bridge | Demonstrate observation, mapping, authorized publication, restart/replay and lost-acknowledgement handling against isolated test data, including installed-package checks and retained accepted regressions. |
+
+Before preparing an implementation brief, agree:
+
+- Which managed issue kinds this first slice observes, how a prepared Task supplies its required context, and whether it imports a Task or links an already supplied local Task.
+- Which fields the human and Coordinator own, how external edits/close/reopen affect synchronization, and which status/evidence projection is useful.
+- The minimum account permissions, project/installation authority, polling bounds and protected connection configuration.
+- The persistent mapping/revision and uncertain-effect rules, with one concrete demonstration and observable completion criteria.
+
+Keep the first slice small: automatic Request decomposition/Orchestrator planning, autonomous allocation/execution, per-Agent forge actions, PR/branch/merge automation, a background polling daemon/webhooks, cross-forge migration and broader scheduling/recovery are outside this proposal. Select later slices when needed; no Increment 5 implementation is started by this plan update.
+
 ## Deferred Coordination capabilities
 
-These behaviors remain agreed product direction, but are **not Increment 3 completion requirements**. Select bounded later increments as the next useful capability becomes necessary. Existing roadmap numbers 4–7 are retained; the placement of additional Coordination increments will be selected during later planning.
+These behaviors remain agreed product direction, but are **not Increment 3 completion requirements**. Select bounded later increments as the next useful capability becomes necessary. The remaining roadmap numbers 5–7 are retained; the placement of additional Coordination increments will be selected during later planning.
 
 | Later capability | Deferred behavior and governing reference |
 | --- | --- |
@@ -125,22 +183,22 @@ These behaviors remain agreed product direction, but are **not Increment 3 compl
 | Human controls and scope changes | Pause/resume/cancel/reprioritize/takeover and baseline-change effects under [human controls](workflow.md#human-controls-and-scope-changes). |
 | Advanced recovery | Retries, reassignment, ownership expiry/supersession, uncertain-effect continuation and cleanup/containment before capacity reuse under [waiting and recovery](workflow.md#waiting-and-recovery). |
 | Overall outcome and closure | Initiative outcome acceptance and Request closure independently of Run/Task completion under [Initiative acceptance](workflow.md#initiative-outcome-acceptance) and [Request closure](workflow.md#request-closure-and-follow-up). |
-| Live integration | Supervised execution, forge synchronization, primary qualification and end-to-end delivery under the existing later-increment roadmap. |
+| Live integration | Forge synchronization, ordinary Agent execution, primary qualification and end-to-end delivery beyond the accepted supervised fixture. |
 
-Later increments must implement and verify the safeguards their capabilities rely on before use. In particular, real supervised execution still requires applicable stopping, ownership and cleanup controls. Deferral does not weaken authority, independence, isolation or qualification requirements. Exact transitions, grants, schemas, commands and operating values are decided for the capability being implemented.
+Later increments must implement and verify the safeguards their capabilities rely on before use. Extending the accepted fixture to ordinary Agent execution must retain applicable stopping, ownership and cleanup controls. Deferral does not weaken authority, independence, isolation or qualification requirements. Exact transitions, grants, schemas, commands and operating values are decided for the capability being implemented.
 
 ## Remaining specifications
 
-The accepted foundation, Registry and local simulated workflow contracts are implemented within their recorded scopes. The rows below cover broader capabilities beyond that slice; they do not reopen completed Increment 3 work. Complete each applicable contract before implementing its dependent capability. Independent work can proceed when its own inputs are sufficient.
+The accepted foundation, Registry, local simulated workflow and supervised fixture contracts are implemented within their recorded scopes. The rows below cover broader capabilities; they do not reopen completed Increments 1–4. Complete each applicable contract before implementing its dependent capability. Independent work can proceed when its own inputs are sufficient.
 
 | Area | Unfinished specification | Governing baseline |
 | --- | --- | --- |
-| Lifecycles and assignments | Transitions beyond the accepted one-Task simulation: multi-Task/dependency and Decision progression, Initiative/Request outcomes, rework, reassignment, human controls and recovery. Preserve Task identity and exact evidence when extending the current contracts. | D-03, D-04; F-12, F-19, F-20, F-22 |
+| Lifecycles and assignments | Transitions beyond the accepted one-Task simulated/fixture flow: multi-Task/dependency and Decision progression, Initiative/Request outcomes, rework, reassignment, human controls and recovery. Preserve Task identity and exact evidence when extending the current contracts. | D-03, D-04; F-12, F-19, F-20, F-22 |
 | Authority and independence | Production service/Agent identities and broader delegated workflow authority, baseline approval, review eligibility, human intervention and Orchestrator-only escalation. Extend current local scoped grants and exact-evidence gates without inferring execution authority from Registry administration. | D-08, D-10; S-03, F-18, F-20, F-25 |
-| Coordinator state and recovery | Extend current durable records, operation identities, transactional history and uncertainty fences to supervised execution, ownership expiry/supersession, reassignment and deliberate recovery. Define capacity reuse after verified cleanup or containment. | D-04, D-11; F-22, F-23; N-02, N-05 |
+| Coordinator state and recovery | Beyond the bounded [Increment 4 contracts](execution-contracts.md), specify general ownership expiry/supersession, reassignment and deliberate recovery. Preserve durable records, operation identities, transactional history, uncertainty fences and safe capacity reuse. | D-04, D-11; F-22, F-23; N-02, N-05 |
 | Coordination access to the Registry | Least-privilege service access for live dispatch, exact published configuration/current controls and qualification/enablement integration. Preserve the accepted Registry interfaces and local scoped-read behavior; isolated fixture resolution does not qualify ordinary execution. | D-05, D-11; F-07 through F-09, F-15; N-04, N-05 |
-| Runner and configuration contracts | Inputs and machine-readable outcomes, Artifact/evidence references, cancellation and errors, compatibility validation, explicit overrides, and requested/effective configuration resolution under the approved fields. Bind immutable per-Run settings and context. | D-05, D-08; F-03 through F-09 |
-| Enforcement boundary | Threat assumptions and trusted enforcement for processes, workspaces, network, resources, repository operations, Coordinator actions, and secrets, including subprocess activity and revoked access. Specify demonstrable cleanup and containment criteria. | D-06, D-10; N-02 through N-04 |
+| Runner and configuration contracts | Extend the fixed fixture contract to actual Agent runtimes: inputs/machine-readable outcomes, Artifact references, cancellation/errors, compatibility validation, explicit overrides and requested/effective configuration under the approved fields. Bind immutable per-Run settings and context. | D-05, D-08; F-03 through F-09 |
+| Enforcement boundary | Beyond the no-network/no-credential fixture, specify threat assumptions and trusted enforcement for Agent processes, workspaces, network, resources, repository operations, Coordinator actions and secrets, including subprocess activity and revoked access. Retain demonstrable cleanup/containment criteria. | D-06, D-10; N-02 through N-04 |
 | Forge contract | Supported operations/events, capability declarations, per-field authority, stable mappings, actor authentication, external edit/close/reopen behavior, duplicate handling, reconciliation, and conflict treatment. Keep project forge bindings separate from reusable Agent/Profile definitions. | D-07; F-16, F-18, F-22, F-24 |
 | Artifacts, context, and integration | Beyond supplied local text artifacts: durable external publication/resolution, context assembly and freshness, dependency evidence, shared-target coordination, exact combined-result validation and retention/deletion. Preserve current immutable references and acceptance applicability checks. | D-05, D-11; F-13 through F-15, F-21, F-27; N-05 |
 

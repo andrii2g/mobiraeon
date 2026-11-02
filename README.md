@@ -58,7 +58,7 @@ Only the orchestrator creates requests requiring human decisions or intervention
 
 See the [documentation index](docs/README.md) for requirements, architecture, workflow, and decisions.
 
-The [implementation plan](docs/implementation-plan.md) records the accepted foundation, Agent Registry and minimum Coordination increments, their verification limits, and the remaining roadmap.
+The [implementation plan](docs/implementation-plan.md) records the accepted foundation, Agent Registry, minimum Coordination and supervised fixture execution increments, their verification limits, and the remaining roadmap.
 
 ## Application foundation (Increment 1)
 
@@ -69,8 +69,9 @@ The foundation provides shared contracts, a foreground local host, validated app
 configuration, controlled internal operations, and SQLite/Alembic persistence. The
 [accepted Registry increment](#agent-registry-increment-2) adds authenticated Registry
 operations and HTTP administration. The [local simulated Coordination slice](#local-coordination-increment-3)
-is available; Agent execution and forge integration remain unavailable. Foundation readiness does not establish their
-qualification or acceptance.
+and [supervised fixture execution](#supervised-fixture-execution-increment-4) are available.
+Ordinary Agent execution and forge integration remain unavailable. Foundation readiness
+does not establish their qualification or acceptance.
 
 Use CPython **3.14.10** and **uv 0.13.6**. `.python-version` pins the interpreter;
 `pyproject.toml` pins `uv_build` and separates runtime dependencies from development
@@ -269,7 +270,7 @@ Verification tools default to `submissions/increment-2/`; `--increment increment
 generated locally rather than distributed as repository documentation. The
 [implementation plan](docs/implementation-plan.md#verification-and-evidence) defines
 source identification, independent assessment, and evidence requirements for later
-increments. Completed reviews and human acceptance for Increments 1 and 2 are recorded
+increments. Completed reviews and human acceptance for Increments 1–4 are recorded
 in the plan; runtime readiness remains a separate observation.
 
 
@@ -502,3 +503,140 @@ checks use `tools/verify_platform.py` on the extracted archive with `--manifest`
 forge integration still unavailable. No background Coordinator, HTTP surface,
 provider/Worker/forge integration, multi-Task scheduler, recovery controls,
 Initiative acceptance or Request closure is delivered by this slice.
+
+## Supervised fixture execution (Increment 4)
+
+Increment 4 is implemented, independently reassessed, and accepted by the human
+owner within its [recorded scope and limitations](docs/implementation-plan.md#increment-4-supervised-execution).
+I4-R1–R3, including the residual I4-R2 nested-signal defect, are resolved. Independent
+checks reproduced 271 Windows tests and 269 Linux/WSL tests plus one platform skip,
+with passing source/installed-wheel signal and Linux Docker Worker regressions.
+
+The Linux-only foreground supervisor runs the packaged fixed fixture in one
+isolated Docker container. The [execution contracts](docs/execution-contracts.md)
+define its authority, handoff, limits and uncertainty rules. Capability reporting
+is `fixture_execution=supervised_fixture_only`; all five Registry Agents remain
+disabled/unqualified and `agent_execution=unavailable`.
+
+Use the existing Linux Docker Engine (WSL is supported for development). Prepare
+the approved image before admitting work; run this from the source environment
+or a clean installation containing the packaged build assets:
+
+```text
+uv run --locked python -m mobiraeon.execution_fixture build
+```
+
+The JSON output records the base RepoDigest, immutable `image_id`, Engine/CLI
+identity, asset hashes and raw build results. No image is published. The tested
+developer image is
+`sha256:0a8b7aa53e80af9edebaa8ea21803b9b70ee9325a16751c7dd6a1465c8a5f8f8`,
+on Engine `0fc089f8-7374-43a4-a1aa-7381a79669e6` at
+`unix:///var/run/docker.sock`, using `/snap/bin/docker` 29.8.0. These identities
+describe the recorded development environment; a new installation builds and
+records its own approved image and Engine binding.
+
+Prepare a fresh private installation using ordinary Access authentication:
+
+```text
+uv run --locked python -m mobiraeon.execution_fixture prepare --directory /tmp/mobiraeon-fixture-new --input examples/execution.json --catalog-input bootstrap/initial-test.json --image-id sha256:0a8b7aa53e80af9edebaa8ea21803b9b70ee9325a16751c7dd6a1465c8a5f8f8
+uv run --locked mobiraeon --config /tmp/mobiraeon-fixture-new/settings.toml --request-file /tmp/mobiraeon-fixture-new/run.json execution run
+uv run --locked mobiraeon --config /tmp/mobiraeon-fixture-new/settings.toml --request-file /tmp/mobiraeon-fixture-new/status.json execution status
+uv run --locked mobiraeon --config /tmp/mobiraeon-fixture-new/settings.toml --request-file /tmp/mobiraeon-fixture-new/stop.json execution stop
+```
+
+The private root must not exist. The helper supplies the bounded work, allocates
+`assignment-1` / `attempt-1` to the ordinary author, and writes actual Task versions,
+protected local credentials, strict settings and request files. It prints paths
+and identifiers only. Credentials stay in protected files selected by the
+established `[access]` configuration; do not paste them into requests or logs.
+For installed use replace `uv run --locked` with the installed interpreter/CLI,
+and supply the explicitly distributed example and catalog files.
+
+Run stays in the foreground and emits JSON progress and a terminal operation
+result. Use status or stop from another terminal with the same settings. Request
+action and CLI action must match. Public modes are `success`, `failure`, `wait`,
+`excess_output` and `stubborn_child`; there are no arbitrary commands or images.
+Registry administration grants no execution authority. Grant `execution.run`,
+`execution.status`, `execution.stop` separately using Task scopes; launch also
+requires current allocation ownership and Coordination dispatch authority.
+Ordinary PATs all identify the installation owner, so an additional PAT cannot
+establish independent assessment.
+
+Settings use the single resolver's defaults → TOML → environment → CLI precedence.
+`[execution]` has `docker_executable`, `endpoint`, `engine_id`, `image_id`,
+`data_dir`, plus `startup_seconds=100`, `execution_seconds=100`, `grace_seconds=5`,
+`cleanup_seconds=10`, `cpus=1`, `memory_bytes=268435456`, `pids=32`,
+`input_bytes=65536`, `result_bytes=65536`, `capture_bytes=262144` and
+`scratch_bytes=33554432`. Recognized `MOBIRAEON_EXECUTION_*` variables follow the
+same names in uppercase. Time bounds are 0.05–600 seconds, CPU 0.01–16, RAM
+32–1024 MiB, PIDs 8–256, input/result 1–131072 bytes, capture 256 bytes–2 MiB,
+scratch 4–256 MiB; RAM must exceed scratch by at least 16 MiB. Unsupported settings
+are refused. Settings are pinned before dispatch; changes affect future Runs,
+while stop uses the retained Engine/image/settings binding.
+
+Execution requires Linux cgroup v2 resource enforcement. The container uses UID
+65532, read-only root, no external network, no credentials/management socket,
+dropped capabilities and no-new-privileges. Writable storage totals the configured
+scratch budget across `/tmp`, `/dev` and `/dev/shm`; the fixed read-only `/dev/null`
+device bind is required by the tested runtime. CPU is throttled, memory has no
+swap, PIDs and combined attached output are bounded. Daemon logging is disabled.
+The packaged lifetime guard bounds fixture activity if the supervisor dies.
+
+Migration 0004 adds execution projections, immutable handoffs, append-only events
+and stable receipts. Short database transactions reserve/report; a fenced local
+actuation lock serializes effects. One active attempt and zero retries apply per
+private installation. Lost acknowledgements, changed/unreachable Engine identity,
+or unverified cleanup retain capacity. Status is read-only after restart. Authorized
+stop can inspect and clean the retained attempt, never resume it. An uncertain
+create cannot be cleared by merely observing an absent name. Terminal run success
+requires successful execution, valid sealed captured output and verified cleanup;
+known failure and uncertainty have distinct operation outcomes. A later stop
+preserves an already sealed terminal fact.
+
+The supervisor retains bounded capture and exact revision/hash references beneath
+the protected `data_dir`. Only its sealed successful artifact can pass through
+Coordination submission, independent exact-submission assessment and explicit
+Task acceptance. Public simulated dispatch/observe/submit cannot replace execution,
+including before any execution row exists. Request and Initiative outcomes remain
+unchanged. The narrow UTF-8 bridge supports configured content byte budgets with
+a 1 MiB envelope while preserving unrelated Registry/Coordination limits.
+
+Run the complete source/installed checks with a fresh evidence directory:
+
+```text
+uv run --locked python tools/verify_foundation.py --increment increment-4 --output-directory submissions/increment-4/local-verification --uv .tools/bin/uv.exe --fixture-image-id sha256:0a8b7aa53e80af9edebaa8ea21803b9b70ee9325a16751c7dd6a1465c8a5f8f8
+uv run --locked python tools/verify_execution.py --input examples/execution.json --catalog-input bootstrap/initial-test.json --image-id sha256:0a8b7aa53e80af9edebaa8ea21803b9b70ee9325a16751c7dd6a1465c8a5f8f8
+```
+
+Use the actual native uv executable on Linux and `tools/verify_platform.py` on an
+isolated extraction with `--manifest`, `--output`, `--uv` and `--fixture-image-id`.
+Windows covers portable contracts and explicit unavailable behavior; it has no
+native Linux Worker. Real enforcement checks run on Linux/WSL from source and a
+clean wheel outside the checkout, including percent-containing paths. WSL results
+do not qualify production Linux deployment. No provider/forge integration,
+background service, automatic retry/reassignment or general recovery is included.
+
+I4-R1–R3 developer repairs retain per-channel EOF/failure evidence: a stopped
+reader alone cannot establish complete capture, and failed capture cannot support
+successful observation/submission. Foreground execution records SIGINT/SIGTERM
+as bounded stop requests and restores prior signal handlers after cleanup;
+SIGKILL remains the separate lifetime-guard/cleanup-only case. Submission and
+assessment retain the exact attempt's pinned result allowance when settings
+change, while future Runs use current settings. Current authority, exact sealed
+artifact bytes, human independence and the fixed transport limits still apply.
+The full source/installed fixture verifier includes these repair regressions;
+`python -m mobiraeon.execution_repair_verification --input examples/execution.json
+--catalog-input bootstrap/initial-test.json --image-id IMAGE_ID` runs them alone
+on Linux. The findings are independently resolved in the accepted repaired
+snapshot; the implementation plan records its exact source identity and evidence.
+
+The residual I4-R2 nested-signal repair uses only a pending-boolean assignment
+inside the execution signal handler; synchronized stop/cleanup stays in normal
+execution flow. `python -m mobiraeon.execution_signal_verification` runs bounded
+single-signal, deterministic nested-delivery and untraced spaced-signal controls
+on Windows/Linux. Nested cases must observe reentry and both returns, including
+after the Event-based implementation is removed. This is timing-window evidence,
+not a measured natural occurrence rate. Source tests and clean-wheel verification
+include these checks. Independent reassessment reproduced the baseline deadlock
+and verified the repaired cases on both platforms; prior reviews and evidence
+remain preserved.

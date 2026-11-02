@@ -1,0 +1,35 @@
+{
+  "work": {
+    "project": "project-1",
+    "request": "request-1",
+    "initiative": "initiative-1",
+    "objective": "Produce a deterministic text summary in the isolated fixture",
+    "scope": "One supervised local Docker fixture Run",
+    "exclusions": "No repository changes, provider calls, real Agent or parent acceptance",
+    "inputs": [
+      {
+        "identity": "fixture-input",
+        "revision": "v1",
+        "sha256": "26f75ed871d155c615a382f9a7c97e8fd8a00f16ebb80589ff5297ac0cd6a990",
+        "content": "Supervised fixture: Hello, Möbiræon!\n"
+      }
+    ],
+    "deliverables": [
+      "fixture-summary"
+    ],
+    "criteria": {
+      "exact-summary": {
+        "requirement": "The sealed summary exactly describes the supplied UTF-8 text and cleanup is verified.",
+        "evidence": "fixture-summary"
+      }
+    },
+    "role": {
+      "kind": "role",
+      "identity": "supervised-fixture-role",
+      "revision": "supervised-fixture-v1"
+    },
+    "project_context": "Synthetic text-only project; no external integrations",
+    "request_outcome": "Demonstrate one greeting delivery with independent assessment",
+    "initiative_outcome": "Retain the bounded greeting contribution; overall outcome remains unaccepted"
+  }
+}
