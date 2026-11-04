@@ -1,0 +1,20 @@
+{
+  "command": [
+    "C:\\github\\a2g.name\\mobiraeon\\.venv\\Scripts\\python.exe",
+    "-B",
+    "C:\\github\\a2g.name\\mobiraeon\\artifacts\\full-review-increment5-20261104-01\\forge-replay-probe\\attempt-04\\probe.py"
+  ],
+  "cwd": "C:\\github\\a2g.name\\mobiraeon",
+  "started_utc": "2026-11-04T15:25:46.852520+00:00",
+  "script": {
+    "bytes": 12409,
+    "sha256": "2fb06c93b191ba95acfacb19be569e2b4c8f791c23ed0e3cda00713863309f25"
+  },
+  "process_context": "Windows installation owner; already verified protected new review TEMP/TMP",
+  "temporary": "C:\\mobiraeon-i5-independent-reassessment-final06-20261103-01\\full-review-increment5-20261104-01\\temporary",
+  "actual_child_exit_code": 0,
+  "exit_code": 0,
+  "stdout": "{\"result\": \"observation_completed\", \"candidate_confirmed\": true, \"required_behavior\": false, \"controller_exit_code\": 0, \"report\": \"C:\\\\github\\\\a2g.name\\\\mobiraeon\\\\artifacts\\\\full-review-increment5-20261104-01\\\\forge-replay-probe\\\\attempt-04\\\\result.json\"}\n",
+  "stderr": "",
+  "finished_utc": "2026-11-04T15:25:48.035537+00:00"
+}

@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 
 from mobiraeon.contracts import (
     EXECUTION_ACTIONS,
+    FORGE_ACTIONS,
     WORKFLOW_ACTIONS,
     BusinessTarget,
     Operation,
@@ -55,7 +56,9 @@ ACCESS_ACTIONS = {
     Operation.REVOKE,
     Operation.ACCESS_RECONCILE,
 }
-GRANTABLE = CATALOG_ACTIONS | ACCESS_ACTIONS | WORKFLOW_ACTIONS | EXECUTION_ACTIONS
+GRANTABLE = (
+    CATALOG_ACTIONS | ACCESS_ACTIONS | WORKFLOW_ACTIONS | EXECUTION_ACTIONS | FORGE_ACTIONS
+)
 PROFILE_REFS = {
     "roleRef": "role",
     "contextPolicyRef": "context",
@@ -333,7 +336,7 @@ def validate_grants(grants):
             if not isinstance(scope, str) or scope.count(":") != 1:
                 invalid()
             kind, identity = scope.split(":")
-            if kind not in KINDS | {"credential", "audit", "task"}:
+            if kind not in KINDS | {"credential", "audit", "task", "project"}:
                 invalid()
             if identity != "*":
                 _token(identity)

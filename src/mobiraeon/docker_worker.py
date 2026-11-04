@@ -8,11 +8,43 @@ import subprocess
 import sys
 import time
 from contextlib import contextmanager
+from contextvars import ContextVar
 from importlib.resources import files
 
 from mobiraeon.errors import Reason, SafeError
 from mobiraeon.execution_settings import MIB
+from mobiraeon.execution_trace import event, span
 from mobiraeon.private_state import harden, protected
+
+_completion_cutoff = ContextVar("worker_completion_cutoff", default=None)
+
+
+def _completion_remaining():
+    deadline = _completion_cutoff.get()
+    if deadline is None:
+        return None
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        event("completion_deadline_exhausted", critical=True)
+        raise SafeError(Reason.UNCERTAIN)
+    return remaining
+
+
+def _completion_timeout(timeout):
+    remaining = _completion_remaining()
+    return timeout if remaining is None else min(timeout, remaining)
+
+
+@contextmanager
+def completion_deadline(deadline):
+    """Carry the supervisor's fixed cutoff without changing Worker call signatures."""
+    current = _completion_cutoff.get()
+    token = _completion_cutoff.set(deadline if current is None else min(current, deadline))
+    try:
+        _completion_remaining()
+        yield _completion_remaining
+    finally:
+        _completion_cutoff.reset(token)
 
 
 def asset_hashes():
@@ -61,25 +93,63 @@ class DockerWorker:
         self.environment = {k: v for k, v in os.environ.items() if not k.startswith("DOCKER_")}
 
     def call(self, *args, timeout=10, check=True):
+        if timeout <= 0:
+            event("docker_budget_exhausted", critical=True, supplied_timeout=timeout)
+            raise SafeError(Reason.UNCERTAIN)
+        effective_timeout = _completion_timeout(timeout)
+        operation = (
+            "info"
+            if args[:1] == ("info",)
+            else "container_inspect"
+            if args[:2] == ("container", "inspect")
+            else str(args[0])
+            if args
+            else "unavailable"
+        )
+        with span(
+            "docker_call",
+            operation=operation,
+            supplied_timeout=timeout,
+            effective_timeout=effective_timeout,
+        ):
+            result = self._call(*args, timeout=effective_timeout, check=check)
+            event("docker_call_result", operation=operation, result_code=result.returncode)
+        _completion_remaining()
+        return result
+
+    def _call(self, *args, timeout=10, check=True):
         if sys.platform != "linux":
             raise SafeError(Reason.UNAVAILABLE)
+        effective_timeout = None
         try:
             result = subprocess.run(
                 [*self.base, *map(str, args)],
                 env=self.environment,
                 capture_output=True,
-                timeout=max(0.05, timeout),
+                timeout=(effective_timeout := _completion_timeout(timeout)),
             )
-        except OSError, subprocess.TimeoutExpired:
+        except (OSError, subprocess.TimeoutExpired) as error:
+            event("docker_transport_error", critical=True, exception_type=type(error).__name__)
             raise SafeError(Reason.UNCERTAIN) from None
+        finally:
+            if effective_timeout is not None:
+                event(
+                    "docker_dispatch_timeout",
+                    supplied_timeout=timeout,
+                    effective_timeout=effective_timeout,
+                )
+        _completion_remaining()
+        event("docker_raw_result", result_code=result.returncode)
         if check and result.returncode:
             raise SafeError(Reason.UNAVAILABLE)
         return result
 
     def engine(self, timeout=10):
         info = json.loads(self.call("info", "--format", "json", timeout=timeout).stdout)
+        event("engine_identity", matches=info.get("ID") == self.settings.get("engine_id"))
         if info["ID"] != self.settings.get("engine_id"):
             raise SafeError(Reason.UNAVAILABLE)
+        _completion_remaining()
         return info
 
     def preflight(self):
@@ -174,20 +244,54 @@ class DockerWorker:
         return identity
 
     def inspect(self, handoff, identity=None, timeout=10):
-        deadline = time.monotonic() + timeout
-        self.engine(timeout)
+        deadline = _completion_cutoff.get()
+        with span(
+            "inspect",
+            requested_timeout=timeout,
+            inspection_deadline=deadline
+            if deadline is not None
+            else time.monotonic() + timeout,
+        ):
+            result = self._inspect(handoff, identity, timeout)
+        _completion_remaining()
+        return result
+
+    def _inspect(self, handoff, identity=None, timeout=10):
+        if timeout <= 0:
+            event("inspect_budget_exhausted", critical=True, requested_timeout=timeout)
+            raise SafeError(Reason.UNCERTAIN)
+        deadline = _completion_cutoff.get()
+        if deadline is None:
+            deadline = time.monotonic() + timeout
+        self.engine(_completion_timeout(timeout))
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            event("inspect_budget_exhausted_after_info", critical=True, remaining=remaining)
+            raise SafeError(Reason.UNCERTAIN)
         result = self.call(
             "container",
             "inspect",
             identity or handoff["name"],
-            timeout=max(0.05, deadline - time.monotonic()),
+            timeout=remaining,
             check=False,
         )
+        if time.monotonic() > deadline:
+            event("inspect_result_after_deadline", critical=True)
+            raise SafeError(Reason.UNCERTAIN)
         if result.returncode:
             if b"No such" in result.stderr:
                 return None
             raise SafeError(Reason.UNCERTAIN)
         container = json.loads(result.stdout)[0]
+        event(
+            "container_state",
+            state={
+                k: v
+                for k, v in container["State"].items()
+                if k
+                in {"Running", "ExitCode", "FinishedAt", "StartedAt", "OOMKilled", "Status"}
+            },
+        )
         labels = container["Config"].get("Labels", {})
         if (
             container["Name"] != "/" + handoff["name"]
@@ -196,6 +300,14 @@ class DockerWorker:
             or (identity is not None and container["Id"] != identity)
         ):
             raise SafeError(Reason.UNCERTAIN)
+        event(
+            "owned_identity_verified",
+            immutable_identity=identity is not None,
+            name_match=True,
+            image_match=True,
+            nonce_match=True,
+        )
+        _completion_remaining()
         return container
 
     def start(self, identity, timeout=10):

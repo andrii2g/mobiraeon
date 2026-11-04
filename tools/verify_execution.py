@@ -9,6 +9,18 @@ import tempfile
 from pathlib import Path
 
 
+class ExecutionVerificationFailure(RuntimeError):
+    def __init__(self, report):
+        self.report = report
+        super().__init__(json.dumps(report))
+
+
+def decoded(value):
+    if isinstance(value, bytes):
+        value = value.decode(errors="replace")
+    return (value or "")[:2097152]
+
+
 def exercise(python, input_file, catalog_input, image_id, *, short=False):
     environment = {k: v for k, v in os.environ.items() if not k.startswith("MOBIRAEON_")}
     environment.pop("PYTHONPATH", None)
@@ -18,7 +30,13 @@ def exercise(python, input_file, catalog_input, image_id, *, short=False):
             "reason": "No native Linux Docker Worker; portable execution tests run in pytest",
         }
     if not image_id:
-        raise RuntimeError("prepared fixture image ID required for Linux verification")
+        raise ExecutionVerificationFailure(
+            {
+                "result": "failed",
+                "failure_type": "image_prerequisite",
+                "terminal_available": False,
+            }
+        )
     with tempfile.TemporaryDirectory(prefix="mobiraeon-execution-outside-") as temporary:
         command = [
             str(python),
@@ -32,19 +50,57 @@ def exercise(python, input_file, catalog_input, image_id, *, short=False):
             image_id,
             *(["--short"] if short else []),
         ]
-        result = subprocess.run(
-            command, cwd=temporary, env=environment, capture_output=True, text=True, timeout=900
-        )
         report = {
+            "result": "failed",
             "command": command,
-            "exit_code": result.returncode,
-            "stdout": result.stdout,
-            "stderr": result.stderr,
+            "exit_code": None,
+            "timed_out": False,
+            "parse_status": "not_attempted",
         }
-        if result.returncode:
-            raise RuntimeError(json.dumps(report))
-        report["fixture"] = json.loads(result.stdout)
-        assert report["fixture"]["result"] == "passed"
+        try:
+            result = subprocess.run(
+                command,
+                cwd=temporary,
+                env=environment,
+                capture_output=True,
+                text=True,
+                timeout=900,
+            )
+            report |= {
+                "exit_code": result.returncode,
+                "stdout": decoded(result.stdout),
+                "stderr": decoded(result.stderr),
+            }
+        except (subprocess.TimeoutExpired, OSError) as error:
+            report |= {
+                "failure_type": type(error).__name__,
+                "timed_out": isinstance(error, subprocess.TimeoutExpired),
+                "stdout": decoded(getattr(error, "stdout", None)),
+                "stderr": decoded(getattr(error, "stderr", None)),
+                "terminal_available": False,
+            }
+            raise ExecutionVerificationFailure(report) from None
+        try:
+            report["fixture"] = json.loads(result.stdout)
+            report["parse_status"] = "parsed"
+        except ValueError, TypeError:
+            report |= {
+                "parse_status": "invalid_json",
+                "failure_type": "child_json_invalid",
+                "terminal_available": False,
+            }
+            raise ExecutionVerificationFailure(report) from None
+        # A structured failed child is retained even when its process exits nonzero.
+        if (
+            result.returncode
+            or not isinstance(report["fixture"], dict)
+            or report["fixture"].get("result") != "passed"
+        ):
+            report["failure_type"] = (
+                "child_nonzero" if result.returncode else "child_report_failed"
+            )
+            raise ExecutionVerificationFailure(report)
+        report["result"] = "passed"
         return report
 
 
@@ -56,19 +112,19 @@ def main():
     parser.add_argument("--image-id")
     parser.add_argument("--short", action="store_true")
     args = parser.parse_args()
-    print(
-        json.dumps(
-            exercise(
-                args.target_python,
-                args.input.resolve(),
-                args.catalog_input.resolve(),
-                args.image_id,
-                short=args.short,
-            ),
-            indent=2,
+    try:
+        report = exercise(
+            args.target_python,
+            args.input.resolve(),
+            args.catalog_input.resolve(),
+            args.image_id,
+            short=args.short,
         )
-    )
+    except ExecutionVerificationFailure as error:
+        report = error.report
+    print(json.dumps(report, indent=2))
+    return int(report["result"] == "failed")
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

@@ -71,7 +71,7 @@ These interpretations form part of the agreed functional requirements.
 
 | Requirement | Agreed interpretation |
 | --- | --- |
-| F-16 | The requirement establishes that a mapping exists. [D-07](decisions.md#d-07-forge-integration-and-initial-platform) selects the initial Gitea mapping; detailed adapter operations and qualification follow separately. |
+| F-16 | The requirement establishes that a mapping exists. [D-07](decisions.md#d-07-forge-integration-and-initial-platform) selects the initial Gitea mapping; the [manual Forge contracts](forge-contracts.md) describe the delivered Task/issue slice and its qualification limits. Broader adapter operations and qualification remain separately scoped. |
 | F-20 | A reviewer supplies an independent assessment. The reviewer may also hold acceptance authority when policy explicitly grants it. |
 | F-21 | A Task may finish with a reviewed patch when its contract assigns integration to another Task. Overall code delivery remains incomplete until the combined result passes validation. |
 | F-25 | Coordinator, Scheduler, and Orchestrator Agent are separate logical responsibilities; this does not require separate services. |

@@ -42,3 +42,11 @@ class SafeError(Exception):
         self.reason = reason
         self.source = source
         self.setting = setting
+
+
+class RecordedForgeFailure(SafeError):
+    """Trusted replay of an immutable failed result, never a request field."""
+
+    def __init__(self, reason, outcome):
+        super().__init__(reason)
+        self.outcome = outcome

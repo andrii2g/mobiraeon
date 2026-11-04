@@ -220,7 +220,9 @@ The drill rejects existing target volumes and starts services only after all ext
 
 ## Next integration steps
 
-Configure the authorized Project repositories and separate Coordination and forge-acting Agent accounts according to the Registry's [forge identity model](agent-registry.md#forge-identities). Scope account access to permitted managed-repository operations and apply the required token permissions and branch protections. Qualify issue/comment/milestone/pull-request operations against this installed Gitea version before connecting the Coordinator. Initial observation uses polling under the agreed [architecture](architecture.md#coordination-and-agent-reasoning).
+The implemented [Increment 5 bridge](forge-contracts.md) links one existing Task to one existing issue and manually synchronizes one Coordinator-authored status/evidence comment. Configure its dedicated Coordination user, protected token and Project-scoped grants under that contract. Its isolated real-Gitea qualification used SQLite; it does not qualify this persistent PostgreSQL-backed installation. Verify the configured endpoint, identities, permissions and owned disposable workflow against this installation before relying on it.
+
+Broader integration remains later work: configure forge-acting Agent accounts according to the Registry's [forge identity model](agent-registry.md#forge-identities), scope their managed-repository operations and qualify milestone/pull-request behavior and any automatic observation. The broader [architecture](architecture.md#coordination-and-agent-reasoning) specifies polling; the delivered manual bridge has no polling service and does not enable those Agent paths.
 
 Prepare definitions through Möbiræon's Registry API and immutable publication process. The application-owned SQLite Registry has no Gitea repository prerequisite; optional Git imports and exports remain subject to Registry validation and publication controls.
 

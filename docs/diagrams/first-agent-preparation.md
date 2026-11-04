@@ -30,6 +30,6 @@ Evidence retains the five Agent/Profile revisions, dependencies, current disable
 
 The prepared catalog completes Increment 2's bootstrap outcome. The [enablement boundary](registry-enablement.md) returns unavailable while Coordination qualification cannot be checked, leaving current enablement unchanged; authorized disablement remains available. Project integration, runtime qualification, successful enablement, and execution follow their applicable later gates. Authorized qualification checks cannot override disablement or revoked access.
 
-The [implementation plan](../implementation-plan.md#increment-2-agent-registry-and-bootstrap) records Increment 2 acceptance and its verification limits. The [operation contracts](../registry-contracts.md) retain the current behavior. Original instructions, reviews and source-bound evidence remain preserved with the local submission; qualification and execution follow later gates.
+The [implementation plan](../implementation-plan.md#increment-2-agent-registry-and-bootstrap) records Increment 2 acceptance and its verification limits. The [operation contracts](../registry-contracts.md) retain the current behavior. Original instructions, reviews and source-bound evidence remain preserved through the [evidence archive](../evidence-archive.md); qualification and execution follow later gates.
 
 Continue with the agreed [Agent setup](agent-setup-and-gitea.md), [operations and persistence](registry-operations.md), or the [diagram guide](README.md).

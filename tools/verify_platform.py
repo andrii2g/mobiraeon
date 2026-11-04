@@ -101,6 +101,19 @@ print(json.dumps({"platform": platform.platform(), "python": platform.python_ver
             "run",
             "--locked",
             "python",
+            str(root / "tools/verify_forge.py"),
+            "--manifest",
+            str(options.manifest),
+            "--output",
+            str(options.output.with_name(options.output.stem + "-forge.json")),
+        ]
+    )
+    commands.append(
+        [
+            uv,
+            "run",
+            "--locked",
+            "python",
             str(root / "tools/verify_execution.py"),
             "--input",
             str(root / "examples/execution.json"),

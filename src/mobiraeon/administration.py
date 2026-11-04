@@ -72,7 +72,12 @@ def administer(application, options):
             # The facade retains safe child attribution and partial progress.
             return stopped.result
     try:
-        if command in {"coordination", "execution"}:
+        if command == "forge":
+            from mobiraeon.forge_schema import decode
+
+            with Path(options["request_file"]).open("rb") as stream:
+                request = decode(stream.read(131073))
+        elif command in {"coordination", "execution"}:
             from mobiraeon.execution_schema import decode
 
             request = decode(Path(options["request_file"]).read_bytes())
@@ -115,6 +120,12 @@ def administer(application, options):
     else:
         raw = service.private.read_credential(config.credential_file)
         proof = credential_proof(raw)
+    if command == "forge":
+        from mobiraeon.forge import ForgeService
+
+        return ForgeService(application.store, service.private).invoke(
+            request["operation"], request["target"], request["inputs"], proof=proof
+        )
     if command == "coordination":
         from mobiraeon.coordination import Coordinator
 

@@ -1,0 +1,550 @@
+{
+  "created_utc": "2026-11-04T14:04:41.291005+00:00",
+  "source_archive_sha256": "e208e66b44e1e97678d0a4ca5ade6a2c50b90fc53b6dd9b589eb9757db4f4a1b",
+  "manifest_sha256": "8e2228f59746928b046c6838968952279d92b60dd137cb7fc379c6313fa207e0",
+  "source_files": 191,
+  "baseline_archive_sha256": "fd33b712b97a1db7ebc8b810b1e1400c3bdcdc3c5dc38b9b1b7e902901579c23",
+  "development_source_manifest": "submissions/increment-5/repair-final10-r1-q3-01/development-source-manifest-v2.json",
+  "source_snapshot_sha256": "2ab7a27873a1fb4707f7f767060b8612b6724464bb84d32c749c16f6fce239a0",
+  "head": "7fff312282c66ac8dfe616fde0b4230b31e133b2",
+  "staging_unchanged_empty": true,
+  "decision": "Increment 5 repair and required qualification complete; independent repair closure verified",
+  "independent_closure_gates": {
+    "qualification": {
+      "path": "submissions\\increment-5\\repair-final10-r1-q3-01\\final-audit\\qualification-audit.json",
+      "bytes": 119404,
+      "sha256": "71711006ce653b0ca827bdb5ea189645441fd9ce4f1f7e932190e7448266c33e"
+    },
+    "fresh_repair_closure": {
+      "path": "submissions\\increment-5\\repair-final10-r1-q3-01\\fresh-final-review\\closure.json",
+      "bytes": 45185,
+      "sha256": "904229e611442482294284dd74845b5cc67f5a32cf95923106e7c8e979692586"
+    }
+  },
+  "repairs": {
+    "F10_R1": "Local 64-level progress prevention and generic parser-fault raw continuation; genuine read/decode errors remain distinct",
+    "F9_R1": "Preserved original first-read/later-wait and ordered independent finalization controls pass unchanged",
+    "F9_R2": "Preserved strict absolute completion cutoff, semantic admission and no erroneous Coordination facts controls pass unchanged",
+    "Q3": "Current required qualification complete in the declared native Linux context; historical trigger remains unknown"
+  },
+  "inherited_F8_Q2_current_closure": {
+    "source_archive_sha256": "e208e66b44e1e97678d0a4ca5ade6a2c50b90fc53b6dd9b589eb9757db4f4a1b",
+    "disposition": "Inherited current F8-R1 and Q2 mechanism/prerequisite closure reverified; no remaining current qualification blocker in the declared context",
+    "preserved_causal_decision": {
+      "path": "submissions\\increment-5\\final-10\\q2-causal-decision.json",
+      "bytes": 2111,
+      "sha256": "b4f4a282522d0310a47108a6ba150b31e6e6f5f67e57edcfa5dcc82a61977a20",
+      "archive_sha256": "fd33b712b97a1db7ebc8b810b1e1400c3bdcdc3c5dc38b9b1b7e902901579c23",
+      "inherited_basis": {
+        "path": "submissions/increment-5/final-09/q2-causal-decision.json",
+        "sha256": "e42e35db35b15daf30c8b799e01f68be90690fdc660ee5d11f3e8ab81a2f5c5f",
+        "archive_sha256": "a6c00db0025e160855008fdb0a5fde3a35cbf28244c23583e4e8f8e7b7ffd4ad",
+        "meaning": "Historical source/installed real Snap-versus-direct diagnostic comparisons; not relabelled new-source execution"
+      }
+    },
+    "preserved_cause_explanation": {
+      "path": "submissions/increment-5/final-10/q2-cause.md",
+      "bytes": 1498,
+      "sha256": "832bf1c849a0faafbedbbab7c251ddc99f3d1a75c36583fa0453430863ef2ecf"
+    },
+    "preserved_discriminating_observations": {
+      "path": "submissions\\increment-5\\repair-final10-r1-q3-01\\q2-observed-boundary-facts.json",
+      "bytes": 1946,
+      "sha256": "9513fe4073bfe0ccc859ec2e371f755576239f816113eb7f924f73a1642a5d4c",
+      "comparisons": [
+        {
+          "mode": "source",
+          "report": "submissions/increment-5/repair-final08-r1-q2-01/q2-inspection-discriminator-01/source.json",
+          "sha256": "2c3f74d39042d3e6ba411059a8a93b2cadb137a5871e9d0ae12bc5281d2a4887",
+          "unavailable_event_sequence": 103,
+          "positive_event_sequence": 118,
+          "unavailable_observation": {
+            "executable": "/snap/bin/docker",
+            "exception_type": "SafeError",
+            "reason": "effects_uncertain",
+            "cleanup_parent_remaining": 4.979182516981382
+          },
+          "owned_finished_state": {
+            "Running": false,
+            "OOMKilled": false,
+            "ExitCode": 1,
+            "StartedAt": "2026-11-04T01:17:37.810231129Z",
+            "FinishedAt": "2026-11-04T01:17:38.742522016Z"
+          }
+        },
+        {
+          "mode": "installed",
+          "report": "submissions/increment-5/repair-final08-r1-q2-01/q2-inspection-discriminator-01/installed.json",
+          "sha256": "dae64d1143346ad528004f96c72b8f6ca963cf9aed2c3a7221f87cdae7387f50",
+          "unavailable_event_sequence": 102,
+          "positive_event_sequence": 117,
+          "unavailable_observation": {
+            "executable": "/snap/bin/docker",
+            "exception_type": "SafeError",
+            "reason": "effects_uncertain",
+            "cleanup_parent_remaining": 4.973174043989275
+          },
+          "owned_finished_state": {
+            "Running": false,
+            "OOMKilled": false,
+            "ExitCode": 1,
+            "StartedAt": "2026-11-04T01:17:54.635780473Z",
+            "FinishedAt": "2026-11-04T01:17:55.580744829Z"
+          }
+        }
+      ],
+      "inference_limit": "Historical Snap/direct observations used sequential separately allocated 300 ms windows and different cutoffs; they do not reconstruct one shared original request window"
+    },
+    "current_qualified_client": {
+      "executable": "/snap/docker/3618/bin/docker",
+      "sha256": "32d535f940cf658c82216a31b3440ab65f7cabf554b0e06d563f32846c163f05",
+      "preflight": {
+        "bytes": 1911,
+        "sha256": "2f1529d67d5dc67cc276e3ff7475c81cfaf03560fc1007a9962ceb58d51b4c93"
+      },
+      "settings": {
+        "startup_seconds": 100.0,
+        "execution_seconds": 100.0,
+        "grace_seconds": 5.0,
+        "cleanup_seconds": 10.0,
+        "cpus": 1.0,
+        "memory_bytes": 268435456,
+        "pids": 32,
+        "input_bytes": 65536,
+        "result_bytes": 65536,
+        "capture_bytes": 262144,
+        "scratch_bytes": 33554432,
+        "docker_executable": "/snap/docker/3618/bin/docker",
+        "endpoint": "unix:///var/run/docker.sock",
+        "image_id": "sha256:0a8b7aa53e80af9edebaa8ea21803b9b70ee9325a16751c7dd6a1465c8a5f8f8",
+        "engine_id": "0fc089f8-7374-43a4-a1aa-7381a79669e6"
+      },
+      "client": {
+        "executable": "/snap/docker/3618/bin/docker",
+        "sha256": "32d535f940cf658c82216a31b3440ab65f7cabf554b0e06d563f32846c163f05",
+        "python": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-source/.venv/bin/python",
+        "host": "DESKTOP-V80J3VT",
+        "uid": 1000,
+        "gid": 1000,
+        "netns": "net:[4026531840]"
+      }
+    },
+    "current_completion_controls": {
+      "source": {
+        "completion": {
+          "checks": 30,
+          "explicitly_unavailable": []
+        },
+        "final09": {
+          "checks": 36,
+          "explicitly_unavailable": []
+        },
+        "retained_strict_cutoff": {
+          "required_behavior": true,
+          "outer_exit_code": 0
+        }
+      },
+      "runtime-only-installed": {
+        "completion": {
+          "checks": 30,
+          "explicitly_unavailable": []
+        },
+        "final09": {
+          "checks": 36,
+          "explicitly_unavailable": []
+        },
+        "retained_strict_cutoff": {
+          "required_behavior": true,
+          "outer_exit_code": 0
+        }
+      }
+    },
+    "current_full_worker": {
+      "source": {
+        "outer": 76,
+        "nested": 30,
+        "raw_stdout_equals_fixture": true,
+        "all_semantic_cases_passed": true
+      },
+      "installed": {
+        "outer": 76,
+        "nested": 30,
+        "raw_stdout_equals_fixture": true,
+        "all_semantic_cases_passed": true
+      }
+    },
+    "current_fixed_plan_sha256": "05370d8a6c331c616ac9b5b6ebd8d5f36f5034ad6936b934b75cd9c7ed667d4e",
+    "current_fixed_counts": {
+      "source": {
+        "requested": 10,
+        "executed": 10,
+        "passed": 10,
+        "mismatched": 0,
+        "failed_other": 0,
+        "not_attempted": 0
+      },
+      "runtime-only-installed": {
+        "requested": 10,
+        "executed": 10,
+        "passed": 10,
+        "mismatched": 0,
+        "failed_other": 0,
+        "not_attempted": 0
+      }
+    },
+    "fixed_probe_owning_package_hashes": {
+      "execution.py": "f6dd898a54d5633b2a7d54993217f50a16116fae1da5d2acae135af198829ef8",
+      "docker_worker.py": "25dab0513da65563a09e8520f1e01dbbd2d59e2e1e279f5da192fff8ecc3583a",
+      "execution_fixture.py": "1e417c64d5ef46cc485cf7325656dacaf90a84d7d8488dfac8d16ac27c2d4860",
+      "execution_verification.py": "fcc596098911290b8f7e3f68ff67ff16e19da731f6b7bd2c63ad2ce2c4a50ee2",
+      "execution_diagnostics.py": "2bf4d8a773fa8a951251b45282db032fe880893a0639ce100a2e4d021bc52099",
+      "execution_trace.py": "2119b9f66aa6343d3a7aba9052461d4e66a788297e45d24fc280018b14ace3a2",
+      "fixture_assets/program.py": "a609ead6ba499066e7f0db6d26c007c9fbb894c28e5cadb1d985b671743044aa",
+      "fixture_assets/guard.py": "5f3c8568123d89b3e6fc1eb8f2a576ee441176f20ea42391946b3b1fd970c21a"
+    },
+    "current_live_trace_assertions": "Every one of the 20 raw cases verifies pre-cleanup completion within the original deadline, source/client/identity binding and original public/SQL outcome predicates",
+    "historical_limits": "Exact original Q2 trigger and final04 cause remain unknown; historical observations are not relabelled as current execution"
+  },
+  "stage_actual_outers": {
+    "foundation": {
+      "outer_exit_code": 0,
+      "commands": 1
+    },
+    "windows": {
+      "outer_exit_code": 0,
+      "commands": 1
+    },
+    "linux": {
+      "outer_exit_code": 0,
+      "commands": 4
+    },
+    "runtime": {
+      "outer_exit_code": 0,
+      "commands": 25
+    },
+    "native": {
+      "outer_exit_code": 0,
+      "commands": 6
+    },
+    "qualify": {
+      "outer_exit_code": 0,
+      "commands": 6
+    }
+  },
+  "matrices": {
+    "foundation": {
+      "commands": 13,
+      "outer_exit_code": 0,
+      "pytest": {
+        "summary": "================= 727 passed, 4 skipped in 323.97s (0:05:23) ==================",
+        "counts": {
+          "passed": 727,
+          "skipped": 4
+        }
+      },
+      "installed_forge": {
+        "summary": "174 passed in 115.26s (0:01:55)",
+        "counts": {
+          "passed": 174
+        }
+      },
+      "installed_reporting": {
+        "summary": "38 passed in 3.33s",
+        "counts": {
+          "passed": 38
+        }
+      }
+    },
+    "windows": {
+      "commands": 15,
+      "outer_exit_code": 0,
+      "pytest": {
+        "summary": "================= 727 passed, 4 skipped in 340.40s (0:05:40) ==================",
+        "counts": {
+          "passed": 727,
+          "skipped": 4
+        }
+      },
+      "installed_forge": {
+        "summary": "174 passed in 120.40s (0:02:00)",
+        "counts": {
+          "passed": 174
+        }
+      },
+      "installed_reporting": {
+        "summary": "38 passed in 3.10s",
+        "counts": {
+          "passed": 38
+        }
+      }
+    },
+    "linux": {
+      "commands": 15,
+      "outer_exit_code": 0,
+      "pytest": {
+        "summary": "================== 729 passed, 1 skipped in 282.93s (0:04:42) ==================",
+        "counts": {
+          "passed": 729,
+          "skipped": 1
+        }
+      },
+      "installed_forge": {
+        "summary": "174 passed in 104.29s (0:01:44)",
+        "counts": {
+          "passed": 174
+        }
+      },
+      "installed_reporting": {
+        "summary": "38 passed in 2.57s",
+        "counts": {
+          "passed": 38
+        }
+      }
+    }
+  },
+  "controls": {
+    "source": {
+      "final10": {
+        "checks": 8,
+        "explicitly_unavailable": []
+      },
+      "final09": {
+        "checks": 36,
+        "explicitly_unavailable": []
+      },
+      "f8": {
+        "checks": 37,
+        "explicitly_unavailable": []
+      },
+      "completion": {
+        "checks": 30,
+        "explicitly_unavailable": []
+      },
+      "required": {
+        "checks": 15,
+        "explicitly_unavailable": []
+      },
+      "final07": {
+        "checks": 66,
+        "explicitly_unavailable": []
+      }
+    },
+    "runtime-only-installed": {
+      "final10": {
+        "checks": 8,
+        "explicitly_unavailable": []
+      },
+      "final09": {
+        "checks": 36,
+        "explicitly_unavailable": []
+      },
+      "f8": {
+        "checks": 37,
+        "explicitly_unavailable": []
+      },
+      "completion": {
+        "checks": 30,
+        "explicitly_unavailable": []
+      },
+      "required": {
+        "checks": 15,
+        "explicitly_unavailable": []
+      },
+      "final07": {
+        "checks": 66,
+        "explicitly_unavailable": []
+      }
+    },
+    "native-windows": {
+      "final10": {
+        "checks": 8,
+        "explicitly_unavailable": []
+      },
+      "final09": {
+        "checks": 36,
+        "explicitly_unavailable": []
+      },
+      "f8": {
+        "checks": 37,
+        "explicitly_unavailable": [
+          "no_eof",
+          "delayed",
+          "oversized",
+          "multibyte"
+        ]
+      },
+      "completion": {
+        "checks": 30,
+        "explicitly_unavailable": []
+      },
+      "required": {
+        "checks": 15,
+        "explicitly_unavailable": []
+      },
+      "final07": {
+        "checks": 66,
+        "explicitly_unavailable": []
+      }
+    }
+  },
+  "retained_probes": {
+    "source": {
+      "retained-r1-negative": {
+        "required_behavior": true,
+        "outer_exit_code": 0
+      },
+      "retained-r1-positive": {
+        "required_behavior": true,
+        "outer_exit_code": 0
+      },
+      "retained-r2": {
+        "required_behavior": true,
+        "outer_exit_code": 0
+      }
+    },
+    "runtime-only-installed": {
+      "retained-r1-negative": {
+        "required_behavior": true,
+        "outer_exit_code": 0
+      },
+      "retained-r1-positive": {
+        "required_behavior": true,
+        "outer_exit_code": 0
+      },
+      "retained-r2": {
+        "required_behavior": true,
+        "outer_exit_code": 0
+      }
+    }
+  },
+  "runtime": {
+    "before": {
+      "source_files": 55,
+      "production_distributions": 23,
+      "wheel_sha256": "df9ed24a5ffe623a1b966e463b0062fbf48b2d961a943b146bf6a3d57b515ca2",
+      "python": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-runtime/runtime/bin/python",
+      "module": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-runtime/runtime/lib/python3.14/site-packages/mobiraeon",
+      "native_chain": {
+        "base": "/home/andrey/work/mobiraeon-increment-5-20261104-01",
+        "path_count": 21,
+        "all_recorded_paths_on_ext4": true,
+        "uv_sha256": "23803452c0fbe125033054cd9ff245f1d649fb65b4b73f68429f4abda432436d",
+        "resolved_executable_sha256": "340a561270dc31d791a4922adf3a112da5c425379a3e080c1946047d3eb89638"
+      }
+    },
+    "after-controls": {
+      "source_files": 55,
+      "production_distributions": 23,
+      "wheel_sha256": "df9ed24a5ffe623a1b966e463b0062fbf48b2d961a943b146bf6a3d57b515ca2",
+      "python": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-runtime/runtime/bin/python",
+      "module": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-runtime/runtime/lib/python3.14/site-packages/mobiraeon",
+      "native_chain": {
+        "base": "/home/andrey/work/mobiraeon-increment-5-20261104-01",
+        "path_count": 21,
+        "all_recorded_paths_on_ext4": true,
+        "uv_sha256": "23803452c0fbe125033054cd9ff245f1d649fb65b4b73f68429f4abda432436d",
+        "resolved_executable_sha256": "340a561270dc31d791a4922adf3a112da5c425379a3e080c1946047d3eb89638"
+      }
+    },
+    "after-provider": {
+      "source_files": 55,
+      "production_distributions": 23,
+      "wheel_sha256": "df9ed24a5ffe623a1b966e463b0062fbf48b2d961a943b146bf6a3d57b515ca2",
+      "python": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-runtime/runtime/bin/python",
+      "module": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-runtime/runtime/lib/python3.14/site-packages/mobiraeon",
+      "native_chain": {
+        "base": "/home/andrey/work/mobiraeon-increment-5-20261104-01",
+        "path_count": 21,
+        "all_recorded_paths_on_ext4": true,
+        "uv_sha256": "23803452c0fbe125033054cd9ff245f1d649fb65b4b73f68429f4abda432436d",
+        "resolved_executable_sha256": "340a561270dc31d791a4922adf3a112da5c425379a3e080c1946047d3eb89638"
+      }
+    },
+    "after-qualification": {
+      "source_files": 55,
+      "production_distributions": 23,
+      "wheel_sha256": "df9ed24a5ffe623a1b966e463b0062fbf48b2d961a943b146bf6a3d57b515ca2",
+      "python": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-runtime/runtime/bin/python",
+      "module": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-runtime/runtime/lib/python3.14/site-packages/mobiraeon",
+      "native_chain": {
+        "base": "/home/andrey/work/mobiraeon-increment-5-20261104-01",
+        "path_count": 21,
+        "all_recorded_paths_on_ext4": true,
+        "uv_sha256": "23803452c0fbe125033054cd9ff245f1d649fb65b4b73f68429f4abda432436d",
+        "resolved_executable_sha256": "340a561270dc31d791a4922adf3a112da5c425379a3e080c1946047d3eb89638"
+      }
+    }
+  },
+  "providers": {
+    "source": {
+      "assertions": 9,
+      "routes": 72,
+      "api_version": "28.2.0",
+      "publication": "http://127.0.0.2:39619",
+      "cleanup": "verified_owned_resources_removed"
+    },
+    "runtime-only-installed": {
+      "assertions": 9,
+      "routes": 72,
+      "api_version": "28.2.0",
+      "publication": "http://127.0.0.2:38191",
+      "cleanup": "verified_owned_resources_removed"
+    }
+  },
+  "full_Worker": {
+    "source": {
+      "outer": 76,
+      "nested": 30,
+      "raw_stdout_equals_fixture": true,
+      "all_semantic_cases_passed": true
+    },
+    "installed": {
+      "outer": 76,
+      "nested": 30,
+      "raw_stdout_equals_fixture": true,
+      "all_semantic_cases_passed": true
+    }
+  },
+  "certification_counts": {
+    "source": {
+      "requested": 10,
+      "executed": 10,
+      "passed": 10,
+      "mismatched": 0,
+      "failed_other": 0,
+      "not_attempted": 0
+    },
+    "runtime-only-installed": {
+      "requested": 10,
+      "executed": 10,
+      "passed": 10,
+      "mismatched": 0,
+      "failed_other": 0,
+      "not_attempted": 0
+    }
+  },
+  "certification_plan_sha256": "05370d8a6c331c616ac9b5b6ebd8d5f36f5034ad6936b934b75cd9c7ed667d4e",
+  "certification_owning_package_hashes": {
+    "execution.py": "f6dd898a54d5633b2a7d54993217f50a16116fae1da5d2acae135af198829ef8",
+    "docker_worker.py": "25dab0513da65563a09e8520f1e01dbbd2d59e2e1e279f5da192fff8ecc3583a",
+    "execution_fixture.py": "1e417c64d5ef46cc485cf7325656dacaf90a84d7d8488dfac8d16ac27c2d4860",
+    "execution_verification.py": "fcc596098911290b8f7e3f68ff67ff16e19da731f6b7bd2c63ad2ce2c4a50ee2",
+    "execution_diagnostics.py": "2bf4d8a773fa8a951251b45282db032fe880893a0639ce100a2e4d021bc52099",
+    "execution_trace.py": "2119b9f66aa6343d3a7aba9052461d4e66a788297e45d24fc280018b14ace3a2",
+    "fixture_assets/program.py": "a609ead6ba499066e7f0db6d26c007c9fbb894c28e5cadb1d985b671743044aa",
+    "fixture_assets/guard.py": "5f3c8568123d89b3e6fc1eb8f2a576ee441176f20ea42391946b3b1fd970c21a"
+  },
+  "preservation": {
+    "prior_readable": 52348,
+    "legacy_inaccessible": 17,
+    "pre_capture_files": 220,
+    "all_inventoried_readable_unchanged": true
+  },
+  "limits": [
+    "Designated human acceptance and production approval are separate; no acceptance record edited",
+    "Historical Q3 trigger, original Q2 trigger and final04 cause remain unknown",
+    "Named native WSL/ext4/direct-CLI Engine, genuine 127.0.0.2 provider publication and disposable SQLite qualification only",
+    "Native Windows Worker, production PostgreSQL/deployment and ordinary Agents/Runners remain unqualified",
+    "Five real Agents remain disabled/unqualified; no commit/push"
+  ]
+}

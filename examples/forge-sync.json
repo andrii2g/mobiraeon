@@ -1,0 +1,14 @@
+{
+  "operation": "forge.sync",
+  "target": {
+    "kind": "entity",
+    "entity_kind": "project",
+    "identity": "project-1"
+  },
+  "inputs": {
+    "operation_id": "sync-task-1",
+    "expected_version": 1,
+    "task_id": "task-1",
+    "connection_revision": "fcr_example_1"
+  }
+}

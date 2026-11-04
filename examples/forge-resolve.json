@@ -1,0 +1,16 @@
+{
+  "operation": "forge.resolve",
+  "target": {
+    "kind": "entity",
+    "entity_kind": "project",
+    "identity": "project-1"
+  },
+  "inputs": {
+    "operation_id": "approve-refresh-1",
+    "expected_version": 4,
+    "task_id": "task-1",
+    "conflict_id": "conflict_example_1",
+    "action": "refresh",
+    "rationale": "Restore the Coordinator projection from current local facts."
+  }
+}

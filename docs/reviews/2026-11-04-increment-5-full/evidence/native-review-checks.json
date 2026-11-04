@@ -1,0 +1,84 @@
+{
+  "started_utc": "2026-11-04T15:10:43.845090+00:00",
+  "source_archive_sha256": "e208e66b44e1e97678d0a4ca5ade6a2c50b90fc53b6dd9b589eb9757db4f4a1b",
+  "source_files": 191,
+  "source_unchanged_before": true,
+  "checks": [
+    {
+      "label": "pytest",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "--basetemp",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/full-review-20261104-01/pytest-temporary"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-source",
+      "started_utc": "2026-11-04T15:10:43.845127+00:00",
+      "exit_code": 0,
+      "stdout": "........................................................................ [  9%]\n............................................................s........... [ 19%]\n........................................................................ [ 29%]\n........................................................................ [ 39%]\n........................................................................ [ 49%]\n........................................................................ [ 59%]\n........................................................................ [ 69%]\n........................................................................ [ 78%]\n........................................................................ [ 88%]\n........................................................................ [ 98%]\n..........                                                               [100%]\n729 passed, 1 skipped in 278.09s (0:04:38)\n",
+      "stderr": "",
+      "finished_utc": "2026-11-04T15:15:08.851829+00:00"
+    },
+    {
+      "label": "lint",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "run",
+        "--locked",
+        "ruff",
+        "check",
+        "."
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-source",
+      "started_utc": "2026-11-04T15:15:08.852099+00:00",
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": "",
+      "finished_utc": "2026-11-04T15:15:08.953552+00:00"
+    },
+    {
+      "label": "format",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "run",
+        "--locked",
+        "ruff",
+        "format",
+        "--check",
+        "."
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-source",
+      "started_utc": "2026-11-04T15:15:08.953925+00:00",
+      "exit_code": 0,
+      "stdout": "99 files already formatted\n",
+      "stderr": "",
+      "finished_utc": "2026-11-04T15:15:08.991168+00:00"
+    },
+    {
+      "label": "build",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "build",
+        "--out-dir",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/full-review-20261104-01/dist"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-source",
+      "started_utc": "2026-11-04T15:15:08.991478+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Building source distribution...\nBuilding wheel from source distribution...\nSuccessfully built /home/andrey/work/mobiraeon-increment-5-20261104-01/full-review-20261104-01/dist/mobiraeon-0.1.0.tar.gz\nSuccessfully built /home/andrey/work/mobiraeon-increment-5-20261104-01/full-review-20261104-01/dist/mobiraeon-0.1.0-py3-none-any.whl\n",
+      "finished_utc": "2026-11-04T15:15:09.098267+00:00"
+    }
+  ],
+  "scope": "Fresh full Linux test/lint/format/build reproduction; prior full platform/provider/Worker qualification independently source-bound and audited, not relabelled reruns.",
+  "wheel": {
+    "bytes": 192632,
+    "sha256": "df9ed24a5ffe623a1b966e463b0062fbf48b2d961a943b146bf6a3d57b515ca2"
+  },
+  "packaged_source_files": 55,
+  "finished_utc": "2026-11-04T15:15:09.101683+00:00",
+  "source_unchanged_after": true
+}

@@ -189,6 +189,8 @@ Use one stable Gitea automation account for each registered Agent that acts in t
 
 Versioned project integration configuration binds each Agent to the relevant forge instance, account, repositories, and permitted operations. These bindings remain separate from reusable Profiles and model-provider accounts. Exact binding fields and physical schemas belong to the implementation contracts.
 
+The delivered [Increment 5 bridge](forge-contracts.md) implements Registry-owned Project connection heads and immutable revisions for the Coordination transport account. It does not provision or implement these per-Agent forge-account bindings. Their onboarding and execution qualification remain later work; the broader identity rules above remain the agreed design.
+
 The Coordination account publishes coordination updates; Agent-attributed submissions and reviews use their mapped principals through authorized operations. Account provisioning is an administrative activity. Repository access alone grants no workflow authority or review independence. Trusted operations enforce authenticated actor and Run attribution; a commit author name is insufficient proof of the acting principal.
 
 Use applicable Gitea [repository and team permissions](https://docs.gitea.com/usage/access-control/permissions/), [API-token permissions](https://docs.gitea.com/development/api-usage/), and [protected-branch controls](https://docs.gitea.com/usage/access-control/protected-branches/) alongside Möbiræon's controls, qualifying the actual operations on the installed instance. Configuration, exports, and Run records retain secret references; credential values remain outside the Registry and model-visible context.

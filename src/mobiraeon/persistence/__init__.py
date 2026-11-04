@@ -21,9 +21,11 @@ STORE_ID = "mobiraeon-foundation-v1"
 
 
 class TransactionFailure(Exception):
-    def __init__(self, *, rolled_back, reason=None):
+    def __init__(self, *, rolled_back, reason=None, safe_error=None):
         self.rolled_back = rolled_back
         self.reason = reason
+        # Controlled body metadata is usable only after verified rollback.
+        self.safe_error = safe_error if rolled_back else None
         super().__init__("transaction failed")
 
 
@@ -95,7 +97,7 @@ class Store:
         self.engine.dispose()
 
     @contextmanager
-    def transaction(self):
+    def transaction(self, *, timeout=None):
         """Known failure only when body failed and rollback was verified.
 
         A commit exception is uncertain even if a subsequent rollback succeeds.
@@ -104,6 +106,11 @@ class Store:
         connection = None
         try:
             connection = self.engine.connect()
+            if timeout is not None:
+                connection.exec_driver_sql(
+                    "PRAGMA busy_timeout=" + str(max(1, int(timeout * 1000)))
+                )
+                connection.rollback()
             connection.info["write"] = True
             transaction = connection.begin()
             driver = connection.connection.driver_connection
@@ -142,6 +149,7 @@ class Store:
                 raise TransactionFailure(
                     rolled_back=True,
                     reason=error.reason if isinstance(error, SafeError) else None,
+                    safe_error=error if isinstance(error, SafeError) else None,
                 ) from None
             else:
                 if not driver.in_transaction:

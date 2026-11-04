@@ -48,6 +48,7 @@ def parser():
             "prepare",
             "cleanup",
             "execution",
+            "forge",
         ],
     )
     result.add_argument("execution_action", nargs="?", choices=["run", "status", "stop"])
@@ -122,6 +123,7 @@ def main(argv=None):
             "prepare",
             "cleanup",
             "execution",
+            "forge",
         }:
             from mobiraeon.administration import administer
 

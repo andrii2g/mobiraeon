@@ -1,0 +1,60 @@
+{
+  "verified_utc": "2026-11-04T18:31:10.187129+00:00",
+  "finding": "I5-FR-R1 CLOSED; no remaining material findings in declared Increment 5 scope",
+  "qualified_source_archive": {
+    "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\repair-source.zip",
+    "sha256": "4a6f85d5cbd4c59ef39f5e0523342081a3f01497fd062685a341fb9eb09c9ed0",
+    "files": 204
+  },
+  "baseline_source_archive": {
+    "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\baseline-source.zip",
+    "sha256": "f1b2c6f3271e97c507f401db78c49f996af6e4ec34206db0b8ec9ceb59fa6b1f"
+  },
+  "qualified_non_documentation_inputs_unchanged": 124,
+  "packaged_source_files": 55,
+  "post_qualification_documentation_changes": [
+    "README.md",
+    "docs/README.md",
+    "docs/evidence-archive.md",
+    "docs/forge-contracts.md",
+    "docs/implementation-plan.md",
+    "docs/verification.md"
+  ],
+  "complete_change_allowlist_since_baseline": [
+    "README.md",
+    "docs/README.md",
+    "docs/evidence-archive.md",
+    "docs/forge-contracts.md",
+    "docs/implementation-plan.md",
+    "docs/verification.md",
+    "src/mobiraeon/operations.py",
+    "src/mobiraeon/persistence/__init__.py",
+    "tests/test_forge.py",
+    "tests/test_operations.py"
+  ],
+  "new_closure_record": "C:\\github\\a2g.name\\mobiraeon\\docs\\reviews\\2026-11-04-increment-5-replay-repair",
+  "prior_full_review_entries_unchanged": 22,
+  "prior_full_review_index": {
+    "bytes": 3727,
+    "sha256": "1de2746a3c38fb2d5a015c60f64a1cc2d3df7f1ac393b3d814cf62ac5cd1fdf3"
+  },
+  "original_archived_source_files_unchanged": 191,
+  "raw_reports_byte_identical": true,
+  "independent_final_assessment": {
+    "bytes": 8592,
+    "sha256": "77c15f2d5b1be2a2fadebd27c828fcf9989c3c46bf67d3bf1ea9142a4e41a0de"
+  },
+  "head": "7fff312282c66ac8dfe616fde0b4230b31e133b2",
+  "staged_paths": [],
+  "git_diff_check_exit": 0,
+  "generated_checkout_residue": [],
+  "post_closure_archive_receipt": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\completion-receipt.json",
+  "post_closure_archive_scope": "Final maintained documentation and current source captured separately after this record is sealed; qualified code/tests remain the frozen 204-file archive above.",
+  "no_commit_or_push": true,
+  "human_acceptance_recorded": false,
+  "local_markdown_links": {
+    "checked": 666,
+    "historical_links_resolving_in_preserved_mirror": 69,
+    "broken": []
+  }
+}

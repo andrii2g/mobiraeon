@@ -76,7 +76,7 @@ configuration, controlled internal operations, and SQLite/Alembic persistence. T
 [accepted Registry increment](#agent-registry-increment-2) adds authenticated Registry
 operations and HTTP administration. The [local simulated Coordination slice](#local-coordination-increment-3)
 and [supervised fixture execution](#supervised-fixture-execution-increment-4) are available.
-Ordinary Agent execution and forge integration remain unavailable. Foundation readiness
+Ordinary Agent execution remains unavailable. The manual forge bridge is described below. Foundation readiness
 does not establish their qualification or acceptance.
 
 Use CPython **3.14.10** and **uv 0.13.6**. `.python-version` pins the interpreter;
@@ -238,13 +238,30 @@ results cannot themselves establish Run completion or acceptance.
 
 ### Verification and independent assessment
 
+Tests, lint, formatting and builds are portable. The complete wheel, foundation
+and platform verifiers also run the Linux Worker suites: on Linux they require a
+prepared approved fixture image and a working local Docker Engine. Supply its
+actual immutable ID with `--fixture-image-id IMAGE_ID`. Windows runs the portable
+checks and reports native Worker execution as unavailable. The `--increment`
+selector chooses the evidence location, not a reduced historical test suite.
+See the [verification guide](docs/verification.md) for native toolchain and Docker
+client requirements before running full checks.
+
 ```text
 uv sync --locked
 uv run --locked pytest
 uv run --locked ruff check .
 uv run --locked ruff format --check .
 uv build
-uv run --locked python tools/verify_wheel.py
+```
+
+After building, use the appropriate installed-wheel check:
+
+```text
+# Windows portable checks
+uv run --locked python tools/verify_wheel.py --uv .tools/bin/uv.exe
+# Linux full checks; replace the native uv path and approved image ID
+uv run --locked python tools/verify_wheel.py --uv ABSOLUTE_UV_PATH --fixture-image-id IMAGE_ID
 ```
 
 The wheel check exports runtime constraints from the unchanged lock, creates a clean
@@ -282,14 +299,16 @@ in the plan; runtime readiness remains a separate observation.
 
 ## Agent Registry (Increment 2)
 
+The [manual forge bridge](#manual-forge-bridge-increment-5) adds separately granted
+Project operations. Registry administration alone grants none of that authority.
+
 Increment 2 is implemented, independently reviewed, and accepted by the human owner
 within the [recorded Registry scope and limitations](docs/implementation-plan.md#increment-2-agent-registry-and-bootstrap).
 The application provides authenticated Registry administration, exact immutable
 publications, versioned drafts/current controls, transactional audits and protected
 local owner setup/recovery. The five configured initial test Agents remain disabled.
 Authorized enablement reports unavailable while execution qualification is unavailable;
-authorized disablement remains usable. Agent execution and forge integration remain
-unavailable. Coordination is limited to the [isolated local slice](#local-coordination-increment-3).
+authorized disablement remains usable. Agent execution remains unavailable. Forge operations require separate Project grants. Coordination is limited to the [isolated local slice](#local-coordination-increment-3).
 See the [operation contracts](docs/registry-contracts.md)
 and [initial Agent configuration](docs/initial-agent-configuration.md).
 
@@ -408,7 +427,9 @@ TOML. Additional environment names use `MOBIRAEON_ACCESS_PRIVATE_DIR`,
 above); boolean environment values are exactly `true`/`false`. Unknown settings fail
 safely. Secrets never belong in TOML, environment settings or request documents.
 
-Run the complete checks and outside-checkout installed package probes:
+Run the complete checks and outside-checkout installed package probes. The
+commands below use the Windows uv path; Linux full checks require the prepared
+image and variants shown afterward.
 
 ```text
 uv sync --locked
@@ -421,7 +442,14 @@ uv run --locked python tools/verify_interruptions.py --api --output api-interrup
 uv run --locked python tools/verify_foundation.py --increment increment-2 --output-directory submissions/increment-2/local-verification --uv .tools/bin/uv.exe
 ```
 
-On Linux pass the available native uv path instead. Wheel checks install into a
+For Linux, use a native uv executable and include the Worker image:
+
+```text
+uv run --locked python tools/verify_wheel.py --uv ABSOLUTE_UV_PATH --fixture-image-id IMAGE_ID
+uv run --locked python tools/verify_foundation.py --increment increment-2 --output-directory submissions/increment-2/local-verification --uv ABSOLUTE_UV_PATH --fixture-image-id IMAGE_ID
+```
+
+Wheel checks install into a
 fresh `100%valid` path outside the checkout, consume explicit bootstrap inputs, run
 CLI and TLS probes and verify real SQLite persistence. Interruption probes exercise
 native Windows Ctrl+C/Ctrl+Break or Linux SIGINT/SIGTERM for both foundation and TLS
@@ -499,11 +527,17 @@ requires inspection of storage and external evidence; absence is not permission 
 retry. No automated reconciliation/retry or general multi-user administration exists.
 
 Run all regression, installed-wheel (including literal percent paths), TLS and
-native interruption checks and capture a source-bound Increment 3 submission:
+native interruption checks and capture a source-bound Increment 3 submission.
+The aggregate below is the Windows variant; Linux requires the image argument:
 
 ```text
 uv run --locked python tools/verify_foundation.py --increment increment-3 --output-directory submissions/increment-3/local-verification --uv .tools/bin/uv.exe
 uv run --locked python tools/verify_coordination.py --input examples/coordination.json --catalog-input bootstrap/initial-test.json
+```
+
+```text
+# Linux full aggregate
+uv run --locked python tools/verify_foundation.py --increment increment-3 --output-directory submissions/increment-3/local-verification --uv ABSOLUTE_UV_PATH --fixture-image-id IMAGE_ID
 ```
 
 Use a native uv path on Linux and choose a separate output directory beneath
@@ -511,11 +545,13 @@ Use a native uv path on Linux and choose a separate output directory beneath
 unchanged. Capture archives existing files within the selected output directory
 before replacing them. Exact-source Linux/WSL
 checks use `tools/verify_platform.py` on the extracted archive with `--manifest`,
-`--output` and `--uv`. Capability reporting is
-`coordination_workflows=local_simulated_task_acceptance`, with Agent execution and
-forge integration still unavailable. No background Coordinator, HTTP surface,
-provider/Worker/forge integration, multi-Task scheduler, recovery controls,
-Initiative acceptance or Request closure is delivered by this slice.
+`--output`, `--uv` and, on Linux, `--fixture-image-id`. Capability reporting is
+`coordination_workflows=local_simulated_task_acceptance`. This original Increment 3
+slice provides no background Coordinator, HTTP workflow surface, multi-Task
+scheduler, general recovery, Initiative acceptance or Request closure. The later
+[fixture execution](#supervised-fixture-execution-increment-4) and
+[manual forge bridge](#manual-forge-bridge-increment-5) have their own implemented
+contracts; ordinary Agent execution remains unavailable.
 
 ## Supervised fixture execution (Increment 4)
 
@@ -534,7 +570,10 @@ disabled/unqualified and `agent_execution=unavailable`.
 
 Use the existing Linux Docker Engine (WSL is supported for development). Prepare
 the approved image before admitting work; run this from the source environment
-or a clean installation containing the packaged build assets:
+or a clean installation containing the packaged build assets. First select the
+verified direct Docker client as described in the
+[verification guide](docs/verification.md#docker-and-completion-evidence): the
+fixture helper discovers `docker` through `PATH`.
 
 ```text
 uv run --locked python -m mobiraeon.execution_fixture build
@@ -545,14 +584,15 @@ identity, asset hashes and raw build results. No image is published. The tested
 developer image is
 `sha256:0a8b7aa53e80af9edebaa8ea21803b9b70ee9325a16751c7dd6a1465c8a5f8f8`,
 on Engine `0fc089f8-7374-43a4-a1aa-7381a79669e6` at
-`unix:///var/run/docker.sock`, using `/snap/bin/docker` 29.8.0. These identities
-describe the recorded development environment; a new installation builds and
-records its own approved image and Engine binding.
+`unix:///var/run/docker.sock`, using `/snap/bin/docker` 29.8.0 at the original
+Increment 4 acceptance. That dispatcher path is historical; later Increment 5
+qualification used the direct immutable client recorded in the verification
+guide. A new installation verifies its own client, image and Engine binding.
 
 Prepare a fresh private installation using ordinary Access authentication:
 
 ```text
-uv run --locked python -m mobiraeon.execution_fixture prepare --directory /tmp/mobiraeon-fixture-new --input examples/execution.json --catalog-input bootstrap/initial-test.json --image-id sha256:0a8b7aa53e80af9edebaa8ea21803b9b70ee9325a16751c7dd6a1465c8a5f8f8
+uv run --locked python -m mobiraeon.execution_fixture prepare --directory /tmp/mobiraeon-fixture-new --input examples/execution.json --catalog-input bootstrap/initial-test.json --image-id IMAGE_ID
 uv run --locked mobiraeon --config /tmp/mobiraeon-fixture-new/settings.toml --request-file /tmp/mobiraeon-fixture-new/run.json execution run
 uv run --locked mobiraeon --config /tmp/mobiraeon-fixture-new/settings.toml --request-file /tmp/mobiraeon-fixture-new/status.json execution status
 uv run --locked mobiraeon --config /tmp/mobiraeon-fixture-new/settings.toml --request-file /tmp/mobiraeon-fixture-new/stop.json execution stop
@@ -615,20 +655,23 @@ including before any execution row exists. Request and Initiative outcomes remai
 unchanged. The narrow UTF-8 bridge supports configured content byte budgets with
 a 1 MiB envelope while preserving unrelated Registry/Coordination limits.
 
-Run the complete source/installed checks with a fresh evidence directory:
+On Linux, run the complete source/installed checks with a fresh evidence directory
+and the prepared image:
 
 ```text
-uv run --locked python tools/verify_foundation.py --increment increment-4 --output-directory submissions/increment-4/local-verification --uv .tools/bin/uv.exe --fixture-image-id sha256:0a8b7aa53e80af9edebaa8ea21803b9b70ee9325a16751c7dd6a1465c8a5f8f8
-uv run --locked python tools/verify_execution.py --input examples/execution.json --catalog-input bootstrap/initial-test.json --image-id sha256:0a8b7aa53e80af9edebaa8ea21803b9b70ee9325a16751c7dd6a1465c8a5f8f8
+uv run --locked python tools/verify_foundation.py --increment increment-4 --output-directory submissions/increment-4/local-verification --uv ABSOLUTE_UV_PATH --fixture-image-id IMAGE_ID
+uv run --locked python tools/verify_execution.py --input examples/execution.json --catalog-input bootstrap/initial-test.json --image-id IMAGE_ID
 ```
 
 Use the actual native uv executable on Linux and `tools/verify_platform.py` on an
 isolated extraction with `--manifest`, `--output`, `--uv` and `--fixture-image-id`.
-Windows covers portable contracts and explicit unavailable behavior; it has no
+On Windows, run the foundation aggregate with `--uv .tools/bin/uv.exe` and omit
+`--fixture-image-id`. Windows covers portable contracts and explicit unavailable behavior; it has no
 native Linux Worker. Real enforcement checks run on Linux/WSL from source and a
 clean wheel outside the checkout, including percent-containing paths. WSL results
-do not qualify production Linux deployment. No provider/forge integration,
-background service, automatic retry/reassignment or general recovery is included.
+do not qualify production Linux deployment. This fixture slice provides no
+background service, automatic retry/reassignment or general recovery. The
+[manual forge bridge](#manual-forge-bridge-increment-5) is delivered separately.
 
 I4-R1–R3 developer repairs retain per-channel EOF/failure evidence: a stopped
 reader alone cannot establish complete capture, and failed capture cannot support
@@ -665,3 +708,112 @@ pending boolean; normal bounded wait flow signals the stop event and restores
 previous handlers, including on failure. Supervised success additionally requires
 terminal-zero container evidence and successful attachment capture **before**
 cleanup; attachment EOF or cleanup exit zero alone cannot establish success.
+
+
+## Manual forge bridge (Increment 5)
+
+The [forge contracts](docs/forge-contracts.md) describe the implemented bounded
+Gitea 28.2.0 bridge. The [final repair reassessment](docs/reviews/2026-11-04-increment-5-replay-repair/REVIEW.md) closes the last material finding. Increment 5 implementation and technical verification are complete; designated acceptance remains separate.
+Explicitly link an existing local Task to an existing ordinary issue, then manually
+publish/update one status/evidence comment. Human issue fields and discussion stay
+human-owned; Task progression/acceptance remain separate authorized operations.
+The cooperative read/update race is accepted and explicitly documented in the
+contracts. No polling, Task creation from issues or ordinary Agent execution exists.
+
+Upgrade an existing store explicitly before use. Grant each of the six named forge
+actions on `project:project-1` (or `project:*`/`*`), plus `coordination.status` on the
+Task for link/status/sync/resolve. Registry administrator grants are insufficient.
+The human PAT selected by `access.credential_file` is separate from the protected
+Gitea service-token reference in the connection.
+
+```text
+uv run --locked python -m mobiraeon.forge_credentials --config CONFIG --source-file PROTECTED_SOURCE --destination-name forge-v1
+uv run --locked mobiraeon --config CONFIG --request-file examples/forge-connection.json forge
+uv run --locked mobiraeon --config CONFIG --request-file examples/forge-link.json forge
+uv run --locked mobiraeon --config CONFIG --request-file examples/forge-status.json forge
+uv run --locked mobiraeon --config CONFIG --request-file examples/forge-sync.json forge
+uv run --locked mobiraeon --config CONFIG --request-file examples/forge-resolve.json forge
+```
+
+Examples contain nonsecret illustrative IDs. Use configure/read's actual returned
+`connection_revision`, status's current link version and exact conflict ID. Fixture
+drivers propagate these automatically; no owner-selected production ID/credential
+is needed for developer verification. See the protected source-file creation and
+rotation procedure in the contracts. Never put token values in argv/JSON/logs.
+Read/status make no HTTP calls and label remote facts as last observed.
+
+A failed or interrupted write may remain unresolved indefinitely. Do not repeat a
+potentially applied write: a new manual sync performs bounded read-only
+reconciliation first. Zero matches or an old body cannot exclude delayed delivery.
+Resolve records exact edit/deletion approval only; it cannot clear uncertainty.
+An approved refresh/replacement still requires a later manual sync. Inline fixture
+evidence is published by exact reference/hash without a hosted resolver.
+
+```text
+uv run --locked python tools/verify_forge.py
+uv run --locked python tools/verify_forge.py --target-python INSTALLED_PYTHON --manifest ORIGINAL_SOURCE_MANIFEST --output NEW_INSTALLED_REPORT
+uv run --locked python tools/verify_forge.py --real-gitea --docker-executable QUALIFIED_DOCKER_EXECUTABLE --manifest ORIGINAL_SOURCE_MANIFEST --output NEW_GITEA_REPORT
+uv run --locked python tools/verify_forge.py --real-gitea --target-python INSTALLED_PYTHON --docker-executable QUALIFIED_DOCKER_EXECUTABLE --manifest ORIGINAL_SOURCE_MANIFEST --output NEW_INSTALLED_GITEA_REPORT
+```
+
+The complete aggregate also runs current Worker checks; choose its platform variant:
+
+```text
+# Windows portable aggregate
+uv run --locked python tools/verify_foundation.py --increment increment-5 --output-directory submissions/increment-5/local-verification --uv .tools/bin/uv.exe
+# Linux full aggregate
+uv run --locked python tools/verify_foundation.py --increment increment-5 --output-directory submissions/increment-5/local-verification --uv ABSOLUTE_UV_PATH --fixture-image-id IMAGE_ID
+```
+
+Default `tools/verify_forge.py` loopback mode needs neither Gitea nor Docker: it uses protected disposable
+stores and production handlers/HTTPX2 transport against a loopback fixture. Actual
+provider mode requires Linux Docker and the pinned rootless 28.2.0 image, creates
+its own labeled disposable network/container with private temporary data and
+loopback/random published port, generates test-only accounts/tokens and removes
+only verified owned resources. Reports distinguish SQLite qualification from the
+owner's PostgreSQL deployment, record image/version/scopes/routes/limits, and
+exercise applied writes with acknowledgement loss through a controlled proxy.
+A host unable to reach Docker's published loopback socket is identified explicitly.
+After the original finite readiness budget, the fixture may collect private-address
+fallback diagnostics, but that run remains incomplete and exits nonzero. Real-Gitea
+qualification requires inspected published-loopback use throughout both scenarios;
+the current fixture uses `127.0.0.2` in its recorded WSL context. No persistent
+infrastructure is started or altered. Requested unavailable/failed modes exit nonzero.
+
+Clean wheel verification runs the installed deterministic bridge before installing
+any test dependencies, with no PYTHONPATH and an import path outside the checkout.
+Extract each final archive into fresh native Windows and Linux/WSL directories,
+then run `tools/verify_platform.py --uv ABSOLUTE_UV_PATH --manifest ORIGINAL_SOURCE_MANIFEST
+--output NEW_PLATFORM_REPORT`, with a verified `--fixture-image-id` on Linux.
+Keep the original manifest and verify source hashes before/after. Capture another
+numbered submission and rerun affected checks after any captured source change.
+
+### Verification failure evidence and qualification context
+
+The packaged execution fixture verifier retains a structured failed report before
+removing temporary evidence. Reports identify the active case/stage, original
+failure category, expected predicate, actual terminal fields, earlier checks,
+command exits/partial streams/parse status, package hashes and bounded Run/event/
+Coordination/capture summaries. Missing terminals remain explicitly unavailable.
+Failed state and its diagnostic are retained in an owner-protected directory
+outside Git; diagnostic persistence failure cannot turn verification into success.
+Successful fixture cleanup retains its previous meaning. These are verifier changes,
+not a production Worker outcome, settings, retry or authority change.
+
+The source execution wrapper retains structured failed children even with nonzero
+exit, and rejects zero-exit failed reports, malformed JSON and timeouts. Wheel
+failure stdout stays empty (FR-06); a framed `MOBIRAEON_WHEEL_FAILURE` diagnostic on
+stderr preserves prior installed observations while the original exception/nonzero
+still propagates. Controlled exit-17 and terminal-mismatch regressions exercise this
+reporting path; they do not reproduce or explain the historical Worker failure.
+
+Actual-provider qualification records affirmative Docker publication and proxy
+upstream metadata. The fixture uses random `127.0.0.2` publication on the named WSL
+host, where this address routes through Linux `lo`; the historical `127.0.0.1`
+limitation remains recorded. No daemon/firewall/global networking change or private
+backend relay is used for a passing qualification. Source and clean installed
+provider modes must each establish their own route and all nine assertions.
+
+## Verification environment and historical evidence
+
+The maintained [verification guide](docs/verification.md) records native Linux toolchain placement, direct Docker-client qualification, monotonic deadline and signal-progress contracts. The [evidence archive](docs/evidence-archive.md) locates retired submissions, raw artifacts and one-off developer briefs. The [full review](docs/reviews/2026-11-04-increment-5-full/REVIEW.md) and [final repair reassessment](docs/reviews/2026-11-04-increment-5-replay-repair/REVIEW.md) record the finding and its verified closure; earlier evidence retains its original source attribution.

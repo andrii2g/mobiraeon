@@ -1,8 +1,10 @@
+import pytest
 from sqlalchemy import text
 
 from mobiraeon.application import Application
 from mobiraeon.configuration import Configuration
 from mobiraeon.contracts import (
+    BusinessTarget,
     CallerContext,
     EntityId,
     Operation,
@@ -10,8 +12,9 @@ from mobiraeon.contracts import (
     Owner,
     RevisionRef,
 )
-from mobiraeon.errors import Reason, SafeError
+from mobiraeon.errors import Reason, RecordedForgeFailure, SafeError
 from mobiraeon.operations import Binding, OperationBoundary
+from mobiraeon.persistence import TransactionFailure
 
 CALLER = CallerContext(EntityId("human", "verified-fixture"), "test-adapter")
 TARGET = RevisionRef(EntityId("agent", "fixture-agent"), "immutable-r1")
@@ -238,3 +241,128 @@ def test_failed_rollback_is_uncertain_and_does_not_leak_driver_errors(
     assert result.outcome == Outcome.UNCERTAIN
     output = capsys.readouterr()
     assert "SENSITIVE" not in output.out + output.err + repr(result)
+
+
+def replay_boundary(store, handler, *, owner=Owner.FORGE, transactional=True):
+    # Isolate trusted binding outcome handling; public forge input validation and
+    # its disk-backed request/replay path are exercised in test_forge.
+    return OperationBoundary(
+        {
+            Operation.FORGE_CONFIGURE: Binding(
+                owner,
+                handler,
+                transactional,
+                True,
+                lambda target, inputs: None,
+                True,
+            )
+        },
+        Policy(),
+        CALLER,
+        store,
+    )
+
+
+def replay_result(path):
+    return path.invoke(
+        Operation.FORGE_CONFIGURE,
+        target=BusinessTarget("entity", "project", "project-replay"),
+        inputs={},
+    )
+
+
+def test_verified_rollback_retains_controlled_error_without_retaining_effects(store):
+    failure = RecordedForgeFailure(Reason.STORAGE_FAILURE, Outcome.UNAVAILABLE)
+    with pytest.raises(TransactionFailure) as raised, store.transaction() as tx:
+        tx.execute(text("CREATE TABLE replay_rollback_fixture (value TEXT)"))
+        raise failure
+    assert raised.value.rolled_back is True
+    assert raised.value.reason == Reason.STORAGE_FAILURE
+    assert raised.value.safe_error is failure
+    with store.engine.connect() as tx:
+        assert (
+            tx.exec_driver_sql(
+                "SELECT count(*) FROM sqlite_master WHERE name='replay_rollback_fixture'"
+            ).scalar()
+            == 0
+        )
+
+
+@pytest.mark.parametrize(
+    "outcome,reason",
+    [
+        (Outcome.UNAVAILABLE, Reason.STORAGE_FAILURE),
+        (Outcome.FAILURE, Reason.CONFLICT),
+        (Outcome.UNCERTAIN, Reason.UNCERTAIN),
+        (Outcome.INVALID, Reason.INVALID_INPUT),
+        (Outcome.REFUSED, Reason.REFUSED),
+    ],
+)
+def test_verified_forge_replay_retains_each_non_success_outcome(store, outcome, reason):
+    def handler(tx, target, inputs, invocation):
+        tx.execute(text("CREATE TABLE replay_rollback_fixture (value TEXT)"))
+        raise RecordedForgeFailure(reason, outcome)
+
+    result = replay_result(replay_boundary(store, handler))
+    assert result.outcome == outcome
+    assert result.reason == reason
+    assert result.data is None
+    with store.engine.connect() as tx:
+        assert (
+            tx.exec_driver_sql(
+                "SELECT count(*) FROM sqlite_master WHERE name='replay_rollback_fixture'"
+            ).scalar()
+            == 0
+        )
+
+
+@pytest.mark.parametrize("outcome", [Outcome.SUCCESS, "unrecognized-outcome", None])
+@pytest.mark.parametrize("transactional", [False, True])
+def test_invalid_recorded_forge_outcome_remains_uncertain(store, outcome, transactional):
+    def handler(tx, target, inputs, invocation):
+        raise RecordedForgeFailure(Reason.STORAGE_FAILURE, outcome)
+
+    result = replay_result(replay_boundary(store, handler, transactional=transactional))
+    assert result.outcome == Outcome.UNCERTAIN
+    assert result.reason == Reason.UNCERTAIN
+    assert result.data is None
+
+
+@pytest.mark.parametrize("owner", [Owner.REGISTRY, Owner.FOUNDATION])
+def test_other_owners_do_not_honor_forge_retained_outcome(store, owner):
+    def handler(tx, target, inputs, invocation):
+        raise RecordedForgeFailure(Reason.STORAGE_FAILURE, Outcome.UNAVAILABLE)
+
+    result = replay_result(replay_boundary(store, handler, owner=owner))
+    assert result.outcome == Outcome.FAILURE
+    assert result.reason == Reason.STORAGE_FAILURE
+    assert result.data is None
+
+
+@pytest.mark.parametrize("finalizer", ["commit", "rollback"])
+def test_typed_replay_error_never_overrides_uncertain_transaction_finalization(
+    store, monkeypatch, finalizer
+):
+    from sqlalchemy.engine import Transaction
+
+    original = getattr(Transaction, finalizer)
+
+    def finalize_then_fail(transaction):
+        original(transaction)
+        raise RecordedForgeFailure(Reason.STORAGE_FAILURE, Outcome.UNAVAILABLE)
+
+    monkeypatch.setattr(Transaction, finalizer, finalize_then_fail)
+
+    def handler(tx, target, inputs, invocation):
+        tx.execute(text("CREATE TABLE replay_uncertainty_fixture (value TEXT)"))
+        if finalizer == "rollback":
+            raise RecordedForgeFailure(Reason.STORAGE_FAILURE, Outcome.UNAVAILABLE)
+
+    result = replay_result(replay_boundary(store, handler))
+    assert result.outcome == Outcome.UNCERTAIN
+    assert result.reason == Reason.UNCERTAIN
+    assert result.data is None
+    with store.engine.connect() as tx:
+        assert tx.exec_driver_sql(
+            "SELECT count(*) FROM sqlite_master WHERE name='replay_uncertainty_fixture'"
+        ).scalar() == (1 if finalizer == "commit" else 0)

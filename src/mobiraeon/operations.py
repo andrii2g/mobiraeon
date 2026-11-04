@@ -14,7 +14,7 @@ from mobiraeon.contracts import (
     PermissionPolicy,
     RevisionRef,
 )
-from mobiraeon.errors import Reason, SafeError
+from mobiraeon.errors import Reason, RecordedForgeFailure, SafeError
 from mobiraeon.persistence import Store, TransactionAcquisitionFailure, TransactionFailure
 
 
@@ -59,6 +59,15 @@ class OperationBoundary:
                 validated_target,
                 data=data if outcome == Outcome.SUCCESS else None,
             )
+
+        def recorded_failure(error):
+            try:
+                retained = Outcome(error.outcome)
+            except ValueError, TypeError:
+                return result(Outcome.UNCERTAIN, Reason.UNCERTAIN)
+            if retained == Outcome.SUCCESS:
+                return result(Outcome.UNCERTAIN, Reason.UNCERTAIN)
+            return result(retained, error.reason)
 
         try:
             operation = Operation(code)
@@ -111,11 +120,21 @@ class OperationBoundary:
                     else:
                         binding.handler(transaction, validated_target)
             else:
-                binding.handler(None, validated_target)
+                if binding.business:
+                    data = binding.handler(None, validated_target, inputs, invocation)
+                else:
+                    binding.handler(None, validated_target)
             return result(Outcome.SUCCESS, Reason.OK)
         except TransactionAcquisitionFailure:
             return result(Outcome.UNAVAILABLE, Reason.STORAGE_FAILURE)
         except TransactionFailure as error:
+            if (
+                error.rolled_back
+                and binding is not None
+                and binding.owner == Owner.FORGE
+                and isinstance(error.safe_error, RecordedForgeFailure)
+            ):
+                return recorded_failure(error.safe_error)
             if error.rolled_back and error.reason is not None:
                 outcome = {
                     Reason.REFUSED: Outcome.REFUSED,
@@ -129,6 +148,19 @@ class OperationBoundary:
                 Reason.ROLLED_BACK if error.rolled_back else Reason.UNCERTAIN,
             )
         except SafeError as error:
+            if binding is not None and binding.owner == Owner.FORGE:
+                if isinstance(error, RecordedForgeFailure):
+                    return recorded_failure(error)
+                return result(
+                    {
+                        Reason.INVALID_INPUT: Outcome.INVALID,
+                        Reason.REFUSED: Outcome.REFUSED,
+                        Reason.UNAVAILABLE: Outcome.UNAVAILABLE,
+                        Reason.PROTECTION: Outcome.UNAVAILABLE,
+                        Reason.UNCERTAIN: Outcome.UNCERTAIN,
+                    }.get(error.reason, Outcome.FAILURE),
+                    error.reason,
+                )
             # Only foundation lifecycle handlers raise this controlled error type.
             # Migration failures still have their own per-migration effect boundary.
             if (

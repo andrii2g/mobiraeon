@@ -1,0 +1,453 @@
+{
+  "started_utc": "2026-11-04T15:25:47.330783+00:00",
+  "scope": "Offline controlled concurrency interleaving through actual ForgeService, Store and OperationBoundary; no network, services, Docker or source edit.",
+  "source_files": {
+    "src/mobiraeon/forge.py": {
+      "bytes": 52005,
+      "sha256": "d04606793d6fa453d605267b723ebbd054c2f0eac302021a4219ec3f9af1dc92"
+    },
+    "src/mobiraeon/operations.py": {
+      "bytes": 7066,
+      "sha256": "e51441452143a6a418ca902472e0dcbd9c694ff02d8eb415343a25fc23eb1960"
+    },
+    "src/mobiraeon/persistence/__init__.py": {
+      "bytes": 12048,
+      "sha256": "6a2845eb9e34608997bff9cfc82859050521ce716a0868dce652f38fc3eb02a3"
+    },
+    "src/mobiraeon/access.py": {
+      "bytes": 10237,
+      "sha256": "d649867e42c6cd164da26d1d46581ea8ca77edeb1fcf68875945186b060ed371"
+    },
+    "src/mobiraeon/errors.py": {
+      "bytes": 1777,
+      "sha256": "3390c48627da09313dbaa41339ccb4bef340910d1bfc42eeb4b2e069de61c992"
+    },
+    "src/mobiraeon/forge_verification.py": {
+      "bytes": 20513,
+      "sha256": "72763eb14d106e3de0ff5ed2116b0f4ea15648577a3cb2ccb44f31f695c93b7d"
+    },
+    "tests/test_forge.py": {
+      "bytes": 53776,
+      "sha256": "8c697ac40975a3cefeb3c9f230e2c0c915d7c33715da6300bd3757131275f8e4"
+    },
+    "docs/implementation-instructions.md": {
+      "bytes": 50839,
+      "sha256": "20abca0e4c792bb06f80b4524d79b2a0143479f7dd84f80ba5196dea42af507c"
+    },
+    "docs/forge-contracts.md": {
+      "bytes": 15895,
+      "sha256": "342f3123e122794bf3b7a3351089f624391a983b833da391ac7edd41fc5cc8a7"
+    }
+  },
+  "cases": [
+    {
+      "case": "ordinary_replay",
+      "before": {
+        "heads": [
+          {
+            "project": "project-1",
+            "id": "fc_d027c60cbe8044a0af09709eb305eb98",
+            "version": 1,
+            "revision": "fcr_d8117fe8e68b4dda92fc23bcfb5cfd5d"
+          }
+        ],
+        "revision_count": 1,
+        "attempts": [],
+        "matching_requests": 0,
+        "matching_receipts": 0
+      },
+      "second_matching_request": {
+        "public_result": {
+          "outcome": "unavailable",
+          "reason": "storage_failed",
+          "operation": "forge.connection.configure",
+          "invocation_id": "0f424695-a486-4c16-8fbe-fa2aab366695",
+          "actor": {
+            "kind": "human",
+            "value": "26038c7f94b048f79b463ac71268f4b4"
+          },
+          "target": {
+            "kind": "entity",
+            "entity_kind": "project",
+            "identity": "project-1",
+            "revision": null
+          },
+          "data_state": null
+        },
+        "genuine_sqlite_errors": [
+          {
+            "statement": "BEGIN IMMEDIATE",
+            "original_type": "OperationalError",
+            "sqlite_errorcode": 5,
+            "blocker_transaction_before": true,
+            "blocker_transaction_after": false
+          }
+        ],
+        "elapsed_seconds": 0.09019500005524606,
+        "retained_state": {
+          "heads": [
+            {
+              "project": "project-1",
+              "id": "fc_d027c60cbe8044a0af09709eb305eb98",
+              "version": 1,
+              "revision": "fcr_d8117fe8e68b4dda92fc23bcfb5cfd5d"
+            }
+          ],
+          "revision_count": 1,
+          "attempts": [
+            {
+              "sequence": 2,
+              "reference": "review-ordinary-replay",
+              "outcome": "unavailable",
+              "record": "{\"fingerprint\":\"1a1a9467844818cc454fb843e0ee43ef0895c0553d165e7e35abc9b9848d4372\",\"reason\":\"storage_failed\",\"task\":null}"
+            }
+          ],
+          "matching_requests": 0,
+          "matching_receipts": 0
+        }
+      },
+      "observed_replay_result": {
+        "outcome": "unavailable",
+        "reason": "storage_failed",
+        "operation": "forge.connection.configure",
+        "invocation_id": "d2cd06a7-f08c-4b71-97d8-7e4ffc3e1d4c",
+        "actor": {
+          "kind": "human",
+          "value": "26038c7f94b048f79b463ac71268f4b4"
+        },
+        "target": {
+          "kind": "entity",
+          "entity_kind": "project",
+          "identity": "project-1",
+          "revision": null
+        },
+        "data_state": null
+      },
+      "later_ordinary_replay_result": {
+        "outcome": "unavailable",
+        "reason": "storage_failed",
+        "operation": "forge.connection.configure",
+        "invocation_id": "91080ef6-4200-41a1-85a8-faccf831ccca",
+        "actor": {
+          "kind": "human",
+          "value": "26038c7f94b048f79b463ac71268f4b4"
+        },
+        "target": {
+          "kind": "entity",
+          "entity_kind": "project",
+          "identity": "project-1",
+          "revision": null
+        },
+        "data_state": null
+      },
+      "after": {
+        "heads": [
+          {
+            "project": "project-1",
+            "id": "fc_d027c60cbe8044a0af09709eb305eb98",
+            "version": 1,
+            "revision": "fcr_d8117fe8e68b4dda92fc23bcfb5cfd5d"
+          }
+        ],
+        "revision_count": 1,
+        "attempts": [
+          {
+            "sequence": 2,
+            "reference": "review-ordinary-replay",
+            "outcome": "unavailable",
+            "record": "{\"fingerprint\":\"1a1a9467844818cc454fb843e0ee43ef0895c0553d165e7e35abc9b9848d4372\",\"reason\":\"storage_failed\",\"task\":null}"
+          },
+          {
+            "sequence": 3,
+            "reference": "review-ordinary-replay",
+            "outcome": "unavailable",
+            "record": "{\"fingerprint\":\"1a1a9467844818cc454fb843e0ee43ef0895c0553d165e7e35abc9b9848d4372\",\"reason\":\"storage_failed\",\"task\":null}"
+          },
+          {
+            "sequence": 4,
+            "reference": "review-ordinary-replay",
+            "outcome": "unavailable",
+            "record": "{\"fingerprint\":\"1a1a9467844818cc454fb843e0ee43ef0895c0553d165e7e35abc9b9848d4372\",\"reason\":\"storage_failed\",\"task\":null}"
+          }
+        ],
+        "matching_requests": 0,
+        "matching_receipts": 0
+      },
+      "business_state_unchanged": true
+    },
+    {
+      "case": "writer_gap_replay",
+      "before": {
+        "heads": [
+          {
+            "project": "project-1",
+            "id": "fc_8520607bd820451cba6cc2bd9d0adfcb",
+            "version": 1,
+            "revision": "fcr_4c1229411d7b45b3927aa9205186a0fe"
+          }
+        ],
+        "revision_count": 1,
+        "attempts": [],
+        "matching_requests": 0,
+        "matching_receipts": 0
+      },
+      "second_matching_request": {
+        "public_result": {
+          "outcome": "unavailable",
+          "reason": "storage_failed",
+          "operation": "forge.connection.configure",
+          "invocation_id": "35606af9-115a-4280-b87b-5419994bd62e",
+          "actor": {
+            "kind": "human",
+            "value": "c2ff497119664bae92fbb8877a5626a4"
+          },
+          "target": {
+            "kind": "entity",
+            "entity_kind": "project",
+            "identity": "project-1",
+            "revision": null
+          },
+          "data_state": null
+        },
+        "genuine_sqlite_errors": [
+          {
+            "statement": "BEGIN IMMEDIATE",
+            "original_type": "OperationalError",
+            "sqlite_errorcode": 5,
+            "blocker_transaction_before": true,
+            "blocker_transaction_after": false
+          }
+        ],
+        "elapsed_seconds": 0.08876130008138716,
+        "retained_state": {
+          "heads": [
+            {
+              "project": "project-1",
+              "id": "fc_8520607bd820451cba6cc2bd9d0adfcb",
+              "version": 1,
+              "revision": "fcr_4c1229411d7b45b3927aa9205186a0fe"
+            }
+          ],
+          "revision_count": 1,
+          "attempts": [
+            {
+              "sequence": 2,
+              "reference": "review-writer-gap-replay",
+              "outcome": "unavailable",
+              "record": "{\"fingerprint\":\"6c419670fd3961718af5df05092e31cd2b2b078446237635abd04965ae2a7bb5\",\"reason\":\"storage_failed\",\"task\":null}"
+            }
+          ],
+          "matching_requests": 0,
+          "matching_receipts": 0
+        }
+      },
+      "observers": {
+        "writer_gap": [
+          {
+            "phase": "after_initial_read_before_original_configure_writer"
+          }
+        ],
+        "replay_calls": [
+          {
+            "returned": true,
+            "empty": true
+          },
+          {
+            "returned": false,
+            "exception_type": "RecordedForgeFailure",
+            "retained_outcome": "unavailable",
+            "reason": "storage_failed"
+          }
+        ],
+        "original_values_and_exceptions_unchanged": true
+      },
+      "observed_replay_result": {
+        "outcome": "known_failure",
+        "reason": "storage_failed",
+        "operation": "forge.connection.configure",
+        "invocation_id": "dc979215-93a8-47ff-a381-e164fc863cbf",
+        "actor": {
+          "kind": "human",
+          "value": "c2ff497119664bae92fbb8877a5626a4"
+        },
+        "target": {
+          "kind": "entity",
+          "entity_kind": "project",
+          "identity": "project-1",
+          "revision": null
+        },
+        "data_state": null
+      },
+      "later_ordinary_replay_result": {
+        "outcome": "unavailable",
+        "reason": "storage_failed",
+        "operation": "forge.connection.configure",
+        "invocation_id": "83ac8e25-d6f5-4cf2-8c0c-dc7f99e85db1",
+        "actor": {
+          "kind": "human",
+          "value": "c2ff497119664bae92fbb8877a5626a4"
+        },
+        "target": {
+          "kind": "entity",
+          "entity_kind": "project",
+          "identity": "project-1",
+          "revision": null
+        },
+        "data_state": null
+      },
+      "after": {
+        "heads": [
+          {
+            "project": "project-1",
+            "id": "fc_8520607bd820451cba6cc2bd9d0adfcb",
+            "version": 1,
+            "revision": "fcr_4c1229411d7b45b3927aa9205186a0fe"
+          }
+        ],
+        "revision_count": 1,
+        "attempts": [
+          {
+            "sequence": 2,
+            "reference": "review-writer-gap-replay",
+            "outcome": "unavailable",
+            "record": "{\"fingerprint\":\"6c419670fd3961718af5df05092e31cd2b2b078446237635abd04965ae2a7bb5\",\"reason\":\"storage_failed\",\"task\":null}"
+          },
+          {
+            "sequence": 3,
+            "reference": "review-writer-gap-replay",
+            "outcome": "known_failure",
+            "record": "{\"fingerprint\":\"6c419670fd3961718af5df05092e31cd2b2b078446237635abd04965ae2a7bb5\",\"reason\":\"storage_failed\",\"task\":null}"
+          },
+          {
+            "sequence": 4,
+            "reference": "review-writer-gap-replay",
+            "outcome": "unavailable",
+            "record": "{\"fingerprint\":\"6c419670fd3961718af5df05092e31cd2b2b078446237635abd04965ae2a7bb5\",\"reason\":\"storage_failed\",\"task\":null}"
+          }
+        ],
+        "matching_requests": 0,
+        "matching_receipts": 0
+      },
+      "business_state_unchanged": true
+    }
+  ],
+  "controller_exit_code": 0,
+  "actual_imports": {
+    "mobiraeon.forge": "C:\\github\\a2g.name\\mobiraeon\\src\\mobiraeon\\forge.py",
+    "mobiraeon.operations": "C:\\github\\a2g.name\\mobiraeon\\src\\mobiraeon\\operations.py",
+    "mobiraeon.persistence": "C:\\github\\a2g.name\\mobiraeon\\src\\mobiraeon\\persistence\\__init__.py"
+  },
+  "head": "7fff312282c66ac8dfe616fde0b4230b31e133b2",
+  "temporary_state": {
+    "root": "C:\\mobiraeon-i5-independent-reassessment-final06-20261103-01\\full-review-increment5-20261104-01\\temporary\\mobiraeon-forge-replay-review-8qfhkq46",
+    "outside_checkout": true,
+    "owned_state_removed": true
+  },
+  "writer_observations": [
+    {
+      "public_result": {
+        "outcome": "unavailable",
+        "reason": "storage_failed",
+        "operation": "forge.connection.configure",
+        "invocation_id": "0f424695-a486-4c16-8fbe-fa2aab366695",
+        "actor": {
+          "kind": "human",
+          "value": "26038c7f94b048f79b463ac71268f4b4"
+        },
+        "target": {
+          "kind": "entity",
+          "entity_kind": "project",
+          "identity": "project-1",
+          "revision": null
+        },
+        "data_state": null
+      },
+      "genuine_sqlite_errors": [
+        {
+          "statement": "BEGIN IMMEDIATE",
+          "original_type": "OperationalError",
+          "sqlite_errorcode": 5,
+          "blocker_transaction_before": true,
+          "blocker_transaction_after": false
+        }
+      ],
+      "elapsed_seconds": 0.09019500005524606,
+      "retained_state": {
+        "heads": [
+          {
+            "project": "project-1",
+            "id": "fc_d027c60cbe8044a0af09709eb305eb98",
+            "version": 1,
+            "revision": "fcr_d8117fe8e68b4dda92fc23bcfb5cfd5d"
+          }
+        ],
+        "revision_count": 1,
+        "attempts": [
+          {
+            "sequence": 2,
+            "reference": "review-ordinary-replay",
+            "outcome": "unavailable",
+            "record": "{\"fingerprint\":\"1a1a9467844818cc454fb843e0ee43ef0895c0553d165e7e35abc9b9848d4372\",\"reason\":\"storage_failed\",\"task\":null}"
+          }
+        ],
+        "matching_requests": 0,
+        "matching_receipts": 0
+      }
+    },
+    {
+      "public_result": {
+        "outcome": "unavailable",
+        "reason": "storage_failed",
+        "operation": "forge.connection.configure",
+        "invocation_id": "35606af9-115a-4280-b87b-5419994bd62e",
+        "actor": {
+          "kind": "human",
+          "value": "c2ff497119664bae92fbb8877a5626a4"
+        },
+        "target": {
+          "kind": "entity",
+          "entity_kind": "project",
+          "identity": "project-1",
+          "revision": null
+        },
+        "data_state": null
+      },
+      "genuine_sqlite_errors": [
+        {
+          "statement": "BEGIN IMMEDIATE",
+          "original_type": "OperationalError",
+          "sqlite_errorcode": 5,
+          "blocker_transaction_before": true,
+          "blocker_transaction_after": false
+        }
+      ],
+      "elapsed_seconds": 0.08876130008138716,
+      "retained_state": {
+        "heads": [
+          {
+            "project": "project-1",
+            "id": "fc_8520607bd820451cba6cc2bd9d0adfcb",
+            "version": 1,
+            "revision": "fcr_4c1229411d7b45b3927aa9205186a0fe"
+          }
+        ],
+        "revision_count": 1,
+        "attempts": [
+          {
+            "sequence": 2,
+            "reference": "review-writer-gap-replay",
+            "outcome": "unavailable",
+            "record": "{\"fingerprint\":\"6c419670fd3961718af5df05092e31cd2b2b078446237635abd04965ae2a7bb5\",\"reason\":\"storage_failed\",\"task\":null}"
+          }
+        ],
+        "matching_requests": 0,
+        "matching_receipts": 0
+      }
+    }
+  ],
+  "candidate_confirmed": true,
+  "required_behavior": false,
+  "source_unchanged": true,
+  "result": "observation_completed",
+  "finished_utc": "2026-11-04T15:25:47.953704+00:00"
+}

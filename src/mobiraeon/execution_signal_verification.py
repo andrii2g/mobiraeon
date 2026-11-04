@@ -6,12 +6,18 @@ import os
 import subprocess
 import sys
 import tempfile
+import time
 
 CHILD = r"""
 import dis,json,os,signal,sys,threading,time
+def emit(record):
+    # Test instrumentation only: no TextIO lock held across production calls.
+    os.write(1,(json.dumps(record)+"\n").encode())
 if sys.argv[4]:
     sys.path.insert(0, os.path.join(sys.argv[4], "src"))
+emit({"timing":"before_execution_import","monotonic_ns":time.monotonic_ns()})
 import mobiraeon.execution as execution
+emit({"timing":"after_execution_import","monotonic_ns":time.monotonic_ns()})
 
 mode, first, second = sys.argv[1:4]
 first, second = getattr(signal, first), getattr(signal, second)
@@ -19,9 +25,6 @@ previous = {s: signal.getsignal(s) for s in (signal.SIGINT,signal.SIGTERM)}
 events=[]
 depth=0
 fired=False
-def emit(record):
-    # Test instrumentation only: no TextIO lock held across production calls.
-    os.write(1,(json.dumps(record)+"\n").encode())
 emit({"implementation":execution.__file__})
 with execution.execution_signals() as interruption:
     actual=signal.getsignal(first)
@@ -75,7 +78,8 @@ with execution.execution_signals() as interruption:
     pending=interruption.is_set()
 restored=all(signal.getsignal(s)==h for s,h in previous.items())
 emit({"completed":True,"pending":pending,"restored":restored,"nested_scheduled":fired,
-      "handler_call_opcodes":calls,"events":events})
+      "handler_call_opcodes":calls,"events":events,
+      "timing":"semantic_completion","monotonic_ns":time.monotonic_ns()})
 """
 
 CASES = [
@@ -94,6 +98,7 @@ def run_case(mode, first, second, *, python=sys.executable, source_root=None, de
     environment.pop("PYTHONPATH", None)
     command = [str(python), "-c", CHILD, mode, first, second, str(source_root or "")]
     with tempfile.TemporaryDirectory(prefix="mobiraeon-signal-probe-") as outside:
+        parent_timing = {"popen_started_ns": time.monotonic_ns()}
         process = subprocess.Popen(
             command,
             cwd=outside,
@@ -102,13 +107,21 @@ def run_case(mode, first, second, *, python=sys.executable, source_root=None, de
             stderr=subprocess.PIPE,
             text=True,
         )
+        parent_timing["popen_returned_ns"] = time.monotonic_ns()
         timed_out = False
+        parent_timing["communicate_started_ns"] = time.monotonic_ns()
         try:
             stdout, stderr = process.communicate(timeout=deadline)
+            parent_timing["communicate_returned_ns"] = time.monotonic_ns()
         except subprocess.TimeoutExpired:
+            parent_timing["communicate_timed_out_ns"] = time.monotonic_ns()
             timed_out = True
+            parent_timing["kill_started_ns"] = time.monotonic_ns()
             process.kill()
+            parent_timing["kill_returned_ns"] = time.monotonic_ns()
+            parent_timing["reap_communicate_started_ns"] = time.monotonic_ns()
             stdout, stderr = process.communicate(timeout=3)
+            parent_timing["reap_communicate_returned_ns"] = time.monotonic_ns()
     records = [json.loads(line) for line in stdout.splitlines()]
     completed = next((r for r in records if r.get("completed")), None)
     entries = [r for r in records if r.get("event") == "enter"]
@@ -137,6 +150,21 @@ def run_case(mode, first, second, *, python=sys.executable, source_root=None, de
         "first": first,
         "second": second,
         "command": command,
+        "timing": {
+            "clock": "monotonic_ns",
+            "deadline_seconds": deadline,
+            "post_kill_seconds": 3,
+            # communicate establishes its own cutoff just after this anchor.
+            "communicate_reference_deadline_ns": parent_timing["communicate_started_ns"]
+            + int(deadline * 1_000_000_000),
+            "parent": parent_timing,
+            "child": {
+                record["timing"]: record["monotonic_ns"]
+                for record in records
+                if record.get("timing")
+                in ("before_execution_import", "after_execution_import", "semantic_completion")
+            },
+        },
         "timed_out": timed_out,
         "exit_code": process.returncode,
         "stdout": stdout,

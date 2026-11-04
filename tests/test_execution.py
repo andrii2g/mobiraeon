@@ -418,6 +418,7 @@ def test_accepted_coordination_store_upgrade_retains_records(tmp_path):
     legacy = tmp_path / "migrations"
     shutil.copytree(files("mobiraeon.persistence").joinpath("migrations"), legacy)
     (legacy / "versions/0004_execution.py").unlink()
+    (legacy / "versions/0005_forge.py").unlink()
     store = Store(tmp_path / "old.db")
     store.path.touch(mode=0o600)
     assert store.upgrade(migration_path=legacy, _new=True) == "0003"
@@ -449,7 +450,7 @@ def test_accepted_coordination_store_upgrade_retains_records(tmp_path):
         before = {
             name: tx.exec_driver_sql("SELECT * FROM " + name).fetchall() for name in names
         }
-    assert store.upgrade() == "0004"
+    assert store.upgrade() == "0005"
     with store.engine.connect() as tx:
         assert all(
             tx.exec_driver_sql("SELECT * FROM " + name).fetchall() == records

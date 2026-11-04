@@ -25,9 +25,12 @@ from mobiraeon.contracts import (
     Owner,
 )
 from mobiraeon.coordination import Coordinator, operation_fingerprint, require
-from mobiraeon.docker_worker import DockerWorker, actuation_lock
+from mobiraeon.docker_worker import DockerWorker, actuation_lock, completion_deadline
 from mobiraeon.errors import Reason, SafeError
 from mobiraeon.execution_schema import reference, validate
+from mobiraeon.execution_trace import BoundaryTrace, use_trace
+from mobiraeon.execution_trace import event as boundary_event
+from mobiraeon.execution_trace import phase as boundary_phase
 from mobiraeon.operations import Binding, OperationBoundary
 from mobiraeon.private_state import durable_new, harden, protected
 from mobiraeon.registry_schema import canonical
@@ -224,6 +227,7 @@ class ExecutionService:
                         result = replace(result, data=BusinessData(audit_status="unavailable"))
                 return result
             record = result.data.records[0]
+            boundary_event("before_progress", critical=True)
             if progress:
                 progress(result)
             if operation == Operation.EXECUTION_RUN and record.get("new_reservation"):
@@ -451,7 +455,56 @@ class ExecutionService:
 
     def supervise(self, target, proof, progress):
         with execution_signals() as interruption:
-            self._supervise(target, proof, progress, interruption)
+            trace = None
+            try:
+                trace = BoundaryTrace(self.load(target.identity)[0])
+            except Exception:
+                pass  # Diagnostic availability never grants or changes execution authority.
+            with use_trace(trace):
+                try:
+                    self._supervise(target, proof, progress, interruption)
+                finally:
+                    try:
+                        current = self.load(target.identity)[1]
+                        boundary_event(
+                            "final_projection",
+                            critical=True,
+                            facts={
+                                k: current.get(k)
+                                for k in (
+                                    "outcome",
+                                    "cleanup",
+                                    "terminal",
+                                    "held",
+                                    "seal",
+                                    "attachment_exit_code",
+                                )
+                            },
+                            completion_state={
+                                k: v
+                                for k, v in (current.get("completion_state") or {}).items()
+                                if k
+                                in {
+                                    "Running",
+                                    "ExitCode",
+                                    "FinishedAt",
+                                    "StartedAt",
+                                    "OOMKilled",
+                                    "Status",
+                                }
+                            },
+                        )
+                    except Exception as error:
+                        boundary_event(
+                            "final_projection_unavailable",
+                            critical=True,
+                            exception_type=type(error).__name__,
+                        )
+                    self.last_boundary_diagnostic = (
+                        trace.export()
+                        if trace
+                        else {"available": False, "reason": "trace_initialization_failed"}
+                    )
 
     def _supervise(self, target, proof, progress, interruption):
         task = target.identity
@@ -471,6 +524,7 @@ class ExecutionService:
         attachment_exit = None
         state = None
         startup_end = time.monotonic() + s["startup_seconds"]
+        boundary_event("run_start", critical=True, startup_deadline=startup_end)
 
         def interrupted():
             if interruption.is_set():
@@ -600,6 +654,7 @@ class ExecutionService:
                     time.sleep(0.05)
                 else:
                     raise SafeError(Reason.UNCERTAIN)
+                boundary_event("observed_start_processing", critical=True)
                 self.hook("after_start")
                 self.update(
                     task,
@@ -607,6 +662,7 @@ class ExecutionService:
                     {"phase": "running", "observed_start": state["State"]["StartedAt"]},
                     "observed_start",
                 )
+            boundary_event("before_progress", critical=True)
             if progress:
                 progress(
                     OperationResult(
@@ -619,7 +675,9 @@ class ExecutionService:
                         data=BusinessData((self.load(task)[1],), state="running"),
                     )
                 )
+            boundary_event("progress_returned", critical=True)
             deadline = time.monotonic() + s["execution_seconds"]
+            boundary_event("execution_deadline", critical=True, execution_deadline=deadline)
             while True:
                 interrupted()
                 _, current = self.load(task)
@@ -632,21 +690,50 @@ class ExecutionService:
                 if capture_failed.is_set():
                     raise CaptureFailure
                 attachment_exit = process.poll()
+                boundary_event(
+                    "attachment_poll",
+                    critical=attachment_exit is not None,
+                    exit_code=attachment_exit,
+                )
                 if attachment_exit is not None:
-                    state = worker.inspect(
-                        handoff, identity, timeout=max(0.05, deadline - time.monotonic())
-                    )
-                    observed = state["State"] if state else {}
-                    finished = observed.get("FinishedAt")
-                    if (
-                        observed.get("Running") is False
-                        and isinstance(finished, str)
-                        and finished
-                        and not finished.startswith("0001")
-                        and type(observed.get("ExitCode")) is int
+                    with (
+                        boundary_phase("completion", deadline),
+                        completion_deadline(deadline) as remaining,
                     ):
-                        completion_state = dict(observed)
-                        outcome = "succeeded" if observed["ExitCode"] == 0 else "failed"
+                        state = worker.inspect(handoff, identity, timeout=remaining())
+                        observed = state["State"] if state else {}
+                        finished = observed.get("FinishedAt")
+                        boundary_event(
+                            "completion_predicates",
+                            critical=True,
+                            non_running=observed.get("Running") is False,
+                            finished=isinstance(finished, str)
+                            and bool(finished)
+                            and not finished.startswith("0001"),
+                            strict_exit=type(observed.get("ExitCode")) is int,
+                            state={
+                                k: v
+                                for k, v in observed.items()
+                                if k
+                                in {
+                                    "Running",
+                                    "ExitCode",
+                                    "FinishedAt",
+                                    "StartedAt",
+                                    "OOMKilled",
+                                }
+                            },
+                        )
+                        remaining()
+                        if (
+                            observed.get("Running") is False
+                            and isinstance(finished, str)
+                            and finished
+                            and not finished.startswith("0001")
+                            and type(observed.get("ExitCode")) is int
+                        ):
+                            completion_state = dict(observed)
+                            outcome = "succeeded" if observed["ExitCode"] == 0 else "failed"
                     break
                 if time.monotonic() >= deadline:
                     outcome = "timeout"
@@ -663,16 +750,35 @@ class ExecutionService:
         except CaptureFailure:
             outcome = "capture_failed"
         except SafeError as error:
+            boundary_event(
+                "supervision_safe_error",
+                critical=True,
+                exception_type=type(error).__name__,
+                reason=error.reason.value,
+            )
             outcome = "startup_failed" if error.reason == Reason.EXECUTION_FAILED else "unknown"
-        except Exception:
+        except Exception as error:
+            boundary_event(
+                "supervision_exception", critical=True, exception_type=type(error).__name__
+            )
             outcome = "unknown"
         finally:
             cleanup_end = time.monotonic() + s["grace_seconds"] + s["cleanup_seconds"]
+            boundary_event(
+                "cleanup_begin",
+                critical=True,
+                cleanup_deadline=cleanup_end,
+                outcome=outcome,
+                attachment_exit=attachment_exit,
+                has_completion=completion_state is not None,
+            )
             try:
                 with actuation_lock(self.private):
                     _, current = self.load(task)
                     if not current.get("terminal"):
-                        cleaned = worker.cleanup(handoff, current)
+                        with boundary_phase("cleanup", cleanup_end):
+                            cleaned = worker.cleanup(handoff, current)
+                        boundary_event("cleanup_result", critical=True, cleaned=cleaned)
                         state = getattr(worker, "last_state", None) or state
                         if process:
                             try:
@@ -804,7 +910,7 @@ class ExecutionService:
                 version = one(
                     tx, "SELECT version FROM coordination_tasks WHERE id=:task", {"task": task}
                 )["version"]
-            coordinator.invoke(
+            observed_result = coordinator.invoke(
                 Operation.OBSERVE,
                 target,
                 {
@@ -819,6 +925,11 @@ class ExecutionService:
                     "detail": current["seal"],
                 },
                 proof=proof,
+            )
+            boundary_event(
+                "coordination_observation_result",
+                critical=True,
+                outcome=observed_result.outcome.value,
             )
 
 

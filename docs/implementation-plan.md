@@ -8,7 +8,7 @@ Increments 1–4 are implemented, independently reviewed, and accepted by the hu
 
 The [repository repair pass](#repository-repairs-after-increment-4) is implemented, independently reassessed, and accepted by the human owner. FR-01–FR-05, residual FR-02-R1 and FR-06 are resolved within the reviewed scope. The [acceptance record](reviews/2026-11-02-repairs-acceptance.md) identifies the exact repaired snapshot and preserved review chain. Completed repair instructions are retired from active documentation; their original text and all prior evidence remain preserved.
 
-[Increment 5](#increment-5-gitea-integration) now enters high-level planning. The minimum Gitea bridge below is a proposal for discussion, not a confirmed implementation assignment. Broader Coordination, ordinary Agent execution, forge integration and execution qualification remain unfinished. All five actual Registry Agents remain disabled and unqualified.
+[Increment 5](#increment-5-forge-integration-gitea-first) has an agreed high-level scope, [connection authority/configuration](#connection-authority-and-configuration), [field ownership](#field-ownership-and-publication), and [linking/conflict rules](#linking-and-synchronization-conflicts): one existing local Task explicitly linked to one existing Gitea Task issue in one configured repository, with manually triggered synchronization and a Coordinator-authored status/evidence comment. Its forge-neutral boundary follows D-07, with Gitea as the first adapter. The named [forge operations, Project-scoped permissions, local CLI and persistence ownership](#operation-and-persistence-contracts), [synchronization defaults and recovery](#synchronization-limits-and-recovery), and [demonstration](#demonstration-and-completion-evidence) are also agreed. The maintained [forge contracts](forge-contracts.md) define the wire/API bindings, configuration ranges and persistence constraints. The bounded bridge has completed implementation, [full independent review](reviews/2026-11-04-increment-5-full/REVIEW.md), and [verified closure of its last P2 finding](reviews/2026-11-04-increment-5-replay-repair/REVIEW.md). Technical verification is complete with no remaining material finding. Designated acceptance remains pending. Broader Coordination, ordinary Agent execution, additional forge integration and execution qualification remain unfinished. All five actual Registry Agents remain disabled and unqualified.
 
 The [architecture](architecture.md), [workflow](workflow.md), [forge-account policy](agent-registry.md#forge-identities), and [first-Agent preparation](agent-registry.md#first-agent-preparation) remain the design baseline. The concrete repository and feature for end-to-end validation will be selected under D-12. Existing Gitea setup checks and operational gaps remain in the [infrastructure guide](infrastructure.md#verification-before-relying-on-the-instance).
 
@@ -22,8 +22,8 @@ Use the following work breakdown to turn the agreed components into bounded impl
 | 2. Agent Registry and bootstrap | Accepted | SQLite-backed Registry API/CLI, immutable publication and reference resolution, protected administrator setup, and the disabled initial test Agent catalog. | Independent reassessment resolved I2-R1/I2-R2; Windows and Linux/WSL checks passed; the human owner accepted the identified repaired snapshot with its execution-readiness limitations. |
 | 3. Minimum Coordination workflow | Accepted | One locally supplied Request/Initiative/Task, authorized Assignment and simulated Run, result, independent assessment and explicit Task acceptance, with persistent status/history and basic duplicate protection. | Independent reassessment resolved I3-R1; Windows and Linux/WSL checks passed; the human owner accepted the identified repaired snapshot within its local simulation and storage limits. |
 | 4. Supervised execution | Accepted | One supervised fixture Run at a time in one local isolated Linux/container Worker, with bounded input/output, stopping, cleanup and persistent Coordination reporting. | Independent reassessments resolved I4-R1–R3, including residual I4-R2; Windows and Linux/WSL checks passed, including real source/installed Docker suites; the human owner accepted the exact repaired snapshot within its fixture limits. |
-| 5. Gitea integration | Planning; minimum slice proposed | One configured repository, explicit synchronization, persistent work-item mappings and controlled status/evidence publication through a forge adapter. | Proposed: duplicate observations do not duplicate local work; publication respects field authority and reconciles uncertain external effects before retry. Final scope and contracts remain to be agreed. |
-| 6. Primary execution qualification | Planned | One concrete runtime/provider/model/environment combination, declared capability scope, and independently configured review. | Authorized qualification checks pass with versioned configuration, operating limits, evidence, and limitations; only qualified scope becomes eligible for ordinary work. |
+| 5. Forge integration (Gitea first) | Implementation, review and technical verification complete; designated acceptance pending | One existing local Task linked to one existing Gitea Task issue in one configured repository, manual synchronization, persistent mapping and one Coordinator-authored status/evidence comment through a forge-neutral adapter contract. | Repeated synchronization and restart preserve the mapping without duplicate work or updates; publication follows the agreed ownership/conflict and recovery rules within configured budgets. The [maintained forge contracts](forge-contracts.md) fixes interfaces, persistence constraints, ranges and required verification. |
+| 6. Primary execution integration and qualification | Planned | Integrate and qualify the first actual Runner Adapter for one concrete runtime/provider/model/environment combination, declared capability scope, and independently configured review. Preserve the separate runtime/transport/provider/model configuration and extension boundary for the other requested paths. | Authorized qualification checks pass with versioned configuration, operating limits, evidence, and limitations; only qualified scope becomes eligible for ordinary work. Codex CLI, Claude Code CLI and the Ollama-based coding path require separate qualification. |
 | 7. End-to-end delivery validation | Planned | One bounded change in a prepared existing repository selected through the D-12 validation contract. | The complete delivery, acceptance, waiting, recovery, duplicate, and stale-result scenarios pass for identified revisions. |
 
 ## Increment 1: shared contracts and application foundation
@@ -51,7 +51,7 @@ Acceptance retains the recorded limits:
 - Readiness precedes signal-handler registration, and the verifier waits 0.2 seconds before sending a signal. The checks cover steady-state interruption rather than the exact readiness boundary or every terminal's manual keyboard delivery.
 - Windows and Linux/WSL foundation evidence does not qualify a production Linux host, full authentication, disaster recovery, or later Registry, Coordination, Worker, model, or forge capabilities.
 
-The original and repaired source archives, manifests, handoffs, and independent review remain locally retained under the ignored `submissions/increment-1/` tree. Documentation finalization records this acceptance and retires the completed assignment brief; it does not rewrite those captured snapshots or claim that the updated documentation still has their original file hashes.
+The original and repaired source archives, manifests, handoffs, and independent review remain locally retained under the ignored `submissions/increment-1/` tree (now relocated intact through the [evidence archive](evidence-archive.md)). Documentation finalization records this acceptance and retires the completed assignment brief; it does not rewrite those captured snapshots or claim that the updated documentation still has their original file hashes.
 
 The [D-11 technical baseline](decisions.md#d-11-implementation-technology-and-topology), [foundation setup and configuration guide](../README.md#application-foundation-increment-1), [storage/authorization boundaries](../README.md#storage-and-authorization-boundaries), and [application operation contract](../README.md#application-operation-contract) govern subsequent work. The old implementation instructions are no longer an active assignment; their exact text remains in the reviewed source archives.
 
@@ -82,7 +82,7 @@ Acceptance retains these limits:
 - Windows signal evidence covers the exercised native console context. Linux/WSL evidence does not qualify a production Linux/container deployment; live disconnect and hung-handler scenarios retain their recorded limits.
 - Coordination, scheduling, Workers/Runner Adapters, forge integration, execution qualification and end-to-end delivery remain later increments. Optional Registry Git import/export remains separately scoped.
 
-The original and repaired source archives, manifests, handoffs, original review and separate reassessment remain locally preserved under ignored `submissions/increment-2/`. The acceptance record identifies this exact repaired snapshot; documentation finalization does not rewrite captured evidence or claim that the updated documentation retains the snapshot's original hashes.
+The original and repaired source archives, manifests, handoffs, original review and separate reassessment remain locally preserved under ignored `submissions/increment-2/` (now relocated intact through the [evidence archive](evidence-archive.md)). The acceptance record identifies this exact repaired snapshot; documentation finalization does not rewrite captured evidence or claim that the updated documentation retains the snapshot's original hashes.
 
 The [Registry design](agent-registry.md), [operation contracts](registry-contracts.md), [initial configuration](initial-agent-configuration.md), and [application guide](../README.md#agent-registry-increment-2) govern ongoing use. The completed implementation assignment is retired from active documentation; its original text remains in the reviewed archives. Subsequent increments build on these accepted interfaces without implicitly enabling the initial Agents or introducing live execution.
 
@@ -114,7 +114,7 @@ Acceptance retains these limits:
 - If both commit acknowledgement and separate uncertainty-history recording fail, audit availability is explicitly unavailable; missing records cannot authorize retry. Retained local storage and deliberate inspection remain necessary. Power loss, hostile OS interference and disaster recovery are not qualified.
 - Native interruption evidence retains its console/readiness-timing limits; Linux/WSL is not production Linux qualification. Broader [Coordination capabilities](#deferred-coordination-capabilities), supervised execution and later roadmap work remain deferred.
 
-The original archive/review, repaired submission under `submissions/increment-3/repair-i3-r1/`, and separate independent reassessment remain locally preserved under ignored `submissions/increment-3/`. This acceptance identifies the exact repaired snapshot; documentation finalization does not rewrite evidence or claim that updated documentation retains the snapshot's original hashes.
+The original archive/review, repaired submission under `submissions/increment-3/repair-i3-r1/`, and separate independent reassessment remain locally preserved under ignored `submissions/increment-3/` (now relocated intact through the [evidence archive](evidence-archive.md)). This acceptance identifies the exact repaired snapshot; documentation finalization does not rewrite evidence or claim that updated documentation retains the snapshot's original hashes.
 
 The [Coordination contracts](coordination-contracts.md) and [application guide](../README.md#local-coordination-increment-3) own the maintained interface and operation details. The completed developer brief is retired from active documentation; its exact text remains in the reviewed archives. Select the next small delivery boundary before preparing another implementation assignment.
 
@@ -147,7 +147,7 @@ Acceptance retains these limits:
 - Synthetic independent assessment and explicit Task acceptance demonstrate the application flow. The Request stays open and the Initiative stays unaccepted; these demonstrations do not establish independent acceptance of other work.
 - Native Windows Worker execution is explicitly unavailable. Windows interruption evidence retains its exercised console/context limits, and Linux/WSL does not qualify production deployment, hostile interference, power-loss durability or disaster recovery.
 
-The original submission/review, `repair-i4-r1-r3/final-01`, `repair-i4-r2-nested-signal/final-01`, and separate independent reassessments remain preserved under ignored `submissions/increment-4/`. The final independent report is `submissions/increment-4/independent-reassessment-i4-r2-20261102-01/reassessment.md`. This acceptance identifies the exact repaired snapshot; documentation finalization does not rewrite historical evidence or claim that updated documentation retains its original hashes.
+The original submission/review, `repair-i4-r1-r3/final-01`, `repair-i4-r2-nested-signal/final-01`, and separate independent reassessments remain preserved under ignored `submissions/increment-4/` (now relocated intact through the [evidence archive](evidence-archive.md)). The final independent report is `submissions/increment-4/independent-reassessment-i4-r2-20261102-01/reassessment.md`. This acceptance identifies the exact repaired snapshot; documentation finalization does not rewrite historical evidence or claim that updated documentation retains its original hashes.
 
 The [execution contracts](execution-contracts.md), [Coordination contracts](coordination-contracts.md), and [application guide](../README.md#supervised-fixture-execution-increment-4) own the maintained behavior and operating instructions. The completed implementation brief is retired from active documentation; its exact text remains in the reviewed source archives.
 
@@ -174,30 +174,158 @@ The [first repair reassessment](reviews/2026-11-02-reassessment/REVIEW.md) resol
 
 Acceptance retains the existing fixture, authority, storage and platform limits. All five actual Registry Agents remain disabled and unqualified; no ordinary Agent, provider/model, forge or production Linux capability is qualified by these repairs. Automatic recovery/resumption, hostile interference, power-loss durability and disaster recovery remain outside the tested scope. The controlled FR-06 failures verify aggregation; actual signal observations passed.
 
-Original reviews, handoffs, frozen source archives and raw evidence remain preserved. Completed repair briefs are retired from active documentation, with their exact text retained in the reviewed archives. Acceptance and documentation finalization do not rewrite historical results or claim that the updated documentation retains the accepted archive's original hashes. Increment 5 remains a high-level proposal below.
+Original reviews, handoffs, frozen source archives and raw evidence remain preserved. Completed repair briefs are retired from active documentation, with their exact text retained in the reviewed archives. Acceptance and documentation finalization do not rewrite historical results or claim that the updated documentation retains the accepted archive's original hashes. Increment 5's agreed high-level scope follows below.
 
-## Increment 5: Gitea integration
+## Increment 5: forge integration (Gitea first)
 
-**Proposed for high-level discussion.** Start with a minimum bridge between one configured Gitea repository and the accepted local Coordination flow. A human explicitly runs one synchronization cycle, observes one prepared managed Task and its local mapping, and publishes a narrow Coordinator-owned status/evidence projection. Repeating a cycle or restarting must not duplicate work or external updates. This is a proposed slice of D-07, not a confirmed Task assignment.
+Implementation now exists under the maintained [forge contracts](forge-contracts.md). Developer verification and exact-source evidence are retained in the [evidence archive](evidence-archive.md). The [final repair reassessment](reviews/2026-11-04-increment-5-replay-repair/REVIEW.md) closes the last P2 replay finding with regression, source/installed and both platform checks. Implementation and technical verification are complete; designated acceptance remains pending. Earlier agreed planning below retains its scope.
 
-Keep the Coordinator authoritative for workflow state, permissions and acceptance. Gitea is the human-facing work surface; a label or issue closure alone cannot authorize allocation, execution or acceptance. Reuse existing local run/status/stop operations under their own grants. Import does not automatically start a Run or enable an Agent.
+Start with a minimum bridge between one configured Gitea repository and the accepted local Coordination flow. A human explicitly links one existing local Task to one existing Gitea Task issue. A manually triggered synchronization observes that linked issue and publishes a narrow Coordinator-owned status/evidence comment. Repeating synchronization or restarting preserves the same durable mapping without duplicate work or external updates. This high-level scope, connection/authority defaults, field ownership, linking/conflict policy, cooperative managed-comment editing with its accepted race, logical operation/persistence contracts, synchronization defaults/recovery and demonstration are agreed. The [maintained forge contracts](forge-contracts.md) fixes the concrete contracts and required evidence for implementation.
 
-| Proposed Task | High-level result |
+Keep the Coordinator authoritative for workflow state, permissions and acceptance. Gitea is the human-facing work surface; a label or issue closure alone cannot authorize allocation, execution or acceptance. Reuse existing local run/status/stop operations under their own grants. Linking or synchronization does not automatically start a Run or enable an Agent. The existing local Task supplies its recorded work contract and context; this slice does not create a local Task from issue content.
+
+| Task | High-level result |
 | --- | --- |
-| 1. Define the minimum forge boundary | A small forge-neutral adapter contract, explicit managed-item identity and field ownership, current authority, and the chosen mapping into the existing one-Task workflow. |
+| 1. Define the minimum forge boundary | A small forge-neutral adapter contract with explicit capabilities, stable external references, normalized observations/publication outcomes, the agreed field ownership and current authority. Implement Gitea first for the link between one existing local Task and one existing Task issue. |
 | 2. Configure one project connection | Explicit repository/project binding and a least-privilege Coordination transport account, using protected local credential references. Agent/Profile definitions remain forge-independent; individual Agent forge accounts are deferred. |
-| 3. Observe and map prepared work | One explicit synchronization cycle validates managed input and durably records external identity, observed revision and local work mapping. Incomplete or conflicting input stays blocked; repeated observations do not duplicate Tasks. |
-| 4. Publish controlled progress | Publish only the agreed status/evidence projection. Retain an outbound operation identity and reconcile uncertain delivery before retry; preserve human-owned content and refuse unauthorized progression. |
-| 5. Verify the bridge | Demonstrate observation, mapping, authorized publication, restart/replay and lost-acknowledgement handling against isolated test data, including installed-package checks and retained accepted regressions. |
+| 3. Link and observe existing work | An explicit human action establishes the durable Task/issue mapping. A manually triggered synchronization validates the linked issue and records its observed revision. Missing or conflicting input stays blocked; repeat/restart preserves the same mapping without creating Tasks. |
+| 4. Publish controlled progress | Maintain the agreed Coordinator-authored status/evidence comment from recorded local facts. Retain an outbound operation identity and reconcile uncertain delivery before retry; preserve human-owned content and refuse unauthorized progression. |
+| 5. Verify the bridge | Verify the shared adapter contract and Gitea implementation, including explicit linking, observation, authorized publication, human-content preservation, repeat/restart without duplicate work or updates, and lost-acknowledgement handling against isolated test data. Include installed-package checks and retained accepted regressions. |
 
-Before preparing an implementation brief, agree:
+### Forge adapter boundary
 
-- Which managed issue kinds this first slice observes, how a prepared Task supplies its required context, and whether it imports a Task or links an already supplied local Task.
-- Which fields the human and Coordinator own, how external edits/close/reopen affect synchronization, and which status/evidence projection is useful.
-- The minimum account permissions, project/installation authority, polling bounds and protected connection configuration.
-- The persistent mapping/revision and uncertain-effect rules, with one concrete demonstration and observable completion criteria.
+Follow the existing [D-07](decisions.md#d-07-forge-integration-and-initial-platform) separation: shared synchronization owns mapping, field ownership, duplicate protection and reconciliation under Coordinator authority. An in-process provider adapter translates issue/comment operations, authentication mechanics, native references and revision observations, pagination and API responses. Provider-specific payloads do not become Coordinator work contracts or workflow decisions.
 
-Keep the first slice small: automatic Request decomposition/Orchestrator planning, autonomous allocation/execution, per-Agent forge actions, PR/branch/merge automation, a background polling daemon/webhooks, cross-forge migration and broader scheduling/recovery are outside this proposal. Select later slices when needed; no Increment 5 implementation is started by this plan update.
+Keep the initial contract limited to reading the linked external issue, locating/reading its managed comment, and creating/updating that comment. Use stable external references scoped by the forge connection/instance and external project/repository; titles, URLs and issue numbers alone are insufficient identity. Adapters declare their capabilities and report conflicts, unavailable access, refusal, unsupported behavior and uncertain effects truthfully. The shared layer must not infer a successful publication or weaken ownership rules when a provider cannot establish the required guarantees.
+
+Implement and verify Gitea first. Future GitLab or other adapters use the same boundary and applicable contract checks, with their own connection bindings and qualification. The Agent Registry and authoritative local work remain independent of the forge. Moving an existing linked Project to another forge additionally requires explicit mapping/history and pending-publication migration; it is not a provider-setting change and remains outside this increment.
+
+### Runtime independence
+
+Forge Adapters and Runner Adapters are separate extension points. The requested execution paths remain Codex CLI, Claude Code CLI and an Ollama-based coding harness under [F-02 through F-09](requirements.md#functional-requirements) and [D-08](decisions.md#d-08-initial-profiles). Other execution integrations can use the same Runner Adapter boundary after their contracts and capabilities are defined and verified. Profiles configure runtime, transport, provider and model separately; each Run pins its resolved configuration.
+
+The forge bridge publishes normalized local Task/Run facts independently of which qualified Runner Adapter produced the result. Ollama-based implementation work requires a coding-tool harness providing repository access, edits, command execution and evidence under F-05. The delivered Worker currently runs only the fixed fixture; actual CLI Runner Adapter integration and qualification begin with one primary path in Increment 6, followed by the remaining integrations. Increment 5 does not enable ordinary Agent execution.
+
+### Connection authority and configuration
+
+| Area | Initial approach |
+| --- | --- |
+| Human authority | Use the existing authenticated human identity, with explicit Project permissions for configuring the connection, linking, synchronizing and approving comment repairs. Registry administration or forge access alone grants no workflow authority. |
+| Forge access | Use one dedicated Coordination account to read the selected issue and maintain its managed comment. Möbiræon enforces the agreed publication boundaries even when native forge permissions are broader. |
+| Connection configuration | Keep provider, instance, repository identity, account binding and credential reference in Project integration configuration, separate from reusable Agent Profiles. |
+| Credentials | Keep credential values in protected storage; configuration contains references. |
+| Availability | Check current connection access when operating. Forge unavailability blocks affected publication while local workflow remains usable. |
+
+Credential rotation preserves the connection's identity and existing mappings. Changing the provider or repository requires explicit handling of those mappings; a settings edit cannot silently retarget an existing link. The [maintained forge contracts](forge-contracts.md) defines configuration fields, protected token import and current-access checks.
+
+### Field ownership and publication
+
+| Content | Owner | Synchronization behavior |
+| --- | --- | --- |
+| Issue title and description | Human | Preserve human edits. The recorded local Task contract continues to govern work. |
+| Discussion comments | Their authors | Preserve discussion. Comments are not workflow commands in this increment. |
+| Labels, milestones and issue assignees | Human | Preserve them. An issue assignee does not establish an Agent Assignment. |
+| Issue open/closed state | Human | Observe changes. Local cancellation, acceptance or resumption still requires an authorized Coordination action. |
+| Local Task/Run state and evidence records | Coordinator, under existing authority rules | Publish recorded facts without inferring workflow decisions from issue edits. Acceptance remains subject to the existing designated authority and assessment gates. |
+| Published status/evidence comment | Coordinator | Maintain one clearly identified Coordinator-authored comment under the cooperative editing rule below. |
+
+The managed comment contains the local Task reference, current workflow state, latest relevant result and evidence links. Update it when those published facts change; unchanged synchronization does not create another comment or duplicate an update. This is a projection of local records, not a second authoritative workflow store.
+
+Use cooperative editing for the managed comment. Before each update, read it and compare its identity, author and content with the recorded expected observation. A detected external edit or deletion is a publication conflict requiring explicit resolution; hold publication rather than overwriting the observed edit or recreating the comment. Ordinary human discussion uses separate comments. Before manually editing the managed comment, humans must ensure synchronization is idle and no publication remains unresolved.
+
+Gitea's standard API cannot atomically bind an update to the Coordinator's preceding read. A human edit arriving between that read and the server's update-time load can still be overwritten. This remaining race is explicitly accepted for Increment 5; atomic protection is not a completion claim. The checks above and explicit resolution of detected conflicts remain required. The high-level resolution rules below preserve the existing Task-control authority; the [maintained forge contracts](forge-contracts.md) defines the exact checks and operation contracts.
+
+### Linking and synchronization conflicts
+
+An authorized human selects the exact existing local Task and external issue through the configured Project connection. The Coordinator validates their identities, access and existing mappings, then records a durable one-to-one association. Repeating the same pairing reuses it. Linking only establishes the relationship; the next manual synchronization publishes the managed comment, and local workflow progression continues through its existing authorized operations.
+
+| Situation | Handling |
+| --- | --- |
+| Either endpoint is linked differently | Retain the existing mapping and require explicit resolution. Do not automatically rebind or merge work. |
+| External edit of the managed comment is detected | Hold affected publication. An authorized human may approve refreshing it from current local facts under the cooperative editing rule. |
+| Deletion of the managed comment is established | Hold affected publication. An authorized human may approve one replacement, preserving the mapping and publication history. |
+| Issue or access is unavailable | Preserve the link and report the problem. Ambiguous absence does not establish deletion. |
+| Information became stale | Read again and recompute the intended update before publishing. |
+| A write may have succeeded before timing out | Establish its outcome before another write. Insufficient evidence leaves publication unresolved; repeat/restart must not duplicate the comment or update. |
+
+Ordinary edits to human-owned fields remain observations. Publication problems hold the affected synchronization; Task and Run control continue through existing authorized operations. These rules apply through the shared forge boundary, including future providers.
+
+### Operation and persistence contracts
+
+| Operation | Responsibility |
+| --- | --- |
+| `forge.connection.configure` | Create or revise the Project's versioned forge binding and protected credential reference. |
+| `forge.connection.read` | Inspect the connection configuration and its revision. |
+| `forge.link` | Establish the exact existing Task/issue relationship. |
+| `forge.status` | Inspect the mapping, last confirmed publication and any conflict or unresolved delivery. |
+| `forge.sync` | Perform one bounded synchronization cycle. Report published, unchanged, blocked or unresolved facts truthfully. |
+| `forge.resolve` | Explicitly authorize refreshing an externally edited comment or replacing a confirmed deletion under the existing link. |
+
+These operation names, Project-scoped per-operation permissions and initial local CLI surface are agreed. Reuse the existing request envelope and result conventions. Operations reading or publishing Task facts additionally require the existing Task-read authority. Forge permissions grant no Task progression or acceptance authority. Exact targets and input/result fields are defined in the [forge contracts](forge-contracts.md#ownership-and-authority).
+
+Each operation checks current authority. Mutations use expected local versions and stable request identities: an exact repeat returns its recorded result after current authorization, while conflicting reuse fails. Task acceptance continues through its existing separate operation. `forge.resolve` cannot clear an uncertain write merely to permit another attempt; that outcome must be reconciled first.
+
+Preserve the [architecture's ownership split](architecture.md#main-parts): the Registry owns versioned Project connection configuration, account bindings and credential references. Coordination owns Task/issue mappings, observations, publication intentions, receipts and history. The Forge Adapter owns provider-specific HTTP operations and delivery observations. Shared SQLite storage does not merge those responsibilities.
+
+Retain the following logical records in the existing SQLite application:
+
+- Registry-owned versioned connection bindings.
+- Task/issue mappings, managed-comment references and relevant observations.
+- Last confirmed published content and its local Task revision.
+- Pending publication intentions, outcomes, replay receipts and attributable history.
+
+Synchronization versions remain separate from Task workflow versions. Publication follows three steps: durably record the exact intended update locally, perform the forge operation outside the SQLite transaction, then record its confirmed outcome locally. No SQLite transaction stays open across the remote request.
+
+An interruption between these steps leaves an unresolved publication to reconcile before another write. Only one active or unresolved publication is allowed per link, preventing concurrent synchronization from creating duplicate comments. Retain the intention and history across restart; remote and local outcomes must remain truthful when either acknowledgement is missing.
+
+### Synchronization limits and recovery
+
+| Limit | Initial behavior |
+| --- | --- |
+| Scope | One cycle handles the linked Task/issue pair. |
+| Publication | At most one managed-comment write attempt per cycle. |
+| Concurrency | One active cycle per link; concurrent requests report its existing state. |
+| Timing | Configurable overall deadline and individual request timeouts. |
+| Reading | Configurable request, pagination and response-size bounds. Reconciliation consumes the same budget. |
+| Output | A bounded status summary with evidence references. |
+| Retries | No automatic write retries or background continuation. |
+
+Use these configurable defaults:
+
+| Budget | Default |
+| --- | --- |
+| Whole synchronization cycle | 100 seconds |
+| Individual request | 10 seconds, capped by remaining cycle time |
+| Total HTTP requests | 20 |
+| Comment-list pages | 5 |
+| Response size / total data read | 1 MiB / 5 MiB |
+| Managed comment size | 16 KiB UTF-8 |
+
+Connection checks, reconciliation and rereads share these budgets. Reserve time within the cycle for recording its outcome. An incomplete search cannot establish that a comment is absent. Supported ranges, complete-request deadlines, finalization reserve and practical timing limits are defined in the [forge limits and token contracts](forge-contracts.md#configuration-and-protected-tokens). A cycle may inspect and reconcile an existing unresolved intention; it cannot create another publication while the earlier one remains unresolved.
+
+- Before a write, report a known unattempted outcome when that fact can be established. A later manual cycle may try again.
+- After a write may have started, timeout, interruption or lost acknowledgement leaves the publication unresolved. Reconcile its outcome before another write.
+- Restart retains mappings, intentions and history and publishes nothing by itself. The next manual cycle inspects and reconciles unfinished work under current authority.
+- When reading reaches a limit, incomplete observations cannot prove that a comment is missing. Stop affected publication and report what remains unknown.
+- Refresh/replacement approval applies to the observed conflict. Recheck current authority and circumstances before acting; changed circumstances require fresh resolution.
+
+An unresolved publication does not expire because time passed or its process ended. Publication holds affect synchronization without automatically changing Task or Run state.
+
+### Demonstration and completion evidence
+
+Use one existing local fixture Task and one prepared Gitea Task issue under the configured Project connection:
+
+1. Link the existing pair and publish its status comment.
+2. Advance the Task using the accepted fixture flow, then update that same comment from the new recorded facts.
+3. Demonstrate repeat/restart without duplicates, preservation of human-owned content, and recovery from lost acknowledgement or a detected edit/deletion of the managed comment under the cooperative editing rule. Record the accepted concurrent-edit limitation rather than claiming atomic protection.
+
+The expected result is a durable link and controlled status/evidence publication with retained history. Fixture progression does not enable real Agent execution or establish independent acceptance of other work. The [verification guide](verification.md) defines isolated test data, actual-provider qualification, checks and source-bound evidence.
+
+### Implementation and review record
+
+The one-off developer briefs are retired from active documentation and preserved in the [evidence archive](evidence-archive.md). Maintained [forge contracts](forge-contracts.md), the [application guide](../README.md#manual-forge-bridge-increment-5) and [verification guide](verification.md) own the implemented interfaces and operating boundaries.
+
+The final-11 qualification passed its recorded platform, runtime, provider and Worker checks. The subsequent [full repository review](reviews/2026-11-04-increment-5-full/REVIEW.md) reproduced one P2 concurrent configuration-replay classification defect. The [final repair reassessment](reviews/2026-11-04-increment-5-replay-repair/REVIEW.md) closes it against a separately frozen repaired source, with 18 new controls, both complete platform suites and clean installed-wheel checks. No material finding remains within the agreed Increment 5 scope. Earlier live qualification retains its original archive attribution; no new human acceptance is recorded.
 
 ## Deferred Coordination capabilities
 

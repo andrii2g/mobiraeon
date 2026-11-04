@@ -1,0 +1,142 @@
+{
+  "assessed_utc": "2026-11-04T18:28:11.576104+00:00",
+  "assessor": "independent qualification_plan agent; authored no production repair or regression tests",
+  "assessment_kind": "Independent final review of actual source-bound reports and frozen source; no duplicate test execution by assessor",
+  "reviewed_files": {
+    "src/mobiraeon/operations.py": {
+      "bytes": 7383,
+      "sha256": "264a8444932d2750b557ce043177f0498e61b0d0aa916810273ba4c703738035"
+    },
+    "src/mobiraeon/persistence/__init__.py": {
+      "bytes": 12282,
+      "sha256": "47372ed70cea3eb88be241a92e98b4615ef961a9ca07d0afa0395241048a6ea0"
+    },
+    "tests/test_operations.py": {
+      "bytes": 13440,
+      "sha256": "4429498d4131d31975cb1f3819517234730948b6b7713ea00ddcec4545a6599d"
+    },
+    "tests/test_forge.py": {
+      "bytes": 57968,
+      "sha256": "63d6f0587c88aa5b1b76c9f1034583849b91d19fce670c698671b9791707cef6"
+    }
+  },
+  "evidence": {
+    "repair-source-manifest.json": {
+      "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\repair-source-manifest.json",
+      "bytes": 33519,
+      "sha256": "02992cab6aa700c7ef358055ca1dd148a1a32b505c0b0daa3fef0ae9997615f6"
+    },
+    "repair-source.zip": {
+      "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\repair-source.zip",
+      "bytes": 643808,
+      "sha256": "4a6f85d5cbd4c59ef39f5e0523342081a3f01497fd062685a341fb9eb09c9ed0"
+    },
+    "baseline-source.zip": {
+      "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\baseline-source.zip",
+      "bytes": 641862,
+      "sha256": "f1b2c6f3271e97c507f401db78c49f996af6e4ec34206db0b8ec9ceb59fa6b1f"
+    },
+    "red-outer.json": {
+      "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\red-outer.json",
+      "bytes": 8374,
+      "sha256": "2cf5bfa1cfa7ef231a537a8a728adb0b82f89b8174ff4164682e299a6a7a71af"
+    },
+    "green-results.json": {
+      "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\green-results.json",
+      "bytes": 24326,
+      "sha256": "54b63781bd6479082a7549f692daa9ee0b2fde8f41435db74802b49942146935"
+    },
+    "native-outer.json": {
+      "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\native-outer.json",
+      "bytes": 2318,
+      "sha256": "d77684204d9036f33e55d1c6c0067d62e1f0f6aaabaf2b279277c2f1c8c6a448"
+    },
+    "windows-results.json": {
+      "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\windows-results.json",
+      "bytes": 2219,
+      "sha256": "b8127aa92acb396940efd5afedf547211772713bfcb8cdbc709707a5e9e826db"
+    },
+    "windows-checks.json": {
+      "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\windows-checks.json",
+      "bytes": 2353,
+      "sha256": "d17067009b816ee43c467a1cf41f67f7ae8225e8574a21d03a036121f69fc0ce"
+    },
+    "native-controller.py": {
+      "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\native-controller.py",
+      "bytes": 6329,
+      "sha256": "bde28399ae9195e06c6c0ce8edec167c34444488b906a1916ee1e02c2a286c63"
+    }
+  },
+  "prior_source_assessment_preserved": {
+    "path": "C:\\github\\a2g.name\\mobiraeon\\docs\\reviews\\2026-11-04-increment-5-replay-repair\\evidence\\independent-source-assessment.json",
+    "sha256": "a0b7c05dc3a6d4216e08124085d4e84746f79160db722fdf2c298d2bfbdc8f64",
+    "status": "Original source assessment with pending gate statuses retained unchanged; superseded on final gate status only by this new record."
+  },
+  "independently_rechecked_binding": {
+    "frozen_source_archive_sha256": "4a6f85d5cbd4c59ef39f5e0523342081a3f01497fd062685a341fb9eb09c9ed0",
+    "frozen_source_files_verified": 204,
+    "all_four_reviewed_files_match_frozen_archive_and_current_checkout": true,
+    "all_current_non_documentation_inputs_match_qualified_frozen_source": true,
+    "non_documentation_inputs_verified": 124,
+    "windows_wheel_verified_directly": "Exact paths and bytes of all 55 packaged source files match frozen manifest; actual wheel hash matches Windows report.",
+    "native_controller_inspected": "Uses genuine subprocess command exits; verifies source before/after and every wheel member; clears source PYTHONPATH; runs installed module from noneditable site-packages outside source; copies the frozen forge/operations/persistence tests with conftest.",
+    "prior_full_review_files_verified_unchanged": 22
+  },
+  "actual_gate_results": {
+    "baseline_causal_regression": "Expected original failure preserved: exact replay returned known_failure instead of unavailable; authority control passed. Source assessment independently verified unchanged baseline runtime and equivalent causal test AST.",
+    "new_native_regressions": {
+      "actual_exit": 0,
+      "passed": 18
+    },
+    "native_linux_full_suite": {
+      "actual_exit": 0,
+      "passed": 747,
+      "skipped": 1
+    },
+    "native_command_checks": {
+      "passed": 14,
+      "all_actual_exits": 0,
+      "actual_owner_controller_exit": 0
+    },
+    "native_paths": "Nine resolved source/toolchain/executable/base/stdlib/cache/temp/controller paths recorded on ext4; no /mnt/ execution input.",
+    "installed_affected_tests": {
+      "actual_exit": 0,
+      "passed": 218,
+      "suites": [
+        "forge",
+        "operations",
+        "persistence"
+      ],
+      "application_import": "Noneditable installed wheel outside checkout; no source PYTHONPATH"
+    },
+    "runtime_only_forge": {
+      "source_checks": 10,
+      "installed_checks": 10,
+      "both_actual_exits": 0,
+      "transport": "Production httpx2 over disposable loopback TCP",
+      "provider_qualification_claimed": false
+    },
+    "windows_full_suite": {
+      "actual_exit": 0,
+      "passed": 745,
+      "skipped": 4
+    },
+    "lint_format_build": "Actual exit 0 for each on both platforms",
+    "packaging": "Both platform records verify all 55 packaged source entries; Windows wheel independently rechecked directly",
+    "source_integrity": "Both platform checks retain true before/after integrity on the frozen repair inputs."
+  },
+  "finding_disposition": {
+    "I5-FR-R1": "CLOSED: typed retained outcome survives verified rollback and matches ordinary replay; uncertainty and owner restrictions remain intact.",
+    "remaining_material_findings_in_declared_Increment_5_scope": [],
+    "O1_O2": "Previously documented nonblocking robustness observations remain recorded; approved current Linux producer/platform scope is unchanged."
+  },
+  "decision": "Increment 5 repair-specific technical closure verified; no remaining material finding within the declared Increment 5 scope. Ready for human acceptance.",
+  "qualification_scope": {
+    "fresh_on_repaired_source": "Both full portable platform suites, 18 focused native regressions, 218 installed affected regressions, source/installed runtime-only forge checks, lint/format/build, source integrity and packaging.",
+    "historical_live_qualification": "Final-11 real Worker, Docker/Gitea and full qualification matrices retain their original archive attribution and scopes. No new live Worker/provider execution is claimed.",
+    "carry_forward_basis": "53 of 55 packaged inputs remain byte-identical, including Worker, HTTP/provider/publication implementations and controls. The two changed runtime files preserve controlled exception metadata and map it only after verified rollback. Both platform suites and explicit uncertainty/owner/rollback controls address the affected shared boundary. This satisfies the maintained affected-check-and-reassessment rule for this narrow repair.",
+    "closure_documentation": "Root is updating maintained status/navigation documentation after qualification. All executable/test/configuration inputs remain exactly the qualified frozen inputs; those later documentation edits are not retroactively included in the frozen archive.",
+    "not_recorded": "Human acceptance, deployment, ordinary Runner qualification, native Windows Worker qualification, real Agent enablement, commit or push."
+  },
+  "assessor_writes": "Only this new independent-final-assessment.json; prior source assessment, reviews, reports, production and tests unchanged by assessor."
+}

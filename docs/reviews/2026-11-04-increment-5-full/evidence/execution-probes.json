@@ -1,0 +1,361 @@
+{
+  "started_utc": "2026-11-04T15:16:31.463390+00:00",
+  "finished_utc": "2026-11-04T15:16:32.188227+00:00",
+  "fixed_plan": {
+    "encoding_cases": [
+      "utf-8",
+      "utf-16-le",
+      "utf-32-le"
+    ],
+    "framing_cases": [
+      "lf_single_chunk",
+      "lf_json_split",
+      "crlf_single_chunk",
+      "crlf_pair_split"
+    ],
+    "no_retry": true
+  },
+  "source_hashes_before_and_after": {
+    "src/mobiraeon/execution.py": {
+      "bytes": 43066,
+      "sha256": "f6dd898a54d5633b2a7d54993217f50a16116fae1da5d2acae135af198829ef8"
+    },
+    "src/mobiraeon/signal_verification.py": {
+      "bytes": 16934,
+      "sha256": "3941becee754e60424286ec903e26b768853fe72252525333aafce920ca8ebb7"
+    },
+    "src/mobiraeon/execution_schema.py": {
+      "bytes": 4204,
+      "sha256": "e87a181ca7186f6c65f1b710b424ff3857dd0ca8f6e64d7d4969144d16f109b6"
+    },
+    "src/mobiraeon/coordination.py": {
+      "bytes": 24648,
+      "sha256": "18de6b14520a169cfa67b924bbeb02209f4557cf5b329f2751febe2618f291b7"
+    },
+    "src/mobiraeon/fixture_assets/program.py": {
+      "bytes": 2856,
+      "sha256": "a609ead6ba499066e7f0db6d26c007c9fbb894c28e5cadb1d985b671743044aa"
+    },
+    "tests/test_execution.py": {
+      "bytes": 21240,
+      "sha256": "74ecbab569f1b6f065d1a455bfeeb9bdaaeb62e6517e70a317e9d3582eba3e26"
+    },
+    "tests/test_registry.py": {
+      "bytes": 29110,
+      "sha256": "a263b6dc270e1b231ca858057b494f19eda5ec6d30cc2d5712a01bb6410f90ab"
+    },
+    "docs/execution-contracts.md": {
+      "bytes": 25541,
+      "sha256": "a7991913eec7af6beaa97cd01b837f7ef2e0b4469b5a43a7cce4d2beae06c001"
+    }
+  },
+  "source_unchanged": true,
+  "python": "C:\\github\\a2g.name\\mobiraeon\\.venv\\Scripts\\python.exe",
+  "encoding": [
+    {
+      "encoding": "utf-8",
+      "raw_bytes": 176,
+      "raw_sha256": "d85c089c8e2794aa03da373127481d9ad9d654a192c6089170a134beb67adf0c",
+      "raw_prefix_hex": "7b22736368656d61223a2022666978747572652d73756d6d6172792d7631222c",
+      "strict_utf8_decoding_succeeds": true,
+      "json_parsing_after_utf8_decoding_succeeds": true,
+      "actual_run_outcome": "success",
+      "actual_run_reason": "ok",
+      "execution_record": {
+        "artifact": {
+          "content": "{\"schema\": \"fixture-summary-v1\", \"input_sha256\": \"26f75ed871d155c615a382f9a7c97e8fd8a00f16ebb80589ff5297ac0cd6a990\", \"utf8_bytes\": 39, \"characters\": 37, \"lines\": 1, \"words\": 4}",
+          "identity": "fixture-summary",
+          "revision": "sha256-d85c089c8e2794aa03da373127481d9ad9d654a192c6089170a134beb67adf0c",
+          "sha256": "d85c089c8e2794aa03da373127481d9ad9d654a192c6089170a134beb67adf0c"
+        },
+        "artifact_path": "C:\\Users\\andrey\\AppData\\Local\\Temp\\mobiraeon-full-review-execution-wekh_j4d\\utf-8\\private\\output\\489940674920450b980ec1da4f70313a.txt",
+        "artifact_valid": true,
+        "assignment": "assignment-1",
+        "attachment_exit_code": 0,
+        "attempt": "attempt-1",
+        "capture_channels": {
+          "stderr": "eof",
+          "stdout": "eof"
+        },
+        "capture_complete": true,
+        "capture_path": "C:\\Users\\andrey\\AppData\\Local\\Temp\\mobiraeon-full-review-execution-wekh_j4d\\utf-8\\private\\output\\489940674920450b980ec1da4f70313a.json",
+        "cleanup": "verified",
+        "completion_state": {
+          "ExitCode": 0,
+          "FinishedAt": "2026-11-04T00:00:01Z",
+          "Running": false,
+          "StartedAt": "2026-11-04T00:00:00Z"
+        },
+        "container_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "create_ack": true,
+        "create_intent": true,
+        "generation": 1,
+        "held": false,
+        "new_reservation": false,
+        "observed_start": "2026-11-04T00:00:00Z",
+        "outcome": "succeeded",
+        "phase": "terminal",
+        "retired": true,
+        "runtime_state": {
+          "ExitCode": 0,
+          "FinishedAt": "2026-11-04T00:00:01Z",
+          "Running": false,
+          "StartedAt": "2026-11-04T00:00:00Z"
+        },
+        "seal": "1023009ca509451a8e5bc14befab1806",
+        "start_authorized": true,
+        "stop_intent": false,
+        "task": "task-1",
+        "terminal": true,
+        "truncated": false,
+        "worker": "local-docker"
+      },
+      "coordination_observation": [
+        "succeeded"
+      ],
+      "actual_submission_outcome": "success",
+      "actual_submission_reason": "ok",
+      "scope": "Actual supervisor/SQLite/Coordinator with trusted in-memory Worker and streams; no native Worker qualification"
+    },
+    {
+      "encoding": "utf-16-le",
+      "raw_bytes": 352,
+      "raw_sha256": "e54cc07245cbfd47bbda0debfbaaf203aa989fb216355ac07fef2893b351fbeb",
+      "raw_prefix_hex": "7b00220073006300680065006d00610022003a00200022006600690078007400",
+      "strict_utf8_decoding_succeeds": true,
+      "json_parsing_after_utf8_decoding_succeeds": false,
+      "actual_run_outcome": "success",
+      "actual_run_reason": "ok",
+      "execution_record": {
+        "artifact": {
+          "content": "{\u0000\"\u0000s\u0000c\u0000h\u0000e\u0000m\u0000a\u0000\"\u0000:\u0000 \u0000\"\u0000f\u0000i\u0000x\u0000t\u0000u\u0000r\u0000e\u0000-\u0000s\u0000u\u0000m\u0000m\u0000a\u0000r\u0000y\u0000-\u0000v\u00001\u0000\"\u0000,\u0000 \u0000\"\u0000i\u0000n\u0000p\u0000u\u0000t\u0000_\u0000s\u0000h\u0000a\u00002\u00005\u00006\u0000\"\u0000:\u0000 \u0000\"\u00002\u00006\u0000f\u00007\u00005\u0000e\u0000d\u00008\u00007\u00001\u0000d\u00001\u00005\u00005\u0000c\u00006\u00001\u00005\u0000a\u00003\u00008\u00002\u0000f\u00009\u0000a\u00007\u0000c\u00009\u00007\u0000e\u00008\u0000f\u0000d\u00008\u0000a\u00000\u00000\u0000f\u00001\u00006\u0000e\u0000b\u0000b\u00008\u00000\u00005\u00008\u00009\u0000f\u0000f\u00005\u00002\u00009\u00007\u0000a\u0000c\u00000\u0000c\u0000d\u00006\u0000a\u00009\u00009\u00000\u0000\"\u0000,\u0000 \u0000\"\u0000u\u0000t\u0000f\u00008\u0000_\u0000b\u0000y\u0000t\u0000e\u0000s\u0000\"\u0000:\u0000 \u00003\u00009\u0000,\u0000 \u0000\"\u0000c\u0000h\u0000a\u0000r\u0000a\u0000c\u0000t\u0000e\u0000r\u0000s\u0000\"\u0000:\u0000 \u00003\u00007\u0000,\u0000 \u0000\"\u0000l\u0000i\u0000n\u0000e\u0000s\u0000\"\u0000:\u0000 \u00001\u0000,\u0000 \u0000\"\u0000w\u0000o\u0000r\u0000d\u0000s\u0000\"\u0000:\u0000 \u00004\u0000}\u0000",
+          "identity": "fixture-summary",
+          "revision": "sha256-e54cc07245cbfd47bbda0debfbaaf203aa989fb216355ac07fef2893b351fbeb",
+          "sha256": "e54cc07245cbfd47bbda0debfbaaf203aa989fb216355ac07fef2893b351fbeb"
+        },
+        "artifact_path": "C:\\Users\\andrey\\AppData\\Local\\Temp\\mobiraeon-full-review-execution-wekh_j4d\\utf-16-le\\private\\output\\25dc9512985a4dcbacab5cefbe95ad0b.txt",
+        "artifact_valid": true,
+        "assignment": "assignment-1",
+        "attachment_exit_code": 0,
+        "attempt": "attempt-1",
+        "capture_channels": {
+          "stderr": "eof",
+          "stdout": "eof"
+        },
+        "capture_complete": true,
+        "capture_path": "C:\\Users\\andrey\\AppData\\Local\\Temp\\mobiraeon-full-review-execution-wekh_j4d\\utf-16-le\\private\\output\\25dc9512985a4dcbacab5cefbe95ad0b.json",
+        "cleanup": "verified",
+        "completion_state": {
+          "ExitCode": 0,
+          "FinishedAt": "2026-11-04T00:00:01Z",
+          "Running": false,
+          "StartedAt": "2026-11-04T00:00:00Z"
+        },
+        "container_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "create_ack": true,
+        "create_intent": true,
+        "generation": 1,
+        "held": false,
+        "new_reservation": false,
+        "observed_start": "2026-11-04T00:00:00Z",
+        "outcome": "succeeded",
+        "phase": "terminal",
+        "retired": true,
+        "runtime_state": {
+          "ExitCode": 0,
+          "FinishedAt": "2026-11-04T00:00:01Z",
+          "Running": false,
+          "StartedAt": "2026-11-04T00:00:00Z"
+        },
+        "seal": "c293ce26fe094f9eab48238362eb564c",
+        "start_authorized": true,
+        "stop_intent": false,
+        "task": "task-1",
+        "terminal": true,
+        "truncated": false,
+        "worker": "local-docker"
+      },
+      "coordination_observation": [
+        "succeeded"
+      ],
+      "actual_submission_outcome": "invalid_input",
+      "actual_submission_reason": "invalid_input",
+      "scope": "Actual supervisor/SQLite/Coordinator with trusted in-memory Worker and streams; no native Worker qualification"
+    },
+    {
+      "encoding": "utf-32-le",
+      "raw_bytes": 704,
+      "raw_sha256": "32e2abc5e6e662893b6c76437291eb3becc78666c0e854d48f0cf417e9d623ed",
+      "raw_prefix_hex": "7b00000022000000730000006300000068000000650000006d00000061000000",
+      "strict_utf8_decoding_succeeds": true,
+      "json_parsing_after_utf8_decoding_succeeds": false,
+      "actual_run_outcome": "success",
+      "actual_run_reason": "ok",
+      "execution_record": {
+        "artifact": {
+          "content": "{\u0000\u0000\u0000\"\u0000\u0000\u0000s\u0000\u0000\u0000c\u0000\u0000\u0000h\u0000\u0000\u0000e\u0000\u0000\u0000m\u0000\u0000\u0000a\u0000\u0000\u0000\"\u0000\u0000\u0000:\u0000\u0000\u0000 \u0000\u0000\u0000\"\u0000\u0000\u0000f\u0000\u0000\u0000i\u0000\u0000\u0000x\u0000\u0000\u0000t\u0000\u0000\u0000u\u0000\u0000\u0000r\u0000\u0000\u0000e\u0000\u0000\u0000-\u0000\u0000\u0000s\u0000\u0000\u0000u\u0000\u0000\u0000m\u0000\u0000\u0000m\u0000\u0000\u0000a\u0000\u0000\u0000r\u0000\u0000\u0000y\u0000\u0000\u0000-\u0000\u0000\u0000v\u0000\u0000\u00001\u0000\u0000\u0000\"\u0000\u0000\u0000,\u0000\u0000\u0000 \u0000\u0000\u0000\"\u0000\u0000\u0000i\u0000\u0000\u0000n\u0000\u0000\u0000p\u0000\u0000\u0000u\u0000\u0000\u0000t\u0000\u0000\u0000_\u0000\u0000\u0000s\u0000\u0000\u0000h\u0000\u0000\u0000a\u0000\u0000\u00002\u0000\u0000\u00005\u0000\u0000\u00006\u0000\u0000\u0000\"\u0000\u0000\u0000:\u0000\u0000\u0000 \u0000\u0000\u0000\"\u0000\u0000\u00002\u0000\u0000\u00006\u0000\u0000\u0000f\u0000\u0000\u00007\u0000\u0000\u00005\u0000\u0000\u0000e\u0000\u0000\u0000d\u0000\u0000\u00008\u0000\u0000\u00007\u0000\u0000\u00001\u0000\u0000\u0000d\u0000\u0000\u00001\u0000\u0000\u00005\u0000\u0000\u00005\u0000\u0000\u0000c\u0000\u0000\u00006\u0000\u0000\u00001\u0000\u0000\u00005\u0000\u0000\u0000a\u0000\u0000\u00003\u0000\u0000\u00008\u0000\u0000\u00002\u0000\u0000\u0000f\u0000\u0000\u00009\u0000\u0000\u0000a\u0000\u0000\u00007\u0000\u0000\u0000c\u0000\u0000\u00009\u0000\u0000\u00007\u0000\u0000\u0000e\u0000\u0000\u00008\u0000\u0000\u0000f\u0000\u0000\u0000d\u0000\u0000\u00008\u0000\u0000\u0000a\u0000\u0000\u00000\u0000\u0000\u00000\u0000\u0000\u0000f\u0000\u0000\u00001\u0000\u0000\u00006\u0000\u0000\u0000e\u0000\u0000\u0000b\u0000\u0000\u0000b\u0000\u0000\u00008\u0000\u0000\u00000\u0000\u0000\u00005\u0000\u0000\u00008\u0000\u0000\u00009\u0000\u0000\u0000f\u0000\u0000\u0000f\u0000\u0000\u00005\u0000\u0000\u00002\u0000\u0000\u00009\u0000\u0000\u00007\u0000\u0000\u0000a\u0000\u0000\u0000c\u0000\u0000\u00000\u0000\u0000\u0000c\u0000\u0000\u0000d\u0000\u0000\u00006\u0000\u0000\u0000a\u0000\u0000\u00009\u0000\u0000\u00009\u0000\u0000\u00000\u0000\u0000\u0000\"\u0000\u0000\u0000,\u0000\u0000\u0000 \u0000\u0000\u0000\"\u0000\u0000\u0000u\u0000\u0000\u0000t\u0000\u0000\u0000f\u0000\u0000\u00008\u0000\u0000\u0000_\u0000\u0000\u0000b\u0000\u0000\u0000y\u0000\u0000\u0000t\u0000\u0000\u0000e\u0000\u0000\u0000s\u0000\u0000\u0000\"\u0000\u0000\u0000:\u0000\u0000\u0000 \u0000\u0000\u00003\u0000\u0000\u00009\u0000\u0000\u0000,\u0000\u0000\u0000 \u0000\u0000\u0000\"\u0000\u0000\u0000c\u0000\u0000\u0000h\u0000\u0000\u0000a\u0000\u0000\u0000r\u0000\u0000\u0000a\u0000\u0000\u0000c\u0000\u0000\u0000t\u0000\u0000\u0000e\u0000\u0000\u0000r\u0000\u0000\u0000s\u0000\u0000\u0000\"\u0000\u0000\u0000:\u0000\u0000\u0000 \u0000\u0000\u00003\u0000\u0000\u00007\u0000\u0000\u0000,\u0000\u0000\u0000 \u0000\u0000\u0000\"\u0000\u0000\u0000l\u0000\u0000\u0000i\u0000\u0000\u0000n\u0000\u0000\u0000e\u0000\u0000\u0000s\u0000\u0000\u0000\"\u0000\u0000\u0000:\u0000\u0000\u0000 \u0000\u0000\u00001\u0000\u0000\u0000,\u0000\u0000\u0000 \u0000\u0000\u0000\"\u0000\u0000\u0000w\u0000\u0000\u0000o\u0000\u0000\u0000r\u0000\u0000\u0000d\u0000\u0000\u0000s\u0000\u0000\u0000\"\u0000\u0000\u0000:\u0000\u0000\u0000 \u0000\u0000\u00004\u0000\u0000\u0000}\u0000\u0000\u0000",
+          "identity": "fixture-summary",
+          "revision": "sha256-32e2abc5e6e662893b6c76437291eb3becc78666c0e854d48f0cf417e9d623ed",
+          "sha256": "32e2abc5e6e662893b6c76437291eb3becc78666c0e854d48f0cf417e9d623ed"
+        },
+        "artifact_path": "C:\\Users\\andrey\\AppData\\Local\\Temp\\mobiraeon-full-review-execution-wekh_j4d\\utf-32-le\\private\\output\\f2a6478ae109405497d6e71e7a5a79ef.txt",
+        "artifact_valid": true,
+        "assignment": "assignment-1",
+        "attachment_exit_code": 0,
+        "attempt": "attempt-1",
+        "capture_channels": {
+          "stderr": "eof",
+          "stdout": "eof"
+        },
+        "capture_complete": true,
+        "capture_path": "C:\\Users\\andrey\\AppData\\Local\\Temp\\mobiraeon-full-review-execution-wekh_j4d\\utf-32-le\\private\\output\\f2a6478ae109405497d6e71e7a5a79ef.json",
+        "cleanup": "verified",
+        "completion_state": {
+          "ExitCode": 0,
+          "FinishedAt": "2026-11-04T00:00:01Z",
+          "Running": false,
+          "StartedAt": "2026-11-04T00:00:00Z"
+        },
+        "container_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "create_ack": true,
+        "create_intent": true,
+        "generation": 1,
+        "held": false,
+        "new_reservation": false,
+        "observed_start": "2026-11-04T00:00:00Z",
+        "outcome": "succeeded",
+        "phase": "terminal",
+        "retired": true,
+        "runtime_state": {
+          "ExitCode": 0,
+          "FinishedAt": "2026-11-04T00:00:01Z",
+          "Running": false,
+          "StartedAt": "2026-11-04T00:00:00Z"
+        },
+        "seal": "f58e1f4afe3d4cc8ae7cdd65f0892cbf",
+        "start_authorized": true,
+        "stop_intent": false,
+        "task": "task-1",
+        "terminal": true,
+        "truncated": false,
+        "worker": "local-docker"
+      },
+      "coordination_observation": [
+        "succeeded"
+      ],
+      "actual_submission_outcome": "invalid_input",
+      "actual_submission_reason": "invalid_input",
+      "scope": "Actual supervisor/SQLite/Coordinator with trusted in-memory Worker and streams; no native Worker qualification"
+    }
+  ],
+  "framing": [
+    {
+      "name": "lf_single_chunk",
+      "chunks": [
+        "{\"data\":{\"state\":\"running\"}}\n"
+      ],
+      "raw_expected": "{\"data\":{\"state\":\"running\"}}\n",
+      "raw_fully_retained": true,
+      "collection_complete": true,
+      "channels": {
+        "stdout": "eof",
+        "stderr": "eof"
+      },
+      "parse_status": "parsed",
+      "parse_failure_type": null,
+      "progress_events": [
+        {
+          "data": {
+            "state": "running"
+          }
+        }
+      ],
+      "scope": "Actual PipeCollector with moderate trusted sequential stream chunks; no real process or Worker"
+    },
+    {
+      "name": "lf_json_split",
+      "chunks": [
+        "{\"data\":{\"",
+        "state\":\"running\"}}\n"
+      ],
+      "raw_expected": "{\"data\":{\"state\":\"running\"}}\n",
+      "raw_fully_retained": true,
+      "collection_complete": true,
+      "channels": {
+        "stdout": "eof",
+        "stderr": "eof"
+      },
+      "parse_status": "parsed",
+      "parse_failure_type": null,
+      "progress_events": [
+        {
+          "data": {
+            "state": "running"
+          }
+        }
+      ],
+      "scope": "Actual PipeCollector with moderate trusted sequential stream chunks; no real process or Worker"
+    },
+    {
+      "name": "crlf_single_chunk",
+      "chunks": [
+        "{\"data\":{\"state\":\"running\"}}\r\n"
+      ],
+      "raw_expected": "{\"data\":{\"state\":\"running\"}}\r\n",
+      "raw_fully_retained": true,
+      "collection_complete": true,
+      "channels": {
+        "stdout": "eof",
+        "stderr": "eof"
+      },
+      "parse_status": "parsed",
+      "parse_failure_type": null,
+      "progress_events": [
+        {
+          "data": {
+            "state": "running"
+          }
+        }
+      ],
+      "scope": "Actual PipeCollector with moderate trusted sequential stream chunks; no real process or Worker"
+    },
+    {
+      "name": "crlf_pair_split",
+      "chunks": [
+        "{\"data\":{\"state\":\"running\"}}\r",
+        "\n"
+      ],
+      "raw_expected": "{\"data\":{\"state\":\"running\"}}\r\n",
+      "raw_fully_retained": true,
+      "collection_complete": true,
+      "channels": {
+        "stdout": "eof",
+        "stderr": "eof"
+      },
+      "parse_status": "invalid_or_nonobject_json",
+      "parse_failure_type": "JSONDecodeError",
+      "progress_events": [
+        {
+          "data": {
+            "state": "running"
+          }
+        }
+      ],
+      "scope": "Actual PipeCollector with moderate trusted sequential stream chunks; no real process or Worker"
+    }
+  ],
+  "supported_reachability": {
+    "public_modes": [
+      "success",
+      "failure",
+      "wait",
+      "excess_output",
+      "stubborn_child"
+    ],
+    "fixed_linux_program_success_output": "Python print(json.dumps(...)); UTF-8 and LF",
+    "live_signal_probe_entrypoint": "execution_repair_verification.exercise returns unavailable outside Linux",
+    "unsupported_needed_to_reach_candidates": "Injected/custom Worker output or a changed fixture producer; CRLF needs non-current producer or Windows Worker, which remains unqualified",
+    "priority_assessment": "Nonblocking robustness observations for the declared fixed-image Increment 5 boundary; not evidence of a current supported-path qualification failure"
+  },
+  "temporary_state": "removed after redacted observation export; credential bytes are not exported"
+}

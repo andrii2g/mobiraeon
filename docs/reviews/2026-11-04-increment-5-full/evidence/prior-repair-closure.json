@@ -1,0 +1,1224 @@
+{
+  "reviewer_role": "fresh nonimplementer",
+  "source_archive_sha256": "e208e66b44e1e97678d0a4ca5ade6a2c50b90fc53b6dd9b589eb9757db4f4a1b",
+  "manifest_sha256": "8e2228f59746928b046c6838968952279d92b60dd137cb7fc379c6313fa207e0",
+  "source_snapshot_sha256": "2ab7a27873a1fb4707f7f767060b8612b6724464bb84d32c749c16f6fce239a0",
+  "reviewed_utc": "2026-11-04T14:04:16.958899+00:00",
+  "source_files": 191,
+  "result": "passed",
+  "checks": [
+    {
+      "name": "frozen_archive_and_manifest_binding",
+      "passed": true
+    },
+    {
+      "name": "m2_matches_frozen_191_file_set",
+      "passed": true
+    },
+    {
+      "name": "m2_logical_snapshot_recomputed",
+      "passed": true
+    },
+    {
+      "name": "archive_exact_paths_and_bytes",
+      "passed": true
+    },
+    {
+      "name": "current_191_source_files_still_frozen",
+      "passed": true
+    },
+    {
+      "name": "prior_fresh_code_review_still_applies",
+      "passed": true
+    },
+    {
+      "name": "prefreeze_format_only_ast_binding",
+      "passed": true
+    },
+    {
+      "name": "completed_detailed_raw_audit",
+      "passed": true,
+      "detail": {
+        "audit_checks": 59,
+        "audit_path": "final-audit/qualification-audit.json"
+      }
+    },
+    {
+      "name": "actual_stage_foundation",
+      "passed": true
+    },
+    {
+      "name": "actual_stage_windows",
+      "passed": true
+    },
+    {
+      "name": "actual_stage_linux",
+      "passed": true
+    },
+    {
+      "name": "actual_stage_runtime",
+      "passed": true
+    },
+    {
+      "name": "actual_stage_native",
+      "passed": true
+    },
+    {
+      "name": "actual_stage_qualify",
+      "passed": true
+    },
+    {
+      "name": "full_matrix_foundation",
+      "passed": true
+    },
+    {
+      "name": "full_matrix_windows",
+      "passed": true
+    },
+    {
+      "name": "full_matrix_linux",
+      "passed": true
+    },
+    {
+      "name": "q3_fresh_full_linux_wheel_nine_original_deadline_cases",
+      "passed": true
+    },
+    {
+      "name": "production_wheel_matches_all_55_frozen_modules",
+      "passed": true
+    },
+    {
+      "name": "runtime-metadata-before",
+      "passed": true
+    },
+    {
+      "name": "runtime-metadata-after-controls",
+      "passed": true
+    },
+    {
+      "name": "runtime-metadata-after-provider",
+      "passed": true
+    },
+    {
+      "name": "runtime-metadata-after-qualification",
+      "passed": true
+    },
+    {
+      "name": "production_distributions_unchanged_across_all_stages",
+      "passed": true
+    },
+    {
+      "name": "native_source_chain_ext4",
+      "passed": true
+    },
+    {
+      "name": "controls_final10_source",
+      "passed": true
+    },
+    {
+      "name": "controls_final09_source",
+      "passed": true
+    },
+    {
+      "name": "controls_f8_source",
+      "passed": true
+    },
+    {
+      "name": "controls_completion_source",
+      "passed": true
+    },
+    {
+      "name": "controls_required_source",
+      "passed": true
+    },
+    {
+      "name": "controls_final07_source",
+      "passed": true
+    },
+    {
+      "name": "controls_final10_runtime-only-installed",
+      "passed": true
+    },
+    {
+      "name": "controls_final09_runtime-only-installed",
+      "passed": true
+    },
+    {
+      "name": "controls_f8_runtime-only-installed",
+      "passed": true
+    },
+    {
+      "name": "controls_completion_runtime-only-installed",
+      "passed": true
+    },
+    {
+      "name": "controls_required_runtime-only-installed",
+      "passed": true
+    },
+    {
+      "name": "controls_final07_runtime-only-installed",
+      "passed": true
+    },
+    {
+      "name": "controls_final10_native-windows",
+      "passed": true
+    },
+    {
+      "name": "controls_final09_native-windows",
+      "passed": true
+    },
+    {
+      "name": "controls_f8_native-windows",
+      "passed": true
+    },
+    {
+      "name": "controls_completion_native-windows",
+      "passed": true
+    },
+    {
+      "name": "controls_required_native-windows",
+      "passed": true
+    },
+    {
+      "name": "controls_final07_native-windows",
+      "passed": true
+    },
+    {
+      "name": "live_provider_source",
+      "passed": true
+    },
+    {
+      "name": "live_provider_runtime-only-installed",
+      "passed": true
+    },
+    {
+      "name": "fixed_twenty_worker_batch",
+      "passed": true
+    },
+    {
+      "name": "post_gate_resources",
+      "passed": true
+    },
+    {
+      "name": "post_gate_preservation",
+      "passed": true
+    },
+    {
+      "name": "all_prior_and_precapture_source_evidence_preserved",
+      "passed": true
+    },
+    {
+      "name": "historical_q3_remains_failed_14_of_15",
+      "passed": true
+    }
+  ],
+  "failed_checks": [],
+  "wheel_binding": {
+    "bytes": 192632,
+    "sha256": "df9ed24a5ffe623a1b966e463b0062fbf48b2d961a943b146bf6a3d57b515ca2"
+  },
+  "package_source_hashes": {
+    "src/mobiraeon/__init__.py": "a993987609023bc0ed3d9494e9bab49c903ed99713d9320b114d7555460d965e",
+    "src/mobiraeon/__main__.py": "fb532261c3dcefb7eb9ad6b8d3dbfd1d448a68ca0c7aad78d3cdba0dcb3fee46",
+    "src/mobiraeon/access.py": "d649867e42c6cd164da26d1d46581ea8ca77edeb1fcf68875945186b060ed371",
+    "src/mobiraeon/administration.py": "8bf88f7747d6983c8d020fed6c51d165a03d405075387f6594cca736514c3218",
+    "src/mobiraeon/api.py": "e0e40ecddf7261a8728d88734551c3ce42f62780c4dd1590d91dabd8ab78b23f",
+    "src/mobiraeon/application.py": "868c19aeb6107c57257fdcb150edecd0ff513f3f8e45b6939135fad96a9cc396",
+    "src/mobiraeon/bootstrap.py": "7d4c12cccaa69e443ae45cf361820d2c8d51eb398a6c674d3a5becc666f0c2de",
+    "src/mobiraeon/catalog.py": "e65a28359e319e3ee98838ad9e71d878bf8ab24d42a89dee4287c54600f90acb",
+    "src/mobiraeon/cli.py": "91ec463ea475617d66e455547d881e01bba4f3de60c3dd27b14d03c6c34e9ee1",
+    "src/mobiraeon/configuration.py": "accd2affff02cff97c1cc7737801aa976911b4afb6e68c0fad04647474e863cd",
+    "src/mobiraeon/contracts.py": "5d3621f5b6d54e7db0e935932e6eadb1635ef3e9f4894da875a54801daae6828",
+    "src/mobiraeon/coordination.py": "18de6b14520a169cfa67b924bbeb02209f4557cf5b329f2751febe2618f291b7",
+    "src/mobiraeon/coordination_schema.py": "ae63e12bfebc1163455b84296ea069e1ae4758e3dec1c1b3ebbbf9e19dc22d09",
+    "src/mobiraeon/diagnostics.py": "37a5425a0812dbf413a83fcb6cb3c2df9b8105397e3ad525514132af001c4514",
+    "src/mobiraeon/docker_worker.py": "25dab0513da65563a09e8520f1e01dbbd2d59e2e1e279f5da192fff8ecc3583a",
+    "src/mobiraeon/errors.py": "3390c48627da09313dbaa41339ccb4bef340910d1bfc42eeb4b2e069de61c992",
+    "src/mobiraeon/execution.py": "f6dd898a54d5633b2a7d54993217f50a16116fae1da5d2acae135af198829ef8",
+    "src/mobiraeon/execution_diagnostics.py": "2bf4d8a773fa8a951251b45282db032fe880893a0639ce100a2e4d021bc52099",
+    "src/mobiraeon/execution_fixture.py": "1e417c64d5ef46cc485cf7325656dacaf90a84d7d8488dfac8d16ac27c2d4860",
+    "src/mobiraeon/execution_repair_verification.py": "38feedb8b9c21d6726351a02aa594b36d7137d8beff65cf614686a2a84306481",
+    "src/mobiraeon/execution_schema.py": "e87a181ca7186f6c65f1b710b424ff3857dd0ca8f6e64d7d4969144d16f109b6",
+    "src/mobiraeon/execution_settings.py": "bd55878b4799da82eca2e48c93244c833d3d69efc222ec4604ddd40d65e4c35e",
+    "src/mobiraeon/execution_signal_verification.py": "2acc033253417016e8036073d5925b342b335993c7d59a06c34a16d7bc4a978b",
+    "src/mobiraeon/execution_trace.py": "2119b9f66aa6343d3a7aba9052461d4e66a788297e45d24fc280018b14ace3a2",
+    "src/mobiraeon/execution_verification.py": "fcc596098911290b8f7e3f68ff67ff16e19da731f6b7bd2c63ad2ce2c4a50ee2",
+    "src/mobiraeon/fixture_assets/Dockerfile": "ee5596de532ba864232acb2e8063075fc64935a1c11bc87eb6992fa558ecba99",
+    "src/mobiraeon/fixture_assets/guard.py": "5f3c8568123d89b3e6fc1eb8f2a576ee441176f20ea42391946b3b1fd970c21a",
+    "src/mobiraeon/fixture_assets/program.py": "a609ead6ba499066e7f0db6d26c007c9fbb894c28e5cadb1d985b671743044aa",
+    "src/mobiraeon/forge.py": "d04606793d6fa453d605267b723ebbd054c2f0eac302021a4219ec3f9af1dc92",
+    "src/mobiraeon/forge_adapter.py": "6bdd894663bdf6f8a066610ad230375f3d477d1f91eef4a6e4499b17033f7ed3",
+    "src/mobiraeon/forge_credentials.py": "fd638e2e2e97df75ea102dc411a186177489801158a7146dcbecb189c89c5537",
+    "src/mobiraeon/forge_gitea_verification.py": "a8f74afa3e6b0d9f046d862fb34087a957ac54050ec26827fd9eb16c0b65c61b",
+    "src/mobiraeon/forge_lock.py": "bdc89a1ae3297ba9b6491f98d19b6a2fd38e05a7450533451cff2dc440c2cee4",
+    "src/mobiraeon/forge_schema.py": "9b64f413536768cd41528999704ede8ccb1302ac52e098047e9924081767372e",
+    "src/mobiraeon/forge_verification.py": "72763eb14d106e3de0ff5ed2116b0f4ea15648577a3cb2ccb44f31f695c93b7d",
+    "src/mobiraeon/operations.py": "e51441452143a6a418ca902472e0dcbd9c694ff02d8eb415343a25fc23eb1960",
+    "src/mobiraeon/persistence/__init__.py": "6a2845eb9e34608997bff9cfc82859050521ce716a0868dce652f38fc3eb02a3",
+    "src/mobiraeon/persistence/migrations/env.py": "ce1f0a6d1ad7c7d256e5a6e734bf8731694c50e21883713a1ff3a19320849939",
+    "src/mobiraeon/persistence/migrations/versions/0001_identity.py": "2cab51a292ce1150f3fa29d37041a6bcf7c51c9bfb626be0633105fad96bf5f2",
+    "src/mobiraeon/persistence/migrations/versions/0002_registry.py": "4b0b26f0e95820cb97ff900e731804069420173223c1def4eb2f5f7e8806f0a1",
+    "src/mobiraeon/persistence/migrations/versions/0003_coordination.py": "d39fbf3d2a73fb0389593986ed30759eb207b7af3ac6af5ea9f7e129dbbff7bf",
+    "src/mobiraeon/persistence/migrations/versions/0004_execution.py": "eb311743557d97b41e3dd321446d168b5968461bf833e3edcbec5f58f9c89310",
+    "src/mobiraeon/persistence/migrations/versions/0005_forge.py": "371f38a7685a3929758abda8e93c50c5ce124b9e7594b2d2d58d6feb6a131a65",
+    "src/mobiraeon/private_state.py": "aa70c008c6fb8cf530d3a05b85c637ff0cd3e3ec017c2deca5a72c85ddcd25c8",
+    "src/mobiraeon/registry.py": "32801676d0c151544846c699bb1b411a8b85c63d2e3134a9484fde091f9d0ec9",
+    "src/mobiraeon/registry_schema.py": "8dd36a618bcf222cf0855d0a83cf6128a131c6360974e9335817171645a6b225",
+    "src/mobiraeon/scenario.py": "4f2dc7e10df70681cce9340529fecceb0ce816b1e61498ab8c849e62edf97ed5",
+    "src/mobiraeon/signal_verification.py": "3941becee754e60424286ec903e26b768853fe72252525333aafce920ca8ebb7",
+    "src/mobiraeon/verification_completion_controls.py": "96a7b175d4d27f9706e688e668b1870674209a2efe426922f9c9ae692e32e3d7",
+    "src/mobiraeon/verification_final07_controls.py": "1249c5346721a2f419b0a3fa0a33225bfc0f1c7e5b1bf43e38ce10dfdffec634",
+    "src/mobiraeon/verification_final08_controls.py": "68eb5d4a5db7e17cc639da383d2c413c2a73e990f0684cb617fd432569def565",
+    "src/mobiraeon/verification_final09_deadlines.py": "f4c3ab3631e20f9d038fe5e898fbad44d0e5a6ada5bcf72820a16e86746c4592",
+    "src/mobiraeon/verification_final09_lifecycle_controls.py": "fd95dc29e51e9a7cf477848bc21f6b1a18fefa1b2c276180e8749156e1f5c3ac",
+    "src/mobiraeon/verification_final10_controls.py": "8fa3562530d9ffee46410313bae7bc9e68f16d0c3fb58ea6bceccebfde4ced10",
+    "src/mobiraeon/verification_repair_controls.py": "a9064e43c160ba18758858acc4e749dfaf5cb64328f64b73970195b2a9364132"
+  },
+  "input_bindings": {
+    "submissions/increment-5/final-11/source-manifest.json": {
+      "bytes": 14519122,
+      "sha256": "8e2228f59746928b046c6838968952279d92b60dd137cb7fc379c6313fa207e0"
+    },
+    "submissions/increment-5/repair-final10-r1-q3-01/development-source-manifest-v2.json": {
+      "bytes": 31131,
+      "sha256": "3fb35b066a73cf3b4c27e5a80520801d246ce0136016368924449801b493d332"
+    },
+    "submissions/increment-5/repair-final10-r1-q3-01/fresh-review/closure-v3.json": {
+      "bytes": 7949,
+      "sha256": "65e79ac748d291d7d364565996ac528b4e342835fc1ebff511a1afdabad541a9"
+    },
+    "submissions/increment-5/repair-final10-r1-q3-01/final-audit/qualification-audit.json": {
+      "bytes": 119404,
+      "sha256": "71711006ce653b0ca827bdb5ea189645441fd9ce4f1f7e932190e7448266c33e"
+    },
+    "submissions/increment-5/final-11/source.zip": {
+      "bytes": 635401,
+      "sha256": "e208e66b44e1e97678d0a4ca5ade6a2c50b90fc53b6dd9b589eb9757db4f4a1b"
+    },
+    "submissions/increment-5/repair-final10-r1-q3-01/foundation-pipeline-outer.json": {
+      "bytes": 478,
+      "sha256": "20fa6ec2cf01ac53206759afcd89223fa076317ecd433c3dcfd8a4cdf0e0900c"
+    },
+    "submissions/increment-5/final-11/foundation-commands.json": {
+      "bytes": 3714,
+      "sha256": "ac263d60fd2121642f0c1e9e1b25d894c52a9ef527d2014f0858f4d319879850"
+    },
+    "submissions/increment-5/repair-final10-r1-q3-01/windows-pipeline-outer.json": {
+      "bytes": 481,
+      "sha256": "fd701d021268fb756cbcb6a1c8fc7f0270e4b4bd35258048c9a440e95cb755b4"
+    },
+    "submissions/increment-5/final-11/windows-commands.json": {
+      "bytes": 5446,
+      "sha256": "67a0d6af6c78cbfdc5bb40265e721e7f23e0b6f0549e9cd221baafac302b390a"
+    },
+    "submissions/increment-5/repair-final10-r1-q3-01/linux-pipeline-outer.json": {
+      "bytes": 4120,
+      "sha256": "f34ccfab2d2cdfc8ed8bbb77172cdb9a726fb7f389304bb91d24e1a8eec5c1f3"
+    },
+    "submissions/increment-5/final-11/linux-commands.json": {
+      "bytes": 8429,
+      "sha256": "0e2288bfcce55d73687258416e7800e9548e1177bb9d74f42f09866b49dc5d52"
+    },
+    "submissions/increment-5/repair-final10-r1-q3-01/runtime-pipeline-outer.json": {
+      "bytes": 5518,
+      "sha256": "10cb1f383c38268f24cbc5b2e1d939c7fa26634dbe6094115984c82c63f775a7"
+    },
+    "submissions/increment-5/final-11/runtime-commands.json": {
+      "bytes": 44093,
+      "sha256": "361520e54547c99a2f6997b6a0ee143335dc6c1480c2e69ff2e2b8c45534c329"
+    },
+    "submissions/increment-5/repair-final10-r1-q3-01/native-pipeline-outer.json": {
+      "bytes": 834,
+      "sha256": "5804b2b279e4f9c6885bd81e61e7cbffca45c1d77d131ff371d64607adfe17d1"
+    },
+    "submissions/increment-5/final-11/native-commands.json": {
+      "bytes": 13984,
+      "sha256": "0e950ecc5e3d0dd61f2248787e966f761a090270bbe7aaf31cc5a3caa2f60a7f"
+    },
+    "submissions/increment-5/repair-final10-r1-q3-01/qualify-pipeline-outer.json": {
+      "bytes": 4307,
+      "sha256": "527da84a503ce4a20410ece64c5ed268aba9fa9756b71842ab2ce2b72d32fd12"
+    },
+    "submissions/increment-5/final-11/qualify-commands.json": {
+      "bytes": 38477,
+      "sha256": "0210c63bf0687d58bfc229e46daa69147cf2f0f7abeb97aee6a7d7ab1a0e3748"
+    },
+    "submissions/increment-5/final-11/verification.json": {
+      "bytes": 692569,
+      "sha256": "2959ec7fbffd7b348ec60d0af3c8dbb0e78ecb96564e27facd8fb8a54ee45d0c"
+    },
+    "submissions/increment-5/final-11/windows-platform.json": {
+      "bytes": 699149,
+      "sha256": "92b0373e663c7ceaff00a74b095b74244e9ced8c7a321da5416057705a8d7e57"
+    },
+    "submissions/increment-5/final-11/linux-platform.json": {
+      "bytes": 3443568,
+      "sha256": "3c680ed83e13811455310fa0fcf869d47a818ea846844f58c1de1abac52ce41e"
+    },
+    "submissions/increment-5/final-11/mobiraeon-0.1.0-py3-none-any.whl": {
+      "bytes": 192632,
+      "sha256": "df9ed24a5ffe623a1b966e463b0062fbf48b2d961a943b146bf6a3d57b515ca2"
+    },
+    "submissions/increment-5/final-11/runtime-metadata-before.json": {
+      "bytes": 16990,
+      "sha256": "eb0fd8518ce199dfb8efe428b2780da7bd20ab81f242765bbac2df3adfda1cc6"
+    },
+    "submissions/increment-5/final-11/runtime-metadata-after-controls.json": {
+      "bytes": 16990,
+      "sha256": "eb0fd8518ce199dfb8efe428b2780da7bd20ab81f242765bbac2df3adfda1cc6"
+    },
+    "submissions/increment-5/final-11/runtime-metadata-after-provider.json": {
+      "bytes": 16990,
+      "sha256": "eb0fd8518ce199dfb8efe428b2780da7bd20ab81f242765bbac2df3adfda1cc6"
+    },
+    "submissions/increment-5/final-11/runtime-metadata-after-qualification.json": {
+      "bytes": 16990,
+      "sha256": "eb0fd8518ce199dfb8efe428b2780da7bd20ab81f242765bbac2df3adfda1cc6"
+    },
+    "submissions/increment-5/final-11/native-chain-source-preflight.json": {
+      "bytes": 9145,
+      "sha256": "3dac74379459d6bf25375a1680141259c4e77c5d413b0db70cd70925a3ea64ff"
+    },
+    "submissions/increment-5/final-11/final10-controls-source.json": {
+      "bytes": 455551,
+      "sha256": "298fede9a0a032b18499bdb0334ba6d2de630ac3335e35f2486ae5d3519e97db"
+    },
+    "submissions/increment-5/final-11/final09-controls-source.json": {
+      "bytes": 1423867,
+      "sha256": "fb988e03eeb38a227cab8e2ced7f320831b4b438e9cfb4a3408c5ea706210da0"
+    },
+    "submissions/increment-5/final-11/f8-controls-source.json": {
+      "bytes": 3778562,
+      "sha256": "e180be2d00668f02b8fe2a1e90fa9f751895fd44d6a2802f620831acd0c7d5c0"
+    },
+    "submissions/increment-5/final-11/completion-controls-source.json": {
+      "bytes": 473587,
+      "sha256": "bfc93bc80ea9e81dec96b256caabe4b7ba0749a558e792c2fd80a45c6a988d18"
+    },
+    "submissions/increment-5/final-11/required-controls-source.json": {
+      "bytes": 265677,
+      "sha256": "58cacb7debc101cc03e245d9f4835a1d17c906e2fe1369aa6da711277201cf30"
+    },
+    "submissions/increment-5/final-11/final07-controls-source.json": {
+      "bytes": 1208325,
+      "sha256": "f77f3525fa742e9acd7fea069b8a1c20e4f6d3129b5612e06998a51901420589"
+    },
+    "submissions/increment-5/final-11/final10-controls-runtime-only-installed.json": {
+      "bytes": 459994,
+      "sha256": "69fe596f97dbfd1e38d82b8a441040b6c595363ce3ef95c0f3fdc9db959d4f53"
+    },
+    "submissions/increment-5/final-11/final09-controls-runtime-only-installed.json": {
+      "bytes": 1438679,
+      "sha256": "b733b47a85feb206e9bc4f6b13f3e7fb2085619b6c92ab5e12fd83e8940d790a"
+    },
+    "submissions/increment-5/final-11/f8-controls-runtime-only-installed.json": {
+      "bytes": 3815683,
+      "sha256": "3b253af4f549fcfa723a203f7f2c0a29737c3e4fd687b564fb14f41c66dc9060"
+    },
+    "submissions/increment-5/final-11/completion-controls-runtime-only-installed.json": {
+      "bytes": 477841,
+      "sha256": "6b55053f26007d5448a6db509bc1a5a4cde37d930e6402e6fd87b1db05461178"
+    },
+    "submissions/increment-5/final-11/required-controls-runtime-only-installed.json": {
+      "bytes": 270987,
+      "sha256": "b1032122ab49c3e3dee6861422d2536623118deada1b62b57d76147af8455f66"
+    },
+    "submissions/increment-5/final-11/final07-controls-runtime-only-installed.json": {
+      "bytes": 1242551,
+      "sha256": "8a090ddc800ec70900f020e0582db6891fe8242a0b535a48acb6feb893d1b187"
+    },
+    "submissions/increment-5/final-11/final10-controls-native-windows.json": {
+      "bytes": 477175,
+      "sha256": "38f17dd5a54959accf79eea71df2debbea8d76e9d6e42316f5811cda2761bd8b"
+    },
+    "submissions/increment-5/final-11/final09-controls-native-windows.json": {
+      "bytes": 1471229,
+      "sha256": "35ce03d42dfa8435bcb6408f01fc35f7fba505f74f44c5b5799e0f43db623c99"
+    },
+    "submissions/increment-5/final-11/f8-controls-native-windows.json": {
+      "bytes": 3396003,
+      "sha256": "caa6173f41601edd5ab0a847245c10b860b714faf78b613d07942ad424db0f11"
+    },
+    "submissions/increment-5/final-11/completion-controls-native-windows.json": {
+      "bytes": 489821,
+      "sha256": "83d49bc4d4bc718708b3cccb81bef38806098f934eb16cdb5ee20a90ccfdde09"
+    },
+    "submissions/increment-5/final-11/required-controls-native-windows.json": {
+      "bytes": 284926,
+      "sha256": "8983bf723336cab3f5b65b48894b5bf2f45dffc6b5833b38cce1419bef26167c"
+    },
+    "submissions/increment-5/final-11/final07-controls-native-windows.json": {
+      "bytes": 1347754,
+      "sha256": "2fa8e9a1219a1e1fda557806f29564ab1da3827cafb9851f0726b2b3ec3fb1fe"
+    },
+    "submissions/increment-5/final-11/real-gitea-source.json": {
+      "bytes": 18751,
+      "sha256": "1dc93c1ae97a97991168390b8f82640b0ae5b044dfcee871791c61af6c4a1eda"
+    },
+    "submissions/increment-5/final-11/real-gitea-runtime-only-installed.json": {
+      "bytes": 18950,
+      "sha256": "1c1f1e0d226bb96250bdf0f5ec6b8b96456c76f5ad18f6b0d68ab5f5b6a6326d"
+    },
+    "submissions/increment-5/final-11/worker-certification-outer.json": {
+      "bytes": 3498,
+      "sha256": "3bff4a4edd05f9eb3fcd2cc984337d00320193cea247c3c3843677048e3fada2"
+    },
+    "submissions/increment-5/repair-final10-r1-q3-01/resources-pipeline-outer.json": {
+      "bytes": 4848,
+      "sha256": "7e8db90660d9af64f19c9abdf4431d2bd1c80c74304bbf3ec5e40a7f61ce44eb"
+    },
+    "submissions/increment-5/final-11/final-resource-inspection.json": {
+      "bytes": 40871,
+      "sha256": "d7de324ec4d6d445e2523c4bf90557c9eb49bf3c2d2052cc5fe03dc3bc814a98"
+    },
+    "submissions/increment-5/repair-final10-r1-q3-01/preservation-pipeline-outer.json": {
+      "bytes": 610,
+      "sha256": "88f208e4e6254f22281cdb279a5b878c39a71e722bdb9340ba3363a6180f7f74"
+    },
+    "submissions/increment-5/final-11/preservation-comparison.json": {
+      "bytes": 14301,
+      "sha256": "5ecafb7b0493c92d6ddf204e8e55c18e30cb501233bf6a08e39b19ea76063f17"
+    },
+    "submissions/increment-5/independent-reassessment-final10-20261104-01/linux-matrix-outer.json": {
+      "bytes": 5257,
+      "sha256": "483d24ee13bac3553f13d5a807fc44f4502f43482aea052f5c2659e5ab3e781e"
+    },
+    "submissions/increment-5/independent-reassessment-final10-20261104-01/linux-platform.json": {
+      "bytes": 1997130,
+      "sha256": "2169dcab7c36708954f3b1ee3a33639b55107d5bd3311c054f84410dc173991f"
+    }
+  },
+  "detailed_raw_audit_checks": [
+    {
+      "name": "exact_frozen_source_archive_manifest_logical_snapshot_and_fresh_code_review",
+      "passed": true,
+      "detail": {
+        "files": 191,
+        "packaged_source_files": 55,
+        "source_snapshot_sha256": "2ab7a27873a1fb4707f7f767060b8612b6724464bb84d32c749c16f6fce239a0"
+      }
+    },
+    {
+      "name": "actual_completed_stage_foundation",
+      "passed": true,
+      "detail": {
+        "commands": 1,
+        "actual_outer_exit": 0
+      }
+    },
+    {
+      "name": "actual_completed_stage_windows",
+      "passed": true,
+      "detail": {
+        "commands": 1,
+        "actual_outer_exit": 0
+      }
+    },
+    {
+      "name": "actual_completed_stage_linux",
+      "passed": true,
+      "detail": {
+        "commands": 4,
+        "actual_outer_exit": 0
+      }
+    },
+    {
+      "name": "native_completed_export_linux",
+      "passed": true,
+      "detail": {
+        "files": 30
+      }
+    },
+    {
+      "name": "actual_completed_stage_runtime",
+      "passed": true,
+      "detail": {
+        "commands": 25,
+        "actual_outer_exit": 0
+      }
+    },
+    {
+      "name": "native_completed_export_runtime",
+      "passed": true,
+      "detail": {
+        "files": 123
+      }
+    },
+    {
+      "name": "actual_completed_stage_native",
+      "passed": true,
+      "detail": {
+        "commands": 6,
+        "actual_outer_exit": 0
+      }
+    },
+    {
+      "name": "actual_completed_stage_qualify",
+      "passed": true,
+      "detail": {
+        "commands": 6,
+        "actual_outer_exit": 0
+      }
+    },
+    {
+      "name": "native_completed_export_qualify",
+      "passed": true,
+      "detail": {
+        "files": 147
+      }
+    },
+    {
+      "name": "serial_matrices_and_both_runtime_and_portable_native_controls_before_qualification",
+      "passed": true,
+      "detail": {
+        "actual_stage_order": [
+          "foundation",
+          "windows",
+          "linux",
+          "native",
+          "runtime",
+          "qualify"
+        ],
+        "actual_all_six_nonoverlapping": true
+      }
+    },
+    {
+      "name": "matrix_foundation_all_raw_commands_tests_wheel_and_source_integrity",
+      "passed": true,
+      "detail": {
+        "commands": 13,
+        "pytest": {
+          "summary": "================= 727 passed, 4 skipped in 323.97s (0:05:23) ==================",
+          "counts": {
+            "passed": 727,
+            "skipped": 4
+          }
+        },
+        "installed_forge": {
+          "summary": "174 passed in 115.26s (0:01:55)",
+          "counts": {
+            "passed": 174
+          }
+        },
+        "installed_reporting": {
+          "summary": "38 passed in 3.33s",
+          "counts": {
+            "passed": 38
+          }
+        }
+      }
+    },
+    {
+      "name": "matrix_windows_all_raw_commands_tests_wheel_and_source_integrity",
+      "passed": true,
+      "detail": {
+        "commands": 15,
+        "pytest": {
+          "summary": "================= 727 passed, 4 skipped in 340.40s (0:05:40) ==================",
+          "counts": {
+            "passed": 727,
+            "skipped": 4
+          }
+        },
+        "installed_forge": {
+          "summary": "174 passed in 120.40s (0:02:00)",
+          "counts": {
+            "passed": 174
+          }
+        },
+        "installed_reporting": {
+          "summary": "38 passed in 3.10s",
+          "counts": {
+            "passed": 38
+          }
+        }
+      }
+    },
+    {
+      "name": "matrix_linux_all_raw_commands_tests_wheel_and_source_integrity",
+      "passed": true,
+      "detail": {
+        "commands": 15,
+        "pytest": {
+          "summary": "================== 729 passed, 1 skipped in 282.93s (0:04:42) ==================",
+          "counts": {
+            "passed": 729,
+            "skipped": 1
+          }
+        },
+        "installed_forge": {
+          "summary": "174 passed in 104.29s (0:01:44)",
+          "counts": {
+            "passed": 174
+          }
+        },
+        "installed_reporting": {
+          "summary": "38 passed in 2.57s",
+          "counts": {
+            "passed": 38
+          }
+        }
+      }
+    },
+    {
+      "name": "full_worker_source_actual_parent_76_outer_30_nested",
+      "passed": true,
+      "detail": {
+        "python": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-source/.venv/bin/python",
+        "expected_none_is_unspecified_observation": [
+          [
+            "nested",
+            25,
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "name": "full_worker_installed_actual_parent_76_outer_30_nested",
+      "passed": true,
+      "detail": {
+        "python": "/home/andrey/work/mobiraeon-increment-5-20261104-01/temporary/mobiraeon-wheel-etemt1ag/100%valid/venv/bin/python",
+        "expected_none_is_unspecified_observation": [
+          [
+            "nested",
+            25,
+            0
+          ]
+        ]
+      }
+    },
+    {
+      "name": "current_full_linux_wheel_original_nine_signal_cases_4s_3s",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "q3_historical_failure_retained_and_finite18_current_comparison_separate",
+      "passed": true,
+      "detail": "No historical phase/trigger, isolated storage cause, occurrence rate or latency guarantee is inferred."
+    },
+    {
+      "name": "final10-controls-source_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "source",
+        "family": "final10",
+        "cases": 8,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "final09-controls-source_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "source",
+        "family": "final09",
+        "cases": 36,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "f8-controls-source_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "source",
+        "family": "f8",
+        "cases": 37,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "completion-controls-source_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "source",
+        "family": "completion",
+        "cases": 30,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "required-controls-source_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "source",
+        "family": "required",
+        "cases": 15,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "final07-controls-source_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "source",
+        "family": "final07",
+        "cases": 66,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "final10-controls-runtime-only-installed_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "runtime-only-installed",
+        "family": "final10",
+        "cases": 8,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "final09-controls-runtime-only-installed_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "runtime-only-installed",
+        "family": "final09",
+        "cases": 36,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "f8-controls-runtime-only-installed_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "runtime-only-installed",
+        "family": "f8",
+        "cases": 37,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "completion-controls-runtime-only-installed_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "runtime-only-installed",
+        "family": "completion",
+        "cases": 30,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "required-controls-runtime-only-installed_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "runtime-only-installed",
+        "family": "required",
+        "cases": 15,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "final07-controls-runtime-only-installed_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "runtime-only-installed",
+        "family": "final07",
+        "cases": 66,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "final10-controls-native-windows_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "native-windows",
+        "family": "final10",
+        "cases": 8,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "final09-controls-native-windows_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "native-windows",
+        "family": "final09",
+        "cases": 36,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "f8-controls-native-windows_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "native-windows",
+        "family": "f8",
+        "cases": 37,
+        "explicitly_unavailable": [
+          "no_eof",
+          "delayed",
+          "oversized",
+          "multibyte"
+        ]
+      }
+    },
+    {
+      "name": "completion-controls-native-windows_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "native-windows",
+        "family": "completion",
+        "cases": 30,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "required-controls-native-windows_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "native-windows",
+        "family": "required",
+        "cases": 15,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "final07-controls-native-windows_raw_required_behavior_imports_and_availability",
+      "passed": true,
+      "detail": {
+        "context": "native-windows",
+        "family": "final07",
+        "cases": 66,
+        "explicitly_unavailable": []
+      }
+    },
+    {
+      "name": "retained-r1-negative-source_unchanged_actual_parent_failure_retention",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "retained-r1-positive-source_unchanged_actual_parent_failure_retention",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "retained-r2-source_absolute_cutoff_and_conservative_admission",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "retained-r1-negative-runtime-only-installed_unchanged_actual_parent_failure_retention",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "retained-r1-positive-runtime-only-installed_unchanged_actual_parent_failure_retention",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "retained-r2-runtime-only-installed_absolute_cutoff_and_conservative_admission",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "runtime-metadata-before_55files_23production_distributions_noneditable_ext4",
+      "passed": true,
+      "detail": {
+        "wheel_sha256": "df9ed24a5ffe623a1b966e463b0062fbf48b2d961a943b146bf6a3d57b515ca2"
+      }
+    },
+    {
+      "name": "runtime-metadata-after-controls_55files_23production_distributions_noneditable_ext4",
+      "passed": true,
+      "detail": {
+        "wheel_sha256": "df9ed24a5ffe623a1b966e463b0062fbf48b2d961a943b146bf6a3d57b515ca2"
+      }
+    },
+    {
+      "name": "runtime-metadata-after-provider_55files_23production_distributions_noneditable_ext4",
+      "passed": true,
+      "detail": {
+        "wheel_sha256": "df9ed24a5ffe623a1b966e463b0062fbf48b2d961a943b146bf6a3d57b515ca2"
+      }
+    },
+    {
+      "name": "runtime-metadata-after-qualification_55files_23production_distributions_noneditable_ext4",
+      "passed": true,
+      "detail": {
+        "wheel_sha256": "df9ed24a5ffe623a1b966e463b0062fbf48b2d961a943b146bf6a3d57b515ca2"
+      }
+    },
+    {
+      "name": "source_native_chain_and_runtime_distribution_set_and_forge_smoke",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "real-gitea-source_raw_live_assertions_routes_API_identity_and_cleanup",
+      "passed": true,
+      "detail": {
+        "mode": "source",
+        "assertions": 9,
+        "routes": 72,
+        "origin": "http://127.0.0.2:39619",
+        "namespace": "mobiraeon-i5-d8f839f182f1acff"
+      }
+    },
+    {
+      "name": "real-gitea-runtime-only-installed_raw_live_assertions_routes_API_identity_and_cleanup",
+      "passed": true,
+      "detail": {
+        "mode": "runtime-only-installed",
+        "assertions": 9,
+        "routes": 72,
+        "origin": "http://127.0.0.2:38191",
+        "namespace": "mobiraeon-i5-162d526fbc5d027b"
+      }
+    },
+    {
+      "name": "both_live_provider_modes_executed_in_distinct_owned_namespaces",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fixed_batch_source_all10_raw_public_SQL_capture_authority_deadline_and_cleanup_predicates",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fixed_batch_runtime-only-installed_all10_raw_public_SQL_capture_authority_deadline_and_cleanup_predicates",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "fixed20_original_limits_predeclared_order_and_plan_identity",
+      "passed": true,
+      "detail": {
+        "cases": 20,
+        "plan_sha256": "05370d8a6c331c616ac9b5b6ebd8d5f36f5034ad6936b934b75cd9c7ed667d4e",
+        "traces": [
+          {
+            "case": "source:1",
+            "events_seen": 124,
+            "retained_events": 123,
+            "truncated": true,
+            "completion_remaining": 0.9946941679809242
+          },
+          {
+            "case": "source:2",
+            "events_seen": 123,
+            "retained_events": 123,
+            "truncated": false,
+            "completion_remaining": 1.035344271978829
+          },
+          {
+            "case": "source:3",
+            "events_seen": 122,
+            "retained_events": 122,
+            "truncated": false,
+            "completion_remaining": 1.1061811090330593
+          },
+          {
+            "case": "source:4",
+            "events_seen": 123,
+            "retained_events": 123,
+            "truncated": false,
+            "completion_remaining": 1.0464769689715467
+          },
+          {
+            "case": "source:5",
+            "events_seen": 124,
+            "retained_events": 123,
+            "truncated": true,
+            "completion_remaining": 0.9958040289930068
+          },
+          {
+            "case": "source:6",
+            "events_seen": 123,
+            "retained_events": 123,
+            "truncated": false,
+            "completion_remaining": 1.0540244100266136
+          },
+          {
+            "case": "source:7",
+            "events_seen": 122,
+            "retained_events": 122,
+            "truncated": false,
+            "completion_remaining": 1.1110990280285478
+          },
+          {
+            "case": "source:8",
+            "events_seen": 121,
+            "retained_events": 121,
+            "truncated": false,
+            "completion_remaining": 1.1597306950134225
+          },
+          {
+            "case": "source:9",
+            "events_seen": 121,
+            "retained_events": 121,
+            "truncated": false,
+            "completion_remaining": 1.1394460360170342
+          },
+          {
+            "case": "source:10",
+            "events_seen": 122,
+            "retained_events": 122,
+            "truncated": false,
+            "completion_remaining": 1.1058349960367195
+          },
+          {
+            "case": "runtime-only-installed:1",
+            "events_seen": 122,
+            "retained_events": 122,
+            "truncated": false,
+            "completion_remaining": 1.0755311400280334
+          },
+          {
+            "case": "runtime-only-installed:2",
+            "events_seen": 121,
+            "retained_events": 121,
+            "truncated": false,
+            "completion_remaining": 1.1503412509919144
+          },
+          {
+            "case": "runtime-only-installed:3",
+            "events_seen": 121,
+            "retained_events": 121,
+            "truncated": false,
+            "completion_remaining": 1.1588490979629569
+          },
+          {
+            "case": "runtime-only-installed:4",
+            "events_seen": 123,
+            "retained_events": 123,
+            "truncated": false,
+            "completion_remaining": 1.0499836889794096
+          },
+          {
+            "case": "runtime-only-installed:5",
+            "events_seen": 126,
+            "retained_events": 123,
+            "truncated": true,
+            "completion_remaining": 0.8880193990189582
+          },
+          {
+            "case": "runtime-only-installed:6",
+            "events_seen": 126,
+            "retained_events": 123,
+            "truncated": true,
+            "completion_remaining": 0.882613547029905
+          },
+          {
+            "case": "runtime-only-installed:7",
+            "events_seen": 124,
+            "retained_events": 123,
+            "truncated": true,
+            "completion_remaining": 0.9872631519683637
+          },
+          {
+            "case": "runtime-only-installed:8",
+            "events_seen": 124,
+            "retained_events": 123,
+            "truncated": true,
+            "completion_remaining": 0.9841954830335453
+          },
+          {
+            "case": "runtime-only-installed:9",
+            "events_seen": 123,
+            "retained_events": 123,
+            "truncated": false,
+            "completion_remaining": 1.0534978799987584
+          },
+          {
+            "case": "runtime-only-installed:10",
+            "events_seen": 122,
+            "retained_events": 122,
+            "truncated": false,
+            "completion_remaining": 1.10297647601692
+          }
+        ],
+        "container_ids": [
+          "0c47a25883cd4853ff7e67449a9ba83c0252f4d44fee294b38cf0184c0869b78",
+          "0dff92bf411e1198d1e414501e7d127dad74756cfbfb546c72fc53419f143552",
+          "1a594759c67b73534de0420a29f02334f16f7091fcf38dddbaef0b0791ed1d37",
+          "22e16d052900f013eff1e34d621d16e8dc078c872b0384db7b8aed7e025480bd",
+          "31441f29f427d1edaad1d21a2be3301d18e11dc3cf4d16077fad858ed4db6170",
+          "3465bce48992ae8f7f1eeeee4a2d56addd3284a478a1eebf8503947a2edcbf48",
+          "4d814f36e49df52247f755d67d75c8222d9212091a29371990f7f0f46924506a",
+          "5183c5ce3a6653d9241a8807de2560708724ed4d57cf22585b7c733c5b12d746",
+          "54208c033af41f0e21797c9b44162397667ccd531005e46334ea1a137220b62c",
+          "59be7402dc4886c8e69c83147d1a0ea33f900bbacb7fc26c7fa3c7a37a4b89aa",
+          "677237d0a15b44e9a4b9b5afa40ca9716a22bdc57f52f7bdbb2f02ad3e9e9d5a",
+          "73be91d3123ebbc85c1ba5d70acfab14813233e60f410b700050bf78e2086865",
+          "78e18a4c53b1aea35217d6c3e96d9f2e5b9ff1fa149d5ee56b27a670a113b7a7",
+          "7e41760a9225c4499aa8b77ed805921f18f53a2ccacacb46ac6b8589333b77c7",
+          "7f310fb49d976aa3fa12d18ca580c9c264468c8e4b8f65dca07283e1ead40a6d",
+          "a99662bc68f4f1f61ac35700aa2e198a45e54ad7de91887979ae3bfc4e148b87",
+          "ab0ffe14ddee843a2b7160663ae6147b000cac6ae032986cb3be0f205a9580c8",
+          "baf6c3c8731bbaf662f95729b56950b4e01293bf54bf8d6c66127a42a5185fa9",
+          "c4dfccce42abaefb6785b17b88f7c236a6ebb90a2c8cea7cb184ecd163f92cc9",
+          "fb25fe830cd7cd858463e683d74ae1a13da27cc9edde896578826bef9fed4df9"
+        ]
+      }
+    },
+    {
+      "name": "inherited_Q2_direct_CLI_mechanism_absolute_cutoff_baseline_and_F10_parser_baseline",
+      "passed": true,
+      "detail": "Current mechanism/prerequisite closure and current qualification are distinct from unknown historical Q2/Q3 triggers."
+    },
+    {
+      "name": "52348_readable_prior_files_220_precapture_191_source_same17_limits_head_and_staging",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "report_owned66containers_provider_namespaces_six_private_roots_absent_originalQ2_untouched",
+      "passed": true,
+      "detail": {
+        "docker_readonly_commands": 71,
+        "owned_container_ids": 66,
+        "removed_private_roots": 6
+      }
+    },
+    {
+      "name": "five_real_Agents_scope_unchanged_disabled_unqualified_and_enable_unavailable",
+      "passed": true,
+      "detail": "Raw CLI reads the orchestrator; captured unchanged registry test loops across all five definitions in each passed full matrix."
+    },
+    {
+      "name": "unused_post_finalizer_copy_reconciled_with_old_bytes_preserved_no_frozen_change_or_qualification_retry",
+      "passed": true,
+      "detail": {
+        "successful_attempt": "submissions/increment-5/repair-final10-r1-q3-01/native-post-controller-reconciliation-03",
+        "old_post_finalizer": {
+          "bytes": 43533,
+          "sha256": "2d74e21ae1d38df5ad03cec8637cec59f74b999b3e103d0aef65b474ca5ac095"
+        },
+        "current_post_finalizer": {
+          "bytes": 45335,
+          "sha256": "01d78500a48199b80a5545e5c1554a31306fe86f81e9b1d793b1f5d2860a7de6"
+        },
+        "failed_attempts": [
+          {
+            "attempt": 1,
+            "actual_exit": 1,
+            "failure_type": "PermissionError",
+            "context": "WSL read of protected Windows pre-capture file"
+          },
+          {
+            "attempt": 2,
+            "actual_exit": 1,
+            "native_not_launched": true,
+            "checked_files": 124,
+            "read_failures": 96
+          }
+        ],
+        "scope": "Administrative staging only; no source/frozen qualification controller edit, ACL change or qualification retry."
+      }
+    },
+    {
+      "name": "all_loaded_input_bytes_unchanged_during_readonly_audit",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "actual_controller_exit": 0,
+  "disposition": "Current frozen F10-R1 repair and Q3 qualification pass closed",
+  "historical_boundary": "Original final-10 Q3 remains failed 14/15, outer1; cause unknown. Current success does not retrospectively repair its evidence.",
+  "limits": "Finite source/runtime/platform/live-fixture qualification only. Human acceptance, production PostgreSQL/deployment, ordinary Agents/Runners and native Windows Worker qualification remain separate; five real Agents stay disabled/unqualified.",
+  "reviewer_mutations": "Only new files here; no tests, Docker/provider/application operations, source edits, prior-evidence edits, commit or push."
+}

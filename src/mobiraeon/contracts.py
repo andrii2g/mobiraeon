@@ -21,6 +21,7 @@ class Owner(StrEnum):
     ACCESS = "access"
     REGISTRY = "registry"
     COORDINATION = "coordination"
+    FORGE = "forge"
 
 
 @dataclass(frozen=True)
@@ -123,6 +124,12 @@ class Operation(StrEnum):
     EXECUTION_RUN = "execution.run"
     EXECUTION_STATUS = "execution.status"
     EXECUTION_STOP = "execution.stop"
+    FORGE_CONFIGURE = "forge.connection.configure"
+    FORGE_READ = "forge.connection.read"
+    FORGE_LINK = "forge.link"
+    FORGE_STATUS = "forge.status"
+    FORGE_SYNC = "forge.sync"
+    FORGE_RESOLVE = "forge.resolve"
     CREATE = "registry.create"
     EDIT = "registry.edit"
     DISCARD = "registry.discard"
@@ -174,6 +181,15 @@ EXECUTION_ACTIONS = {
     Operation.EXECUTION_RUN,
     Operation.EXECUTION_STATUS,
     Operation.EXECUTION_STOP,
+}
+
+FORGE_ACTIONS = {
+    Operation.FORGE_CONFIGURE,
+    Operation.FORGE_READ,
+    Operation.FORGE_LINK,
+    Operation.FORGE_STATUS,
+    Operation.FORGE_SYNC,
+    Operation.FORGE_RESOLVE,
 }
 
 

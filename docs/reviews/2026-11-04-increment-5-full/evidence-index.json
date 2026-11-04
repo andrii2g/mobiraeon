@@ -1,0 +1,94 @@
+{
+  "created_utc": "2026-11-04T15:46:34.778041+00:00",
+  "scope": "Maintained full-review record, compact evidence and cleanup receipts; exact reviewed source remains the external original final-11 archive, not these later documentation changes.",
+  "files": {
+    "CLEANUP.md": {
+      "bytes": 3969,
+      "sha256": "3f120a583a9af166388daade2db7937c9b09a1ee39807b9d18466769f81c4759"
+    },
+    "evidence/cleanup-build-attempt01.json": {
+      "bytes": 1308,
+      "sha256": "b0e2a7a2cf09da1549a866e91de296c3b0b39fae0e7746c44ae96bc37a9fdd0d"
+    },
+    "evidence/cleanup-build-before-manifest-compaction.json": {
+      "bytes": 1116,
+      "sha256": "f04da4e4dd147a371553691a73ca495fc6d3ddd68dfe9ae3e7c9ce4956dba176"
+    },
+    "evidence/cleanup-build.json": {
+      "bytes": 1280,
+      "sha256": "7dbd1b0ef8597ee4b205838d74b949fbea4eaf57ca5d1c283a4393a9ffed8333"
+    },
+    "evidence/cleanup-validator-correction.json": {
+      "bytes": 410,
+      "sha256": "06b399e08b87f69707595d69aa3a2e68cd265ee6453bea3770e5791a77476d71"
+    },
+    "evidence/cleanup-verification.json": {
+      "bytes": 9869,
+      "sha256": "cd3cc7e2484041ef0d744a5ee41629ba0a71b32bbc56d97d15b89f76037cdf41"
+    },
+    "evidence/execution-probes-outer.json": {
+      "bytes": 1955,
+      "sha256": "842702603c75ddb448c5ee16f41b6200bc908a12651fc63b88ad51e5a2f88c7c"
+    },
+    "evidence/execution-probes.json": {
+      "bytes": 18258,
+      "sha256": "526409946c9b90b6d2aee9f8e04455acab00bf16919ec7913d97b78faffc5234"
+    },
+    "evidence/final-validation-attempt01.json": {
+      "bytes": 15632,
+      "sha256": "e0c379b8a11c3ce9407efa8ca5666594367e7c7a847d09ec3c7c8d784882eb47"
+    },
+    "evidence/final-validation.json": {
+      "bytes": 15825,
+      "sha256": "36d8d10e0aea850c6c2a780aabde5aac55eaf23c5b5b712411c0ca550b070f24"
+    },
+    "evidence/native-review-checks.json": {
+      "bytes": 4075,
+      "sha256": "dc8f4857bb5379d6f7af10ea71c23691a37a8aa16f30c955ac1b1604e4a42bfd"
+    },
+    "evidence/native-review-outer.json": {
+      "bytes": 1395,
+      "sha256": "835dbb765c06d67d3e7c3eb87e41cbccc51d5eaeac0e3bd1a59184a1b1de01a5"
+    },
+    "evidence/prior-qualification-audit.json": {
+      "bytes": 119404,
+      "sha256": "71711006ce653b0ca827bdb5ea189645441fd9ce4f1f7e932190e7448266c33e"
+    },
+    "evidence/prior-qualification-summary.json": {
+      "bytes": 20400,
+      "sha256": "4486fc43f8cd0b35b865d31b61e5082ff19b43966ea2aea52f27b492af47981a"
+    },
+    "evidence/prior-repair-closure.json": {
+      "bytes": 45185,
+      "sha256": "904229e611442482294284dd74845b5cc67f5a32cf95923106e7c8e979692586"
+    },
+    "evidence/replay-probe-outer.json": {
+      "bytes": 1113,
+      "sha256": "e44e7f8c81a94785996e444d77f5a9de58b9ec3a77ac2fb15664a90899b8f9a1"
+    },
+    "evidence/replay-probe.json": {
+      "bytes": 15453,
+      "sha256": "feca22f291fbc5d371ac422360ac41c96d58e4b3ebdc05eecf3da8b1163f9ef5"
+    },
+    "evidence/review-decision.json": {
+      "bytes": 2532,
+      "sha256": "2131d9e9544040d00b7c5d01995c06a63244b1594babb23ab5de07ccce61499e"
+    },
+    "evidence/reviewed-source-manifest.json": {
+      "bytes": 33833,
+      "sha256": "dbad37dea2cff625485e550c714215ddd390c68637bcb43ed85f0fe7c13203da"
+    },
+    "evidence/starting-state.json": {
+      "bytes": 37284,
+      "sha256": "d8870cdff16a4a9495f2cbee52809a154611cf4641784b1e02fe76a4402bd748"
+    },
+    "REVIEW.md": {
+      "bytes": 6345,
+      "sha256": "a0029edd1b6fa580c996bf0807d42196b56474f71ef272deb1c1fe5a26b82b62"
+    },
+    "VALIDATION.md": {
+      "bytes": 4145,
+      "sha256": "0718f0cb41292f1d417f90d000c2cde561a57c28c41b1e7db19fea9cc9e22deb"
+    }
+  }
+}

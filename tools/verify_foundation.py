@@ -21,7 +21,7 @@ def main():
     parser.add_argument("--uv", default="uv")
     parser.add_argument(
         "--increment",
-        choices=["increment-1", "increment-2", "increment-3", "increment-4"],
+        choices=["increment-1", "increment-2", "increment-3", "increment-4", "increment-5"],
         default="increment-2",
     )
     parser.add_argument("--output-directory", type=Path)
@@ -43,6 +43,7 @@ def main():
         check=True,
     )
     manifest = json.loads((output / "source-manifest.json").read_text(encoding="utf-8"))
+    verify_source(root, manifest)
     reviewed_manifest = output / "archive/reviewed-49d811ca/source-manifest.json"
     environment = {k: v for k, v in os.environ.items() if not k.startswith("MOBIRAEON_")}
     report = {
@@ -119,6 +120,20 @@ def main():
         for command in commands:
             if any(str(part).endswith("verify_wheel.py") for part in command):
                 command.extend(["--fixture-image-id", args.fixture_image_id])
+    commands.append(
+        [
+            uv,
+            "run",
+            "--locked",
+            "python",
+            str(root / "tools/verify_forge.py"),
+            "--manifest",
+            str(output / "source-manifest.json"),
+            "--output",
+            str(output / "forge.json"),
+        ]
+    )
+    commands.append([uv, "run", "--locked", "python", str(root / "tools/verify_fr_repairs.py")])
     commands.append(
         [
             uv,

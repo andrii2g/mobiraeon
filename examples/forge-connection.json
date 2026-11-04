@@ -1,0 +1,41 @@
+{
+  "operation": "forge.connection.configure",
+  "target": {
+    "kind": "entity",
+    "entity_kind": "project",
+    "identity": "project-1"
+  },
+  "inputs": {
+    "operation_id": "configure-project-1",
+    "expected_version": 0,
+    "connection": {
+      "provider": "gitea",
+      "origin": "http://localhost:3001",
+      "allow_loopback_http": true,
+      "repository": {
+        "id": "1",
+        "owner": "fixture",
+        "name": "bridge"
+      },
+      "account": {
+        "id": "2",
+        "name": "bridge-bot"
+      },
+      "credential": {
+        "name": "forge-v1",
+        "revision": "v1"
+      },
+      "tls_ca_file": null,
+      "limits": {
+        "cycle_seconds": 100,
+        "request_seconds": 10,
+        "finalization_seconds": 1,
+        "max_requests": 20,
+        "max_pages": 5,
+        "response_bytes": 1048576,
+        "total_read_bytes": 5242880,
+        "comment_bytes": 16384
+      }
+    }
+  }
+}

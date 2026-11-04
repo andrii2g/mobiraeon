@@ -1,0 +1,20 @@
+{
+  "actual_exit_code": 0,
+  "command": ".tools/bin/uv.exe build --out-dir C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.preservation\\post-cleanup-build",
+  "wheel": {
+    "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.preservation\\post-cleanup-build\\mobiraeon-0.1.0-py3-none-any.whl",
+    "bytes": 192657,
+    "sha256": "fa7da3125a65dd501421a883b2df5a9ba44a6bb3a3d2cf4be25e42d102daa74e",
+    "packaged_source_files": 55,
+    "manifest_mismatches": []
+  },
+  "sdist": {
+    "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.preservation\\post-cleanup-build\\mobiraeon-0.1.0.tar.gz",
+    "bytes": 3059084,
+    "sha256": "2d6e45fa6e7b2f9d1fdb9000bed06053fb55f6c44d31a03d00c84f26eb07f719",
+    "retired_or_generated_members": [],
+    "retained_input_files_checked": 111,
+    "missing_retained_inputs": []
+  },
+  "scope": "Post-cleanup packaging check; final review metadata and two navigation/status wording corrections followed this build. No product code changed."
+}

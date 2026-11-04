@@ -1,0 +1,82 @@
+{
+  "created_utc": "2026-11-04T18:31:51.030924+00:00",
+  "scope": "Final P2 repair technical closure, actual source/installed checks and unchanged prior-evidence verification. Qualified source ZIP and final documentation capsule are distinct.",
+  "files": {
+    "evidence/baseline-and-scope.json": {
+      "bytes": 4738,
+      "sha256": "4e7ccacec3f2e67762459660c02abd915b8b117b0fe8ae6a1b98ff7819b90de6"
+    },
+    "evidence/baseline-manifest.json": {
+      "bytes": 35870,
+      "sha256": "acc27d96a37115a9792c686e025db7b360d8f85f2980a36ecf0e19ba843515da"
+    },
+    "evidence/final-integrity.json": {
+      "bytes": 2574,
+      "sha256": "b92188503052884ede769c8eb5a076b134c7ec52bddc5c74d401921287d885a3"
+    },
+    "evidence/green-results.json": {
+      "bytes": 24326,
+      "sha256": "54b63781bd6479082a7549f692daa9ee0b2fde8f41435db74802b49942146935"
+    },
+    "evidence/independent-final-assessment.json": {
+      "bytes": 8592,
+      "sha256": "77c15f2d5b1be2a2fadebd27c828fcf9989c3c46bf67d3bf1ea9142a4e41a0de"
+    },
+    "evidence/independent-source-assessment.json": {
+      "bytes": 6851,
+      "sha256": "a0b7c05dc3a6d4216e08124085d4e84746f79160db722fdf2c298d2bfbdc8f64"
+    },
+    "evidence/installed-forge.json": {
+      "bytes": 1329,
+      "sha256": "ecead8f8380cab62b7628e89f4acf6017404f9f9686e6659a7efcd85c126b1dc"
+    },
+    "evidence/native-outer.json": {
+      "bytes": 2318,
+      "sha256": "d77684204d9036f33e55d1c6c0067d62e1f0f6aaabaf2b279277c2f1c8c6a448"
+    },
+    "evidence/red-outer.json": {
+      "bytes": 8374,
+      "sha256": "2cf5bfa1cfa7ef231a537a8a728adb0b82f89b8174ff4164682e299a6a7a71af"
+    },
+    "evidence/red-results.json": {
+      "bytes": 6155,
+      "sha256": "07469e0e87eccd6eee7523d878b62305db0a6bfb0fa42763ab7bdf5ea6733cee"
+    },
+    "evidence/repair-normalized.patch": {
+      "bytes": 15917,
+      "sha256": "98c6baaad8886508038108c6229d4674a31d9fdfc0ba96eb355103fa82328ad2"
+    },
+    "evidence/repair-source-manifest.json": {
+      "bytes": 33519,
+      "sha256": "02992cab6aa700c7ef358055ca1dd148a1a32b505c0b0daa3fef0ae9997615f6"
+    },
+    "evidence/source-forge.json": {
+      "bytes": 1304,
+      "sha256": "6ab1a4a5572e4a7a2d7f0e5e7f4dfc88cc2c33144e8fe3f4a9a27cdc48205672"
+    },
+    "evidence/windows-checks.json": {
+      "bytes": 2353,
+      "sha256": "d17067009b816ee43c467a1cf41f67f7ae8225e8574a21d03a036121f69fc0ce"
+    },
+    "evidence/windows-results.json": {
+      "bytes": 2219,
+      "sha256": "b8127aa92acb396940efd5afedf547211772713bfcb8cdbc709707a5e9e826db"
+    },
+    "evidence/windows-setup-attempt01.json": {
+      "bytes": 530,
+      "sha256": "49d6fcfc824dc0180014fe14a7934a710c52a83468976d1f59127f05ac80b1a4"
+    },
+    "evidence/windows-working-cleanup.json": {
+      "bytes": 319,
+      "sha256": "cdf951ab63457d9d0805947b959c1890296f26f6446f6c71045955e47e4a8277"
+    },
+    "REVIEW.md": {
+      "bytes": 4249,
+      "sha256": "aa6b70a8b271da52b5375ae0bd69d09a6627e0e3da3113087b0fe861cfdbb2ac"
+    },
+    "VALIDATION.md": {
+      "bytes": 4140,
+      "sha256": "926a993a732ff7f973d316fd5c440fce77d40c3c9107c37c8e3832c4ff3322a2"
+    }
+  }
+}

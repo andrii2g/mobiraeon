@@ -68,7 +68,9 @@ qualification. The assessor has assess/accept/status; the author has the authori
 actions/status. Necessary exact Registry reads require their own applicable scopes.
 Fixture configuration uses immutable `fixture-v1` references in its own source,
 never qualifies/enables actual Registry Agents. All actual Agents remain disabled
-and unqualified; Agent execution and forge integration remain unavailable.
+and unqualified; ordinary Agent execution remains unavailable. This Increment 3
+fixture supplies no forge integration itself; the later separately authorized
+[manual forge bridge](forge-contracts.md) implements Increment 5.
 
 ## State, interruption and examples
 

@@ -1,0 +1,19 @@
+{
+  "command": [
+    "wsl.exe",
+    "--cd",
+    "/home/andrey/work/mobiraeon-increment-5-20261104-01",
+    "--exec",
+    "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-source/.venv/bin/python",
+    "-B",
+    "-c",
+    "\nimport hashlib,json,os,runpy,sys\nfrom pathlib import Path\nA,N=map(Path,sys.argv[1:3]);N.mkdir(mode=0o700)\ndef rec(p):\n b=p.read_bytes();return dict(bytes=len(b),sha256=hashlib.sha256(b).hexdigest())\nfor name in ['source-manifest.json','run-native-review.py']:\n (N/name).write_bytes((A/name).read_bytes());assert rec(N/name)==rec(A/name)\nos.chdir(N.parent);sys.path[0]=str(N)\ntry:runpy.run_path(str(N/'run-native-review.py'),run_name='__main__')\nfinally:\n for name in ['native-review-checks.json']:\n  if(N/name).exists():\n   assert not(A/name).exists();(A/name).write_bytes((N/name).read_bytes());assert rec(A/name)==rec(N/name)\n",
+    "/mnt/c/github/a2g.name/mobiraeon/artifacts/full-review-increment5-20261104-01",
+    "/home/andrey/work/mobiraeon-increment-5-20261104-01/full-review-20261104-01"
+  ],
+  "started_utc": "2026-11-04T15:10:43.360003+00:00",
+  "exit_code": 0,
+  "stdout": "{\"label\": \"pytest\", \"exit_code\": 0}\n{\"label\": \"lint\", \"exit_code\": 0}\n{\"label\": \"format\", \"exit_code\": 0}\n{\"label\": \"build\", \"exit_code\": 0}\n",
+  "stderr": "",
+  "finished_utc": "2026-11-04T15:15:08.805678+00:00"
+}

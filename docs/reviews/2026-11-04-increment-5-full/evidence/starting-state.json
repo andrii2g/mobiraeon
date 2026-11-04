@@ -1,0 +1,778 @@
+{
+  "started_utc": "2026-11-04T15:09:41.000571+00:00",
+  "head": "7fff312282c66ac8dfe616fde0b4230b31e133b2",
+  "staged_paths": [],
+  "status": "1 .M N... 100644 100644 100644 12b569134295f2ef0627f6db88048e897718ea64 12b569134295f2ef0627f6db88048e897718ea64 README.md\n1 .M N... 100644 100644 100644 1612e135918d32a866ea8dffecabe62331b49a28 1612e135918d32a866ea8dffecabe62331b49a28 docs/README.md\n1 .M N... 100644 100644 100644 e14c0c5fa24fee92db31e95d9be2a792792f12ba e14c0c5fa24fee92db31e95d9be2a792792f12ba docs/implementation-plan.md\n1 .M N... 100644 100644 100644 c2508f18836d4eab27d17b1a8667a5f4d53b7b9d c2508f18836d4eab27d17b1a8667a5f4d53b7b9d docs/initial-agent-configuration.md\n1 .M N... 100644 100644 100644 63991103b5925970ea091b838534f4bee7a13b0e 63991103b5925970ea091b838534f4bee7a13b0e pyproject.toml\n1 .M N... 100644 100644 100644 baf667768dfd45bb4d2093fe7d4202163a44ae53 baf667768dfd45bb4d2093fe7d4202163a44ae53 src/mobiraeon/administration.py\n1 .M N... 100644 100644 100644 3d16cfc9002edade54eee582ed9b7114e2f5f661 3d16cfc9002edade54eee582ed9b7114e2f5f661 src/mobiraeon/application.py\n1 .M N... 100644 100644 100644 b5bcfd823f0d362fe1dee2c50710021786499918 b5bcfd823f0d362fe1dee2c50710021786499918 src/mobiraeon/cli.py\n1 .M N... 100644 100644 100644 d33399624c47ca345140876e73f7c1bab29e63e9 d33399624c47ca345140876e73f7c1bab29e63e9 src/mobiraeon/contracts.py\n1 .M N... 100644 100644 100644 3b5e176a7ff0a4dfef7e5a78c1e2ec57820949b4 3b5e176a7ff0a4dfef7e5a78c1e2ec57820949b4 src/mobiraeon/docker_worker.py\n1 .M N... 100644 100644 100644 43d917ce8876a556e38d468d6ca2ccae2741a0ce 43d917ce8876a556e38d468d6ca2ccae2741a0ce src/mobiraeon/errors.py\n1 .M N... 100644 100644 100644 72f4dce1a238e4e9b117a1b196bd8188c1fae069 72f4dce1a238e4e9b117a1b196bd8188c1fae069 src/mobiraeon/execution.py\n1 .M N... 100644 100644 100644 adb95728719c0188f2fb9320636f6520c59efd54 adb95728719c0188f2fb9320636f6520c59efd54 src/mobiraeon/execution_repair_verification.py\n1 .M N... 100644 100644 100644 44a17472250028325de73989df0aed9228aafce0 44a17472250028325de73989df0aed9228aafce0 src/mobiraeon/execution_signal_verification.py\n1 .M N... 100644 100644 100644 1e670133cd9fea1f2a84a322af63c0d80cdc05de 1e670133cd9fea1f2a84a322af63c0d80cdc05de src/mobiraeon/execution_verification.py\n1 .M N... 100644 100644 100644 13f0c04011dec4399b6598301e213724e65356b4 13f0c04011dec4399b6598301e213724e65356b4 src/mobiraeon/operations.py\n1 .M N... 100644 100644 100644 780cf454c8d8d25ca519b73f392ab1e29ad73153 780cf454c8d8d25ca519b73f392ab1e29ad73153 src/mobiraeon/persistence/__init__.py\n1 .M N... 100644 100644 100644 a8187a64a639aa2ed15cd5c8f7fc32122ae5aa73 a8187a64a639aa2ed15cd5c8f7fc32122ae5aa73 src/mobiraeon/registry_schema.py\n1 .M N... 100644 100644 100644 d0dc386332214924558aaad298826b38327a7243 d0dc386332214924558aaad298826b38327a7243 tests/test_application.py\n1 .M N... 100644 100644 100644 191f17df9f1707a8de2c5476ec54647ac8aa775e 191f17df9f1707a8de2c5476ec54647ac8aa775e tests/test_coordination.py\n1 .M N... 100644 100644 100644 846d9e408a89284382aa93af895c36c18c2fd6d9 846d9e408a89284382aa93af895c36c18c2fd6d9 tests/test_execution.py\n1 .M N... 100644 100644 100644 978dac4216b4816023c8ccc6e30ba0db7a3b7276 978dac4216b4816023c8ccc6e30ba0db7a3b7276 tests/test_fr06.py\n1 .M N... 100644 100644 100644 46827e8dc7a5151296e7e893934ba3ac716c4e18 46827e8dc7a5151296e7e893934ba3ac716c4e18 tests/test_integration.py\n1 .M N... 100644 100644 100644 37f5dde57d2a078224de852cbc0d85fdf4f03fd0 37f5dde57d2a078224de852cbc0d85fdf4f03fd0 tests/test_persistence.py\n1 .M N... 100644 100644 100644 5bd800c256efa6256808e79a5163fdebf717719a 5bd800c256efa6256808e79a5163fdebf717719a tests/test_registry.py\n1 .M N... 100644 100644 100644 eb361a942d7eac211d9fa7a90d2e7b6409465492 eb361a942d7eac211d9fa7a90d2e7b6409465492 tests/test_review_repairs.py\n1 .M N... 100644 100644 100644 b57e9e5ce210630e76a72842555fef6ed536d904 b57e9e5ce210630e76a72842555fef6ed536d904 tools/capture_submission.py\n1 .M N... 100644 100644 100644 0b20c66fe7c637a8708685e5e673060bf0e1f177 0b20c66fe7c637a8708685e5e673060bf0e1f177 tools/verify_execution.py\n1 .M N... 100644 100644 100644 1afbf9a7bcadb32b617411d2bfe3d345d7b1a69f 1afbf9a7bcadb32b617411d2bfe3d345d7b1a69f tools/verify_foundation.py\n1 .M N... 100644 100644 100644 07e3cbcd9d97b46a71c84548a81437e1d14b6c4d 07e3cbcd9d97b46a71c84548a81437e1d14b6c4d tools/verify_interruptions.py\n1 .M N... 100644 100644 100644 64a8046fbdf246fee56a0e7ce06ad7a919df65c0 64a8046fbdf246fee56a0e7ce06ad7a919df65c0 tools/verify_platform.py\n1 .M N... 100644 100644 100644 a8cb66fa14cf965272ab1e73cfd716e9faf83f8d a8cb66fa14cf965272ab1e73cfd716e9faf83f8d tools/verify_wheel.py\n1 .M N... 100644 100644 100644 5c07dfeb76d97574f7fcc58a3f4ed5a5b5f5c886 5c07dfeb76d97574f7fcc58a3f4ed5a5b5f5c886 uv.lock\n? docs/forge-contracts.md\n? docs/implementation-instructions.md\n? docs/increment-5-completion-instructions.md\n? docs/increment-5-final-06-repair-instructions.md\n? docs/increment-5-final-06-repair-notes.md\n? docs/increment-5-final-07-repair-instructions.md\n? docs/increment-5-final-07-repair-notes.md\n? docs/increment-5-final-08-repair-instructions.md\n? docs/increment-5-final-08-repair-notes.md\n? docs/increment-5-final-09-repair-notes.md\n? docs/increment-5-final-10-repair-notes.md\n? docs/increment-5-status-and-recovery.md\n? docs/repair-instructions-increment-5.md\n? examples/forge-connection.json\n? examples/forge-link.json\n? examples/forge-resolve.json\n? examples/forge-status.json\n? examples/forge-sync.json\n? src/mobiraeon/execution_diagnostics.py\n? src/mobiraeon/execution_trace.py\n? src/mobiraeon/forge.py\n? src/mobiraeon/forge_adapter.py\n? src/mobiraeon/forge_credentials.py\n? src/mobiraeon/forge_gitea_verification.py\n? src/mobiraeon/forge_lock.py\n? src/mobiraeon/forge_schema.py\n? src/mobiraeon/forge_verification.py\n? src/mobiraeon/persistence/migrations/versions/0005_forge.py\n? src/mobiraeon/signal_verification.py\n? src/mobiraeon/verification_completion_controls.py\n? src/mobiraeon/verification_final07_controls.py\n? src/mobiraeon/verification_final08_controls.py\n? src/mobiraeon/verification_final09_deadlines.py\n? src/mobiraeon/verification_final09_lifecycle_controls.py\n? src/mobiraeon/verification_final10_controls.py\n? src/mobiraeon/verification_repair_controls.py\n? tests/test_execution_reporting.py\n? tests/test_final08_completion.py\n? tests/test_final08_lifecycle.py\n? tests/test_final09_deadlines.py\n? tests/test_final09_lifecycle.py\n? tests/test_final10_lifecycle.py\n? tests/test_forge.py\n? tests/test_forge_qualification.py\n? tests/test_signal_verification_timing.py\n? tests/test_verifier_propagation.py\n? tools/verify_forge.py\n",
+  "reviewed_source_files": {
+    ".gitattributes": {
+      "sha256": "82e229fb4c9ff84265ccf4a9cbe58f5e474243aec021193c17c24c289c3cf4b5",
+      "bytes": 127
+    },
+    ".gitignore": {
+      "sha256": "52fd3cf35d27c36e8055756d8fed6b716586b6950bee008c269f3ae83dfe2b06",
+      "bytes": 262
+    },
+    ".python-version": {
+      "sha256": "4f4c88910b6d485ae689143880e5e81b595a48a51ecb391b2f14feaec106d180",
+      "bytes": 8
+    },
+    "README.md": {
+      "sha256": "bdf6874472476bf99732b8ecb62c02a1e4d089da8d0812d2707c7b17355fb914",
+      "bytes": 48382
+    },
+    "bootstrap/initial-test.json": {
+      "sha256": "078c7a48705f4f24cbbbe56a50d6aee1b182ed50d79d0d3ec3fe4f92ca7393d7",
+      "bytes": 32572
+    },
+    "bootstrap/owner-setup.example.json": {
+      "sha256": "c3b8ac938feaf24e12a6a16c32503c43546c58b1e825ac7e2d73a7611ad56f14",
+      "bytes": 1627
+    },
+    "bootstrap/read-control.example.json": {
+      "sha256": "d6af1ae5f1b2b04edc950c60e304027287cbecb1d588a88acd9e3ee22c8f5c7b",
+      "bytes": 164
+    },
+    "docs/README.md": {
+      "sha256": "cf52180ec4803f3e01941c5d4d84aa287f212dfff850dfb57612f269a5d4ee5c",
+      "bytes": 12488
+    },
+    "docs/agent-registry.md": {
+      "sha256": "f6430a53c8fe6dfea931d07956ecc0023e3fc9f4f80728c5ab3256b1c5f0dd7f",
+      "bytes": 39576
+    },
+    "docs/architecture.md": {
+      "sha256": "e4c594b453401c15444b5460687e1b56a5bcd42720470d581df65586ccb20479",
+      "bytes": 21133
+    },
+    "docs/coordination-contracts.md": {
+      "sha256": "da3d8b9a56bd85a245812e349b654354a70034821f2fbdbe06ae9244497b679f",
+      "bytes": 9798
+    },
+    "docs/decisions.md": {
+      "sha256": "fb6d68853ed9e296838b1c8a8f42a5d927cf28c730adb6103fe3755b562f2036",
+      "bytes": 29627
+    },
+    "docs/definitions.md": {
+      "sha256": "bd9996d02d25ffe5cb8f3c95db9b64bceedf70d04780dfc5380727ff4fc3ae86",
+      "bytes": 7274
+    },
+    "docs/diagrams/README.md": {
+      "sha256": "c5b072e3c1729389b61055251dd7a178a7d9a64b39ca0557ea1da6a6402b34c0",
+      "bytes": 4860
+    },
+    "docs/diagrams/agent-setup-and-gitea.md": {
+      "sha256": "53d6c0c8b31df412679bdc8296ee48d563197ddba5f07a2b9a1a3445ab8846cc",
+      "bytes": 2228
+    },
+    "docs/diagrams/assessment-and-rework.md": {
+      "sha256": "231bbb1d70df073d2087c2b5a216b359e55a405a6690bff1aa5a787d7162b759",
+      "bytes": 3993
+    },
+    "docs/diagrams/assignment-and-selection.md": {
+      "sha256": "8aaa0286e4f02a559f561859e35cb67998b5a9d5521be9f8357a39927e3d6993",
+      "bytes": 3422
+    },
+    "docs/diagrams/context-and-shared-work.md": {
+      "sha256": "77f79865c35754eb485de98d1624c95983c9b77cfae34a8c0cd3abeef3b04192",
+      "bytes": 2500
+    },
+    "docs/diagrams/first-agent-preparation.md": {
+      "sha256": "c1f2d5791a60aba6a6b4c778f46ec451e6ca686845589ab9bcca65381dc00cdc",
+      "bytes": 4494
+    },
+    "docs/diagrams/high-level.md": {
+      "sha256": "cf73b7815329ee3cfbd3229a0cc9ca58e772977cedcce3ff71b1feba3c385fb7",
+      "bytes": 3111
+    },
+    "docs/diagrams/human-controls.md": {
+      "sha256": "721b21c45c24a56c50bbec2c85b7a4a80eae1a478e8cf3b9e3fce19423ee00e5",
+      "bytes": 2418
+    },
+    "docs/diagrams/initiative-acceptance.md": {
+      "sha256": "a3bf55b40b08afc4d320e43acbca61179e18e7f7a356f0b1224f0048bbdd9e4d",
+      "bytes": 1980
+    },
+    "docs/diagrams/intake-and-readiness.md": {
+      "sha256": "4f25d9ce3491163fca92a51b17be8c97d6df0d3a7155b8f68e865ee8403df5dc",
+      "bytes": 2734
+    },
+    "docs/diagrams/integration-and-validation.md": {
+      "sha256": "ce8af289a1ad5dd493465ba9be7b5fc043d207c7b2717293d661977a423c0b69",
+      "bytes": 1977
+    },
+    "docs/diagrams/registry-access.md": {
+      "sha256": "7a336f42735f1999f87898515323ab6b0565995881d899aadc084cd74d391fa8",
+      "bytes": 4092
+    },
+    "docs/diagrams/registry-controls.md": {
+      "sha256": "e0347b56e021da442074b6ee2bd5f10fc3231f69e419baf24bb665d3bb0d1838",
+      "bytes": 3128
+    },
+    "docs/diagrams/registry-credential-delivery.md": {
+      "sha256": "e60d4d58902a3dd4478aeb514c863b3a801f8474d4daeadeb9db11b9495f2279",
+      "bytes": 2512
+    },
+    "docs/diagrams/registry-enablement.md": {
+      "sha256": "7800d65a908de1ca262ec431115a84a323fac2d837f2243e7f606f91ab726b4f",
+      "bytes": 2600
+    },
+    "docs/diagrams/registry-hosting.md": {
+      "sha256": "49713fed09918bdfce249822944937a49c5e27308947d9d86351d5e826d3425c",
+      "bytes": 3040
+    },
+    "docs/diagrams/registry-operations.md": {
+      "sha256": "d9acfd28443cb0e1b17b7ddbc29eda1404bd1e34208c8123a8bc27a03754127d",
+      "bytes": 5546
+    },
+    "docs/diagrams/registry-organization.md": {
+      "sha256": "ded57976eed7141142a794197ccb7a268d0753f2b029f68aba7f43d2035d68c5",
+      "bytes": 3610
+    },
+    "docs/diagrams/registry-publication.md": {
+      "sha256": "1c057d7d40cd0e377ff05762743a2635b0473c83df2841b20dd1436978d0cd5f",
+      "bytes": 2662
+    },
+    "docs/diagrams/request-closure-and-follow-up.md": {
+      "sha256": "9fe8d819333cb7518348977089e3f8aee3fb609035da35039b29a340e1df3a26",
+      "bytes": 2188
+    },
+    "docs/diagrams/run-lifecycle.md": {
+      "sha256": "2122404956d1c4caf0b76f5f122b34708d54e231f22efce6dde35ec02eff2094",
+      "bytes": 3536
+    },
+    "docs/diagrams/waiting-and-recovery.md": {
+      "sha256": "263093ceab4dcb9b2a6c7f8916bd8cbe8614b019df885be487f145fb12174d0d",
+      "bytes": 2003
+    },
+    "docs/execution-contracts.md": {
+      "sha256": "a7991913eec7af6beaa97cd01b837f7ef2e0b4469b5a43a7cce4d2beae06c001",
+      "bytes": 25541
+    },
+    "docs/forge-contracts.md": {
+      "sha256": "342f3123e122794bf3b7a3351089f624391a983b833da391ac7edd41fc5cc8a7",
+      "bytes": 15895
+    },
+    "docs/implementation-instructions.md": {
+      "sha256": "20abca0e4c792bb06f80b4524d79b2a0143479f7dd84f80ba5196dea42af507c",
+      "bytes": 50839
+    },
+    "docs/implementation-plan.md": {
+      "sha256": "b750ad06834b7aa211c18a15a7aa1d1adb74952d6a2811ad87636acb001cacf2",
+      "bytes": 61061
+    },
+    "docs/increment-5-completion-instructions.md": {
+      "sha256": "3d330236cecdb7964437ced6b6251e4f9ea9fda8803d54108053f4d0923afc19",
+      "bytes": 28590
+    },
+    "docs/increment-5-final-06-repair-instructions.md": {
+      "sha256": "9a0864d69f8e21fac98d512dabd73cf275150e6221ecb3aca48556d10cf27fb6",
+      "bytes": 22165
+    },
+    "docs/increment-5-final-06-repair-notes.md": {
+      "sha256": "75b4a987de06644a6355cce2cfc1fc7a29362ce90ae78c00fc4a271e8cafa666",
+      "bytes": 2375
+    },
+    "docs/increment-5-final-07-repair-instructions.md": {
+      "sha256": "e3efc09d34efc95010eb6a61af128d42f90fadf5941b292f74846f48631b7f57",
+      "bytes": 47732
+    },
+    "docs/increment-5-final-07-repair-notes.md": {
+      "sha256": "e112857ade07b3444ed6a9c10c87c650328ab816945e43b2e9b24ccf019d7fc8",
+      "bytes": 2077
+    },
+    "docs/increment-5-final-08-repair-instructions.md": {
+      "sha256": "07f2003912fca25a4c21b252e5654b85016911f9e4d9f445835a1c1883a6d69a",
+      "bytes": 49441
+    },
+    "docs/increment-5-final-08-repair-notes.md": {
+      "sha256": "e0020669ec749d32284baa2d3db0adbe227645c49edb4133361b4ac801fdcf55",
+      "bytes": 2518
+    },
+    "docs/increment-5-final-09-repair-notes.md": {
+      "sha256": "eaa58194e94dc4d8f74f87cb461ba8260fc22389f7d72cf1bbc592eedd70db8a",
+      "bytes": 4308
+    },
+    "docs/increment-5-final-10-repair-notes.md": {
+      "sha256": "cdcd023b38ed534acacdbfe081205e95af7909c675242d5eff87ee8a2e19a252",
+      "bytes": 5162
+    },
+    "docs/increment-5-status-and-recovery.md": {
+      "sha256": "942f469c872e0ed579fa3ebe7077a1fc8b3217cf765e576305f46de77deebcf0",
+      "bytes": 12972
+    },
+    "docs/infrastructure.md": {
+      "sha256": "9bdfb945b1e92c5df2be0e4e388076459ef3adbb8b5630b3e5f0298d36cc57e9",
+      "bytes": 20453
+    },
+    "docs/initial-agent-configuration.md": {
+      "sha256": "efab71b26d0ab3e1004e6d891c3bd5546866756740b624201073f5db963654bd",
+      "bytes": 5617
+    },
+    "docs/registry-contracts.md": {
+      "sha256": "ddcd419d0b51d9906df852aa5351d54198f638c472d3788a7d27c4d165701d51",
+      "bytes": 14577
+    },
+    "docs/repair-instructions-increment-5.md": {
+      "sha256": "976bdea93ad602da61809e854d1ef4336dc0e21ffc1fb0df150d44abc8e7346a",
+      "bytes": 27377
+    },
+    "docs/requirements.md": {
+      "sha256": "98fed0e92cdfbdc5ae56da57974525a7bd931755bac2800e15613f7e199463b6",
+      "bytes": 33298
+    },
+    "docs/responsibilities.md": {
+      "sha256": "9b6dd26a483691982675c65d68ab0f623323272dc60cedd09df6a73042d99329",
+      "bytes": 10240
+    },
+    "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/REVIEW.md": {
+      "sha256": "2a95445ab748f7957566817b47073b6f952dc2a2bc7c8444b70c13bef37c3086",
+      "bytes": 8348
+    },
+    "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md": {
+      "sha256": "7477bc93acc7d46eac90e8042e00b1d8536b4cd1934da3a308e836b86b204287",
+      "bytes": 7746
+    },
+    "docs/reviews/2026-11-02-reassessment/REVIEW.md": {
+      "sha256": "4da6d7320e9b15f9dab71354ff1df4bfede51ee203eda5d303e1bcfbce5c4a19",
+      "bytes": 11293
+    },
+    "docs/reviews/2026-11-02-reassessment/VALIDATION.md": {
+      "sha256": "a7f9c63869cedd975108031638dcd51e266de24b9f0fcd09e857b2a624d6c5e5",
+      "bytes": 6439
+    },
+    "docs/reviews/2026-11-02-repairs-acceptance.md": {
+      "sha256": "42ba432f77643eb20fe2e6800fdd2bea12f5e728df1945178b44388cb5120970",
+      "bytes": 5680
+    },
+    "docs/reviews/2026-11-02/REVIEW.md": {
+      "sha256": "3399ad4e5a19ed9a19ae425a262c327c8649eb0875d1437be3b33352d27342f8",
+      "bytes": 12898
+    },
+    "docs/reviews/2026-11-02/VALIDATION.md": {
+      "sha256": "6347746b98eb4eb10dd1ea687ece5bb089c74ceae89c331f137a9ca15116cda0",
+      "bytes": 5838
+    },
+    "docs/roles/README.md": {
+      "sha256": "2446378752909532ffe2c7ea0fc379046b6606b07a398c6530bddcc02d524f99",
+      "bytes": 3639
+    },
+    "docs/roles/_shared/OPERATING_RULES.md": {
+      "sha256": "c621da652d44a608574aaa752fee1f42a4abc163ead06b49ed503982408219b4",
+      "bytes": 3449
+    },
+    "docs/roles/architect-planner/ROLE.md": {
+      "sha256": "1b6ed5a25113fe57a553cf3c9f8b9dd7c73e2bb576e60dbfc21febc8ac002e21",
+      "bytes": 1914
+    },
+    "docs/roles/decision-resolver/ROLE.md": {
+      "sha256": "a154ba60e373759eea27299aa22ae6a697edc12213b1653beeb127e2e875104d",
+      "bytes": 2001
+    },
+    "docs/roles/developer/ROLE.md": {
+      "sha256": "006606bb377d1d1360ea0d6b059f6423af4630784a8aed1848120142e4c4f9ed",
+      "bytes": 1758
+    },
+    "docs/roles/human-owner/ROLE.md": {
+      "sha256": "34655a217cee73072cbcf2c8e17e41f355bfaec48d4dd0ace941c1b4bb7999c0",
+      "bytes": 1757
+    },
+    "docs/roles/orchestrator/ROLE.md": {
+      "sha256": "b9df472e1909f379c8f5d2fe45d4ad18a365dbaca3585b4e3bae10503688e93e",
+      "bytes": 2590
+    },
+    "docs/roles/reviewer/ROLE.md": {
+      "sha256": "311e8992d6543e73c6efed99b2d82e9236bd655ec597299798eee9850121ac8d",
+      "bytes": 2174
+    },
+    "docs/roles/technical-writer/ROLE.md": {
+      "sha256": "9b1f7014340fb2a0e895bdffd5c3a571f80b952eb9a7150ce5e84366013fb249",
+      "bytes": 2039
+    },
+    "docs/roles/verifier-qa/ROLE.md": {
+      "sha256": "3d4441361746e304c00bf2d332d8fd499abb153b34ce68fbcd14cae3c6aa0778",
+      "bytes": 2157
+    },
+    "docs/workflow.md": {
+      "sha256": "bae5fa08f7e943c494e4c9243904a13f40d5fb88b5015a9355e15f14cec908fe",
+      "bytes": 47626
+    },
+    "examples/coordination-status.json": {
+      "sha256": "39ebe00beb050d86da59ef584964c56f56389838447425b785f19481b74c049a",
+      "bytes": 134
+    },
+    "examples/coordination.json": {
+      "sha256": "43d9db90ac5d599508202394601566209c770f7fdffb330bb7c708538b41f998",
+      "bytes": 1795
+    },
+    "examples/execution.json": {
+      "sha256": "b591eb98e342d52114746a3932ef9ea59e1bea32ff8fd91bc0fb86d6d1d59f2e",
+      "bytes": 1253
+    },
+    "examples/forge-connection.json": {
+      "sha256": "58cfbb1549ae91250b822e65d97eec4a288e1baed2241569077764794e297eae",
+      "bytes": 973
+    },
+    "examples/forge-link.json": {
+      "sha256": "20bee327a05eaf0b9ee4f99648f92b97474620fd50da3637eafe6d3f7d85f172",
+      "bytes": 318
+    },
+    "examples/forge-resolve.json": {
+      "sha256": "98c52849fb01212e9b2814c81f9889c59d47e038387648b44876325612605eb3",
+      "bytes": 408
+    },
+    "examples/forge-status.json": {
+      "sha256": "9df69dff58482be2a923008d2e3fafb0621298bf74e0ce463c57c1edd964f586",
+      "bytes": 187
+    },
+    "examples/forge-sync.json": {
+      "sha256": "e7be3ee45d14aa859cc70363ae7e39a95bd5c75b4968501205c9c9e741b832d1",
+      "bytes": 294
+    },
+    "infra/gitea/.env.example": {
+      "sha256": "82fa1c85960d2c4bd902a6de061fe981eac607f3f28b191ff2a203d97203b44c",
+      "bytes": 785
+    },
+    "infra/gitea/bootstrap/labels.json": {
+      "sha256": "c3f46568b314f19b81813da93858f0ae15d2cb3c385f14ba6027a5ff1d42d495",
+      "bytes": 536
+    },
+    "infra/gitea/bootstrap/repository/.gitea/ISSUE_TEMPLATE/01-request.md": {
+      "sha256": "f077429b200a3a60ae4d003a7baecd6c0a5514c8fbe466d69eab84875241305b",
+      "bytes": 868
+    },
+    "infra/gitea/bootstrap/repository/.gitea/ISSUE_TEMPLATE/02-initiative.md": {
+      "sha256": "7aba0634a7b16ceef542a8d91c1da8bc3a3c5f46fe11d382648ff9ea7945610b",
+      "bytes": 1215
+    },
+    "infra/gitea/bootstrap/repository/.gitea/ISSUE_TEMPLATE/03-task.md": {
+      "sha256": "7122df98c97b34c0c1ff1eb6c4b9a365b8d58cbf2e2ef9905a373fd933a468b1",
+      "bytes": 1778
+    },
+    "infra/gitea/bootstrap/repository/README.md": {
+      "sha256": "45820ff7db0ef7bb0fb9a0085b31295834518d84606c9fd767ff26a61358502b",
+      "bytes": 3003
+    },
+    "infra/gitea/compose.yaml": {
+      "sha256": "3170bbb46c8df62254c49f5a2d44f95eff58fa8add6ca4f1e1c23e4318ed4ddd",
+      "bytes": 2942
+    },
+    "infra/gitea/postgres/init/10-create-gitea.sh": {
+      "sha256": "e3ada3d237629b8a7b281ecaab09b96a68cd9d36cb78e1e5ccd1357ecb6704ab",
+      "bytes": 871
+    },
+    "pyproject.toml": {
+      "sha256": "db2fa21f18f2ba8d3c9639780d36a79279e06a5aa8946a0a0b64c49c979273b9",
+      "bytes": 1040
+    },
+    "src/mobiraeon/__init__.py": {
+      "sha256": "a993987609023bc0ed3d9494e9bab49c903ed99713d9320b114d7555460d965e",
+      "bytes": 107
+    },
+    "src/mobiraeon/__main__.py": {
+      "sha256": "fb532261c3dcefb7eb9ad6b8d3dbfd1d448a68ca0c7aad78d3cdba0dcb3fee46",
+      "bytes": 57
+    },
+    "src/mobiraeon/access.py": {
+      "sha256": "d649867e42c6cd164da26d1d46581ea8ca77edeb1fcf68875945186b060ed371",
+      "bytes": 10237
+    },
+    "src/mobiraeon/administration.py": {
+      "sha256": "8bf88f7747d6983c8d020fed6c51d165a03d405075387f6594cca736514c3218",
+      "bytes": 9522
+    },
+    "src/mobiraeon/api.py": {
+      "sha256": "e0e40ecddf7261a8728d88734551c3ce42f62780c4dd1590d91dabd8ab78b23f",
+      "bytes": 10194
+    },
+    "src/mobiraeon/application.py": {
+      "sha256": "868c19aeb6107c57257fdcb150edecd0ff513f3f8e45b6939135fad96a9cc396",
+      "bytes": 1960
+    },
+    "src/mobiraeon/bootstrap.py": {
+      "sha256": "7d4c12cccaa69e443ae45cf361820d2c8d51eb398a6c674d3a5becc666f0c2de",
+      "bytes": 12083
+    },
+    "src/mobiraeon/catalog.py": {
+      "sha256": "e65a28359e319e3ee98838ad9e71d878bf8ab24d42a89dee4287c54600f90acb",
+      "bytes": 21682
+    },
+    "src/mobiraeon/cli.py": {
+      "sha256": "91ec463ea475617d66e455547d881e01bba4f3de60c3dd27b14d03c6c34e9ee1",
+      "bytes": 7353
+    },
+    "src/mobiraeon/configuration.py": {
+      "sha256": "accd2affff02cff97c1cc7737801aa976911b4afb6e68c0fad04647474e863cd",
+      "bytes": 7938
+    },
+    "src/mobiraeon/contracts.py": {
+      "sha256": "5d3621f5b6d54e7db0e935932e6eadb1635ef3e9f4894da875a54801daae6828",
+      "bytes": 6241
+    },
+    "src/mobiraeon/coordination.py": {
+      "sha256": "18de6b14520a169cfa67b924bbeb02209f4557cf5b329f2751febe2618f291b7",
+      "bytes": 24648
+    },
+    "src/mobiraeon/coordination_schema.py": {
+      "sha256": "ae63e12bfebc1163455b84296ea069e1ae4758e3dec1c1b3ebbbf9e19dc22d09",
+      "bytes": 4456
+    },
+    "src/mobiraeon/diagnostics.py": {
+      "sha256": "37a5425a0812dbf413a83fcb6cb3c2df9b8105397e3ad525514132af001c4514",
+      "bytes": 2111
+    },
+    "src/mobiraeon/docker_worker.py": {
+      "sha256": "25dab0513da65563a09e8520f1e01dbbd2d59e2e1e279f5da192fff8ecc3583a",
+      "bytes": 13560
+    },
+    "src/mobiraeon/errors.py": {
+      "sha256": "3390c48627da09313dbaa41339ccb4bef340910d1bfc42eeb4b2e069de61c992",
+      "bytes": 1777
+    },
+    "src/mobiraeon/execution.py": {
+      "sha256": "f6dd898a54d5633b2a7d54993217f50a16116fae1da5d2acae135af198829ef8",
+      "bytes": 43066
+    },
+    "src/mobiraeon/execution_diagnostics.py": {
+      "sha256": "2bf4d8a773fa8a951251b45282db032fe880893a0639ce100a2e4d021bc52099",
+      "bytes": 26376
+    },
+    "src/mobiraeon/execution_fixture.py": {
+      "sha256": "1e417c64d5ef46cc485cf7325656dacaf90a84d7d8488dfac8d16ac27c2d4860",
+      "bytes": 8469
+    },
+    "src/mobiraeon/execution_repair_verification.py": {
+      "sha256": "38feedb8b9c21d6726351a02aa594b36d7137d8beff65cf614686a2a84306481",
+      "bytes": 21654
+    },
+    "src/mobiraeon/execution_schema.py": {
+      "sha256": "e87a181ca7186f6c65f1b710b424ff3857dd0ca8f6e64d7d4969144d16f109b6",
+      "bytes": 4204
+    },
+    "src/mobiraeon/execution_settings.py": {
+      "sha256": "bd55878b4799da82eca2e48c93244c833d3d69efc222ec4604ddd40d65e4c35e",
+      "bytes": 2218
+    },
+    "src/mobiraeon/execution_signal_verification.py": {
+      "sha256": "2acc033253417016e8036073d5925b342b335993c7d59a06c34a16d7bc4a978b",
+      "bytes": 7941
+    },
+    "src/mobiraeon/execution_trace.py": {
+      "sha256": "2119b9f66aa6343d3a7aba9052461d4e66a788297e45d24fc280018b14ace3a2",
+      "bytes": 6318
+    },
+    "src/mobiraeon/execution_verification.py": {
+      "sha256": "fcc596098911290b8f7e3f68ff67ff16e19da731f6b7bd2c63ad2ce2c4a50ee2",
+      "bytes": 49874
+    },
+    "src/mobiraeon/fixture_assets/Dockerfile": {
+      "sha256": "ee5596de532ba864232acb2e8063075fc64935a1c11bc87eb6992fa558ecba99",
+      "bytes": 224
+    },
+    "src/mobiraeon/fixture_assets/guard.py": {
+      "sha256": "5f3c8568123d89b3e6fc1eb8f2a576ee441176f20ea42391946b3b1fd970c21a",
+      "bytes": 464
+    },
+    "src/mobiraeon/fixture_assets/program.py": {
+      "sha256": "a609ead6ba499066e7f0db6d26c007c9fbb894c28e5cadb1d985b671743044aa",
+      "bytes": 2856
+    },
+    "src/mobiraeon/forge.py": {
+      "sha256": "d04606793d6fa453d605267b723ebbd054c2f0eac302021a4219ec3f9af1dc92",
+      "bytes": 52005
+    },
+    "src/mobiraeon/forge_adapter.py": {
+      "sha256": "6bdd894663bdf6f8a066610ad230375f3d477d1f91eef4a6e4499b17033f7ed3",
+      "bytes": 10917
+    },
+    "src/mobiraeon/forge_credentials.py": {
+      "sha256": "fd638e2e2e97df75ea102dc411a186177489801158a7146dcbecb189c89c5537",
+      "bytes": 5781
+    },
+    "src/mobiraeon/forge_gitea_verification.py": {
+      "sha256": "a8f74afa3e6b0d9f046d862fb34087a957ac54050ec26827fd9eb16c0b65c61b",
+      "bytes": 24049
+    },
+    "src/mobiraeon/forge_lock.py": {
+      "sha256": "bdc89a1ae3297ba9b6491f98d19b6a2fd38e05a7450533451cff2dc440c2cee4",
+      "bytes": 2519
+    },
+    "src/mobiraeon/forge_schema.py": {
+      "sha256": "9b64f413536768cd41528999704ede8ccb1302ac52e098047e9924081767372e",
+      "bytes": 6794
+    },
+    "src/mobiraeon/forge_verification.py": {
+      "sha256": "72763eb14d106e3de0ff5ed2116b0f4ea15648577a3cb2ccb44f31f695c93b7d",
+      "bytes": 20513
+    },
+    "src/mobiraeon/operations.py": {
+      "sha256": "e51441452143a6a418ca902472e0dcbd9c694ff02d8eb415343a25fc23eb1960",
+      "bytes": 7066
+    },
+    "src/mobiraeon/persistence/__init__.py": {
+      "sha256": "6a2845eb9e34608997bff9cfc82859050521ce716a0868dce652f38fc3eb02a3",
+      "bytes": 12048
+    },
+    "src/mobiraeon/persistence/migrations/env.py": {
+      "sha256": "ce1f0a6d1ad7c7d256e5a6e734bf8731694c50e21883713a1ff3a19320849939",
+      "bytes": 326
+    },
+    "src/mobiraeon/persistence/migrations/versions/0001_identity.py": {
+      "sha256": "2cab51a292ce1150f3fa29d37041a6bcf7c51c9bfb626be0633105fad96bf5f2",
+      "bytes": 576
+    },
+    "src/mobiraeon/persistence/migrations/versions/0002_registry.py": {
+      "sha256": "4b0b26f0e95820cb97ff900e731804069420173223c1def4eb2f5f7e8806f0a1",
+      "bytes": 5799
+    },
+    "src/mobiraeon/persistence/migrations/versions/0003_coordination.py": {
+      "sha256": "d39fbf3d2a73fb0389593986ed30759eb207b7af3ac6af5ea9f7e129dbbff7bf",
+      "bytes": 2003
+    },
+    "src/mobiraeon/persistence/migrations/versions/0004_execution.py": {
+      "sha256": "eb311743557d97b41e3dd321446d168b5968461bf833e3edcbec5f58f9c89310",
+      "bytes": 1941
+    },
+    "src/mobiraeon/persistence/migrations/versions/0005_forge.py": {
+      "sha256": "371f38a7685a3929758abda8e93c50c5ce124b9e7594b2d2d58d6feb6a131a65",
+      "bytes": 6107
+    },
+    "src/mobiraeon/private_state.py": {
+      "sha256": "aa70c008c6fb8cf530d3a05b85c637ff0cd3e3ec017c2deca5a72c85ddcd25c8",
+      "bytes": 11928
+    },
+    "src/mobiraeon/registry.py": {
+      "sha256": "32801676d0c151544846c699bb1b411a8b85c63d2e3134a9484fde091f9d0ec9",
+      "bytes": 286
+    },
+    "src/mobiraeon/registry_schema.py": {
+      "sha256": "8dd36a618bcf222cf0855d0a83cf6128a131c6360974e9335817171645a6b225",
+      "bytes": 14288
+    },
+    "src/mobiraeon/scenario.py": {
+      "sha256": "4f2dc7e10df70681cce9340529fecceb0ce816b1e61498ab8c849e62edf97ed5",
+      "bytes": 10899
+    },
+    "src/mobiraeon/signal_verification.py": {
+      "sha256": "3941becee754e60424286ec903e26b768853fe72252525333aafce920ca8ebb7",
+      "bytes": 16934
+    },
+    "src/mobiraeon/verification_completion_controls.py": {
+      "sha256": "96a7b175d4d27f9706e688e668b1870674209a2efe426922f9c9ae692e32e3d7",
+      "bytes": 13307
+    },
+    "src/mobiraeon/verification_final07_controls.py": {
+      "sha256": "1249c5346721a2f419b0a3fa0a33225bfc0f1c7e5b1bf43e38ce10dfdffec634",
+      "bytes": 44607
+    },
+    "src/mobiraeon/verification_final08_controls.py": {
+      "sha256": "68eb5d4a5db7e17cc639da383d2c413c2a73e990f0684cb617fd432569def565",
+      "bytes": 26014
+    },
+    "src/mobiraeon/verification_final09_deadlines.py": {
+      "sha256": "f4c3ab3631e20f9d038fe5e898fbad44d0e5a6ada5bcf72820a16e86746c4592",
+      "bytes": 12544
+    },
+    "src/mobiraeon/verification_final09_lifecycle_controls.py": {
+      "sha256": "fd95dc29e51e9a7cf477848bc21f6b1a18fefa1b2c276180e8749156e1f5c3ac",
+      "bytes": 11898
+    },
+    "src/mobiraeon/verification_final10_controls.py": {
+      "sha256": "8fa3562530d9ffee46410313bae7bc9e68f16d0c3fb58ea6bceccebfde4ced10",
+      "bytes": 13239
+    },
+    "src/mobiraeon/verification_repair_controls.py": {
+      "sha256": "a9064e43c160ba18758858acc4e749dfaf5cb64328f64b73970195b2a9364132",
+      "bytes": 20445
+    },
+    "tests/conftest.py": {
+      "sha256": "142791daf6e29795c691260ea55461433e3f660d1a86bf1fb96cdcddee3d2e11",
+      "bytes": 792
+    },
+    "tests/test_application.py": {
+      "sha256": "c648bf735306df789186b687c58b1f9309306d1af6c530f846f909f0dd36ce19",
+      "bytes": 7752
+    },
+    "tests/test_configuration.py": {
+      "sha256": "7d1d2fef52103aec80a96a384de31f22178812021c1cbcfadcf4dc8328800179",
+      "bytes": 3740
+    },
+    "tests/test_contracts.py": {
+      "sha256": "b11f4ca7de4f56602f8ca842394dd654f4a285e8bb7a543c40dfb2c6b8e1e518",
+      "bytes": 1508
+    },
+    "tests/test_coordination.py": {
+      "sha256": "86354b787f932e8bda3c50cefc372959a0471aabed4dda5a91e9bca52bf7824a",
+      "bytes": 32423
+    },
+    "tests/test_execution.py": {
+      "sha256": "74ecbab569f1b6f065d1a455bfeeb9bdaaeb62e6517e70a317e9d3582eba3e26",
+      "bytes": 21240
+    },
+    "tests/test_execution_reporting.py": {
+      "sha256": "4ac432c16e29309153648295082e808a96fe961af47882340521d6114a1d7052",
+      "bytes": 15398
+    },
+    "tests/test_execution_signals.py": {
+      "sha256": "fc37a2dc3f4f34a386ab60b375af422d522bdd569046cf27eb1fe8abd9572fbe",
+      "bytes": 4306
+    },
+    "tests/test_final08_completion.py": {
+      "sha256": "ced0cd159c09fc92b567e3aeb06e32161178c5065475e3cbe4d498c3fc04ab87",
+      "bytes": 1817
+    },
+    "tests/test_final08_lifecycle.py": {
+      "sha256": "721f082f4cbfcbf575b35a01d4a479b0af37b3c9690da5031b1458a34db5c2f4",
+      "bytes": 1966
+    },
+    "tests/test_final09_deadlines.py": {
+      "sha256": "0ab7f9cb75f259617ff48fd01e5d2e6820d00f96fee761dd43da633a0d3f8dac",
+      "bytes": 1562
+    },
+    "tests/test_final09_lifecycle.py": {
+      "sha256": "4889342af97e41455c29fb56142d2915dc7227a289bd2bc5f0253a58b4d6ffb2",
+      "bytes": 361
+    },
+    "tests/test_final10_lifecycle.py": {
+      "sha256": "812f4e8a12b4ec713c4ebd19b2af4966c6d847ca5b7e6e36dc055a758404a7b9",
+      "bytes": 799
+    },
+    "tests/test_forge.py": {
+      "sha256": "8c697ac40975a3cefeb3c9f230e2c0c915d7c33715da6300bd3757131275f8e4",
+      "bytes": 53776
+    },
+    "tests/test_forge_qualification.py": {
+      "sha256": "e378584cde55864168b4926e9ca3128986d7f031945c8e379a73a6327a82d48c",
+      "bytes": 4503
+    },
+    "tests/test_fr01.py": {
+      "sha256": "e8d97d77ba66634ce668fb77391e0c260db5e4badbbb9627bd7a99132aa6098d",
+      "bytes": 3957
+    },
+    "tests/test_fr02.py": {
+      "sha256": "d4b74883a79b8d6e8c7c0b4d9e182642da22f7afbf53bc45dcbe3a1c47ba89a4",
+      "bytes": 12421
+    },
+    "tests/test_fr03.py": {
+      "sha256": "8c201f6ddd6e4c6a336fdbb23c669f1dbbe0a8ccb43d44819f471dbd1ba823a5",
+      "bytes": 1338
+    },
+    "tests/test_fr04.py": {
+      "sha256": "d6d295150761c6e5ef4333239a5a3c6435ad6e9625d0d472aa2e4d7b84c2ace3",
+      "bytes": 4449
+    },
+    "tests/test_fr05.py": {
+      "sha256": "79a22bec48fc1341258f852e7fd46fa175242c352da7d1f05ecb0d700276183e",
+      "bytes": 6329
+    },
+    "tests/test_fr06.py": {
+      "sha256": "453e05bc2278eedc846d9dd970d699623d46eedae1f73f5c6e70dcd62819633c",
+      "bytes": 10627
+    },
+    "tests/test_i3_r1.py": {
+      "sha256": "4e9902916d19a2fa2b0b01a77880d00e45a410bb43a10a570a5bc4d6cb7b2fd5",
+      "bytes": 7118
+    },
+    "tests/test_i4_repairs.py": {
+      "sha256": "5c159bab458bc8f2ce1733a2a65a49c74c48c1268cb85b0fa3d2dc54fb08ad4b",
+      "bytes": 12739
+    },
+    "tests/test_increment2_repairs.py": {
+      "sha256": "b872d393b96c1aae359144dd67b5b8710d42c2deaf27ff9db8fec156b5ef020f",
+      "bytes": 14131
+    },
+    "tests/test_integration.py": {
+      "sha256": "1b2bfe71e631093e325a4c561a934a166fba4d2f1a43c90f21937535c5ca8af8",
+      "bytes": 3412
+    },
+    "tests/test_operations.py": {
+      "sha256": "4a490e559f76238c6aa5275e8c2f02e0eb1bf3b9b0b4decd1cafe1e7b85a1496",
+      "bytes": 8574
+    },
+    "tests/test_persistence.py": {
+      "sha256": "422024b527914ebfd186e8d7ffceef4ab28a0519147466bf7f51e157fe57c89f",
+      "bytes": 7871
+    },
+    "tests/test_registry.py": {
+      "sha256": "a263b6dc270e1b231ca858057b494f19eda5ec6d30cc2d5712a01bb6410f90ab",
+      "bytes": 29110
+    },
+    "tests/test_review_repairs.py": {
+      "sha256": "b3333eab6a33409fe357af9d0e3ea1fea4cd1dd9a562e8e2c582f5781cc2a71e",
+      "bytes": 9150
+    },
+    "tests/test_signal_verification_timing.py": {
+      "sha256": "abc3ac9a605ea1611860e9d64561f08cecec9eb72c690c8e61a1fa091ece782a",
+      "bytes": 4347
+    },
+    "tests/test_verifier_propagation.py": {
+      "sha256": "ae39c8a93e9bf792c9ef106ac3c1c7b75526756917a5f1383d6b55555a749254",
+      "bytes": 13096
+    },
+    "tools/capture_submission.py": {
+      "sha256": "9d679877faa9b363d20fc80ab7ded64631e892e0c360c1db1e32cbebda41c85b",
+      "bytes": 4478
+    },
+    "tools/foundation_signal_verification.py": {
+      "sha256": "418b3674b55b0d330d7787498d4217d03f2575b50d24cb3ca6da06c4e35da79a",
+      "bytes": 6792
+    },
+    "tools/prepare_initial_catalog.py": {
+      "sha256": "eda62b060512c58c20cc365e63af82062205d2e9612506927e705e815a4ed157",
+      "bytes": 5694
+    },
+    "tools/source_integrity.py": {
+      "sha256": "00cb2c35b3c2cdecaa36489984dfa2b1d31ab2acfd92e045a6fb2252014c7a93",
+      "bytes": 1428
+    },
+    "tools/tls_fixture.py": {
+      "sha256": "0f145038ea56d670bdef564d780b90bc6d93a4fa8d3538e787ef129348c132ad",
+      "bytes": 1675
+    },
+    "tools/verify_coordination.py": {
+      "sha256": "bb90535854dc3ffe133a693e79fa78a0216d8ef6aa3f2908985a40d3471c86e9",
+      "bytes": 4726
+    },
+    "tools/verify_execution.py": {
+      "sha256": "0cc03c600334c4a8a6106a95c55865fa1e099cd6fd3c239ff1b13720af1d10e8",
+      "bytes": 4371
+    },
+    "tools/verify_forge.py": {
+      "sha256": "1c13c3f8bdb885b6061be1c530732108031d445117c14aa8b1dd2d3ea8439382",
+      "bytes": 3211
+    },
+    "tools/verify_foundation.py": {
+      "sha256": "f4eb3f7fe092cdc4fa6adc7d2540a4e98790d72fb01e9ac4891f0b6d8c3ffc9b",
+      "bytes": 7072
+    },
+    "tools/verify_fr_repairs.py": {
+      "sha256": "44b0e79da3c23224cea4e2a986634678efe56cbfff3b9c56e21d9084c1a6f1e8",
+      "bytes": 5481
+    },
+    "tools/verify_interruptions.py": {
+      "sha256": "f2dd4b98f4c9b0f3d757677a4f2d8ef0d7662d6c4a21209e52ecc97238451da5",
+      "bytes": 10399
+    },
+    "tools/verify_platform.py": {
+      "sha256": "42a2787ca895bc73e9697c948a8bee164efaa393ac52de4c164e7026c5c67e27",
+      "bytes": 6028
+    },
+    "tools/verify_registry.py": {
+      "sha256": "88202fbaee0709dbb06ac54db626d3867649431f2032b4d91649ddcfbed7e742",
+      "bytes": 11392
+    },
+    "tools/verify_wheel.py": {
+      "sha256": "b6cf017c55227cc7405d4368a60b0acd89ac46e1a817b4cd7f2bc9b3d73ff5dc",
+      "bytes": 11239
+    },
+    "uv.lock": {
+      "sha256": "a1ed290027b52454d4d3f433b83723b9f1b94713c9c8e32df2c03625555135fc",
+      "bytes": 85104
+    }
+  },
+  "source_archive_sha256": "e208e66b44e1e97678d0a4ca5ade6a2c50b90fc53b6dd9b589eb9757db4f4a1b",
+  "source_manifest_record": {
+    "bytes": 14519122,
+    "sha256": "8e2228f59746928b046c6838968952279d92b60dd137cb7fc379c6313fa207e0"
+  },
+  "review_scope": "Full repository contracts/source/security/integration review; same191filefinal11source. Cleanup only after review and external preservation; no product code changes/commit/push."
+}

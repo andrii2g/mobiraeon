@@ -1,0 +1,11 @@
+{
+  "attempt01_actual_observer_exit": 1,
+  "attempt01_reports_preserved_unchanged": [
+    "cleanup-build-attempt01.json",
+    "final-validation-attempt01.json"
+  ],
+  "cause": "ZIP directory entries counted as files by reviewer validator",
+  "correction": "Filter ZipInfo.is_dir(), then compare all 55 path/byte hashes exactly",
+  "corrected_observer_exit": 0,
+  "product_or_build_failure": false
+}

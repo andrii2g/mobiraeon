@@ -1,0 +1,327 @@
+{
+  "started_utc": "2026-11-04T18:19:28.599465+00:00",
+  "source_archive_sha256": "4a6f85d5cbd4c59ef39f5e0523342081a3f01497fd062685a341fb9eb09c9ed0",
+  "source_files": 204,
+  "checks": [
+    {
+      "label": "new_regressions",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "tests/test_forge.py",
+        "tests/test_operations.py",
+        "-k",
+        "configure_failed_replay_between_outer_read_and_writer or verified_rollback_retains_controlled_error or verified_forge_replay_retains_each_non_success_outcome or invalid_recorded_forge_outcome or other_owners_do_not_honor_forge_retained_outcome or typed_replay_error_never_overrides_uncertain_transaction_finalization",
+        "--basetemp",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/new-pytest-temporary"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source",
+      "started_utc": "2026-11-04T18:19:28.632939+00:00",
+      "exit_code": 0,
+      "stdout": "..................                                                       [100%]\n18 passed, 184 deselected in 2.50s\n",
+      "stderr": "Using CPython 3.14.10 interpreter at: /home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/python/cpython-3.14.10-linux-x86_64-gnu/bin/python3.14\nCreating virtual environment at: .venv\n   Building mobiraeon @ file:///home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source\n      Built mobiraeon @ file:///home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source\nInstalled 32 packages in 37ms\n",
+      "finished_utc": "2026-11-04T18:19:32.748092+00:00"
+    },
+    {
+      "label": "lint",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "run",
+        "--locked",
+        "ruff",
+        "check",
+        "."
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source",
+      "started_utc": "2026-11-04T18:19:32.748657+00:00",
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": "",
+      "finished_utc": "2026-11-04T18:19:32.924958+00:00"
+    },
+    {
+      "label": "format",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "run",
+        "--locked",
+        "ruff",
+        "format",
+        "--check",
+        "."
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source",
+      "started_utc": "2026-11-04T18:19:32.925401+00:00",
+      "exit_code": 0,
+      "stdout": "99 files already formatted\n",
+      "stderr": "",
+      "finished_utc": "2026-11-04T18:19:32.975356+00:00"
+    },
+    {
+      "label": "full_pytest",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "run",
+        "--locked",
+        "pytest",
+        "-q",
+        "--basetemp",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/full-pytest-temporary"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source",
+      "started_utc": "2026-11-04T18:19:32.975857+00:00",
+      "exit_code": 0,
+      "stdout": "........................................................................ [  9%]\n............................................................s........... [ 19%]\n........................................................................ [ 28%]\n........................................................................ [ 38%]\n........................................................................ [ 48%]\n........................................................................ [ 57%]\n........................................................................ [ 67%]\n........................................................................ [ 77%]\n........................................................................ [ 86%]\n........................................................................ [ 96%]\n............................                                             [100%]\n747 passed, 1 skipped in 292.58s (0:04:52)\n",
+      "stderr": "",
+      "finished_utc": "2026-11-04T18:24:08.310555+00:00"
+    },
+    {
+      "label": "build",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "build",
+        "--out-dir",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/dist"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source",
+      "started_utc": "2026-11-04T18:24:08.310906+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Building source distribution...\nBuilding wheel from source distribution...\nSuccessfully built /home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/dist/mobiraeon-0.1.0.tar.gz\nSuccessfully built /home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/dist/mobiraeon-0.1.0-py3-none-any.whl\n",
+      "finished_utc": "2026-11-04T18:24:08.408102+00:00"
+    },
+    {
+      "label": "export_runtime",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "export",
+        "--locked",
+        "--no-dev",
+        "--no-emit-project",
+        "--no-hashes"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source",
+      "started_utc": "2026-11-04T18:24:08.411637+00:00",
+      "exit_code": 0,
+      "stdout": "# This file was autogenerated by uv via the following command:\n#    uv export --locked --no-dev --no-emit-project --no-hashes\nalembic==1.20.1\n    # via mobiraeon\nannotated-doc==0.0.5\n    # via fastapi\nannotated-types==0.8.0\n    # via pydantic\nanyio==4.15.1\n    # via\n    #   httpx2\n    #   starlette\nclick==8.5.0\n    # via uvicorn\nfastapi==0.162.0\n    # via mobiraeon\ngreenlet==3.5.6 ; platform_machine == 'AMD64' or platform_machine == 'WIN32' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'ppc64le' or platform_machine == 'win32' or platform_machine == 'x86_64'\n    # via sqlalchemy\nh11==0.16.0\n    # via\n    #   httpcore2\n    #   uvicorn\nhttpcore2==2.16.0 ; sys_platform != 'emscripten'\n    # via httpx2\nhttpx2==2.16.0\n    # via mobiraeon\nhttpx2-jsfetch==1.0 ; sys_platform == 'emscripten'\n    # via httpx2\nidna==3.20\n    # via\n    #   anyio\n    #   httpx2\nmako==1.4.3\n    # via alembic\nmarkupsafe==3.0.4\n    # via mako\nopentelemetry-api==1.45.2\n    # via fastapi\npydantic==2.14.2\n    # via fastapi\npydantic-core==2.50.2\n    # via pydantic\nsqlalchemy==2.0.55\n    # via\n    #   alembic\n    #   mobiraeon\nstarlette==1.10.0\n    # via fastapi\ntruststore==0.10.5 ; sys_platform != 'emscripten'\n    # via\n    #   httpcore2\n    #   httpx2\ntyping-extensions==4.16.0\n    # via\n    #   alembic\n    #   anyio\n    #   fastapi\n    #   opentelemetry-api\n    #   pydantic\n    #   pydantic-core\n    #   sqlalchemy\n    #   typing-inspection\ntyping-inspection==0.4.4\n    # via\n    #   fastapi\n    #   pydantic\nuvicorn==0.54.0\n    # via mobiraeon\n",
+      "stderr": "Resolved 34 packages in 1ms\n",
+      "finished_utc": "2026-11-04T18:24:08.425553+00:00"
+    },
+    {
+      "label": "create_installed_environment",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "venv",
+        "--python",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/python/cpython-3.14.10-linux-x86_64-gnu/bin/python3.14",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01",
+      "started_utc": "2026-11-04T18:24:08.425969+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Using CPython 3.14.10 interpreter at: /home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/python/cpython-3.14.10-linux-x86_64-gnu/bin/python3.14\nCreating virtual environment at: installed\nActivate with: source installed/bin/activate\n",
+      "finished_utc": "2026-11-04T18:24:08.443338+00:00"
+    },
+    {
+      "label": "install_runtime_wheel",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed/bin/python",
+        "--constraint",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/runtime-constraints.txt",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/dist/mobiraeon-0.1.0-py3-none-any.whl"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01",
+      "started_utc": "2026-11-04T18:24:08.443697+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Using Python 3.14.10 environment at: installed\nResolved 23 packages in 20ms\nPrepared 1 package in 11ms\nInstalled 23 packages in 29ms\n + alembic==1.20.1\n + annotated-doc==0.0.5\n + annotated-types==0.8.0\n + anyio==4.15.1\n + click==8.5.0\n + fastapi==0.162.0\n + greenlet==3.5.6\n + h11==0.16.0\n + httpcore2==2.16.0\n + httpx2==2.16.0\n + idna==3.20\n + mako==1.4.3\n + markupsafe==3.0.4\n + mobiraeon==0.1.0 (from file:///home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/dist/mobiraeon-0.1.0-py3-none-any.whl)\n + opentelemetry-api==1.45.2\n + pydantic==2.14.2\n + pydantic-core==2.50.2\n + sqlalchemy==2.0.55\n + starlette==1.10.0\n + truststore==0.10.5\n + typing-extensions==4.16.0\n + typing-inspection==0.4.4\n + uvicorn==0.54.0\n",
+      "finished_utc": "2026-11-04T18:24:08.568014+00:00"
+    },
+    {
+      "label": "installed_runtime_identity",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed/bin/python",
+        "-c",
+        "import json,mobiraeon,sys,importlib.util;from pathlib import Path;from importlib.metadata import version;p=Path(mobiraeon.__file__).resolve();assert p.is_relative_to(Path(sys.prefix));assert all(importlib.util.find_spec(x) is None for x in ['pytest','ruff','cryptography']);print(json.dumps({'module':str(p),'prefix':sys.prefix,'base':sys.base_prefix,'dependencies':{n:version(n) for n in ['mobiraeon','SQLAlchemy','alembic','httpx2']}}))"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01",
+      "started_utc": "2026-11-04T18:24:08.568370+00:00",
+      "exit_code": 0,
+      "stdout": "{\"module\": \"/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed/lib/python3.14/site-packages/mobiraeon/__init__.py\", \"prefix\": \"/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed\", \"base\": \"/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/python/cpython-3.14.10-linux-x86_64-gnu\", \"dependencies\": {\"mobiraeon\": \"0.1.0\", \"SQLAlchemy\": \"2.0.55\", \"alembic\": \"1.20.1\", \"httpx2\": \"2.16.0\"}}\n",
+      "stderr": "",
+      "finished_utc": "2026-11-04T18:24:08.622976+00:00"
+    },
+    {
+      "label": "source_forge_runtime",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source/.venv/bin/python",
+        "tools/verify_forge.py",
+        "--manifest",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/repair-source-manifest.json",
+        "--output",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source-forge.json"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source",
+      "started_utc": "2026-11-04T18:24:08.624384+00:00",
+      "exit_code": 0,
+      "stdout": "{\"started_utc\": \"2026-11-04T18:24:08.682145+00:00\", \"source_archive_sha256\": \"4a6f85d5cbd4c59ef39f5e0523342081a3f01497fd062685a341fb9eb09c9ed0\", \"qualification\": \"loopback\", \"command\": [\"/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source/.venv/bin/python\", \"-c\", \"import json; from mobiraeon.forge_verification import exercise; print(json.dumps(exercise()))\"], \"exit_code\": 0, \"report\": {\"result\": \"passed\", \"checks\": [\"link_publishes_nothing\", \"create_then_semantic_unchanged\", \"fixture_progress_updates_same_comment\", \"restarted_cli_no_duplicate\", \"observed_edit_remote_free_approval_refresh\", \"applied_create_lost_ack_read_only_reconciliation\", \"post_reconciliation_unchanged\", \"no_service_token_in_database\", \"delayed_patch_old_body_never_resends\", \"armed_intent_zero_matches_retains_hold\"], \"count\": 10, \"module\": \"/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source/src/mobiraeon/forge_verification.py\", \"transport\": \"production httpx2 over loopback TCP\", \"provider_qualified\": false}, \"result\": \"passed\", \"source_unchanged_before_and_after\": true, \"finished_utc\": \"2026-11-04T18:24:13.036403+00:00\"}\n",
+      "stderr": "",
+      "finished_utc": "2026-11-04T18:24:13.052261+00:00"
+    },
+    {
+      "label": "installed_forge_runtime",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source/.venv/bin/python",
+        "tools/verify_forge.py",
+        "--manifest",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/repair-source-manifest.json",
+        "--target-python",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed/bin/python",
+        "--output",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed-forge.json"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source",
+      "started_utc": "2026-11-04T18:24:13.052766+00:00",
+      "exit_code": 0,
+      "stdout": "{\"started_utc\": \"2026-11-04T18:24:13.116206+00:00\", \"source_archive_sha256\": \"4a6f85d5cbd4c59ef39f5e0523342081a3f01497fd062685a341fb9eb09c9ed0\", \"qualification\": \"loopback\", \"command\": [\"/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed/bin/python\", \"-c\", \"import json; from mobiraeon.forge_verification import exercise; print(json.dumps(exercise()))\"], \"exit_code\": 0, \"report\": {\"result\": \"passed\", \"checks\": [\"link_publishes_nothing\", \"create_then_semantic_unchanged\", \"fixture_progress_updates_same_comment\", \"restarted_cli_no_duplicate\", \"observed_edit_remote_free_approval_refresh\", \"applied_create_lost_ack_read_only_reconciliation\", \"post_reconciliation_unchanged\", \"no_service_token_in_database\", \"delayed_patch_old_body_never_resends\", \"armed_intent_zero_matches_retains_hold\"], \"count\": 10, \"module\": \"/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed/lib/python3.14/site-packages/mobiraeon/forge_verification.py\", \"transport\": \"production httpx2 over loopback TCP\", \"provider_qualified\": false}, \"result\": \"passed\", \"source_unchanged_before_and_after\": true, \"finished_utc\": \"2026-11-04T18:24:18.128997+00:00\"}\n",
+      "stderr": "",
+      "finished_utc": "2026-11-04T18:24:18.137703+00:00"
+    },
+    {
+      "label": "export_test_constraints",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "export",
+        "--locked",
+        "--no-emit-project",
+        "--no-hashes"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source",
+      "started_utc": "2026-11-04T18:24:18.138279+00:00",
+      "exit_code": 0,
+      "stdout": "# This file was autogenerated by uv via the following command:\n#    uv export --locked --no-emit-project --no-hashes\nalembic==1.20.1\n    # via mobiraeon\nannotated-doc==0.0.5\n    # via fastapi\nannotated-types==0.8.0\n    # via pydantic\nanyio==4.15.1\n    # via\n    #   httpx2\n    #   starlette\ncffi==2.1.1 ; platform_python_implementation != 'PyPy'\n    # via cryptography\nclick==8.5.0\n    # via uvicorn\ncolorama==0.4.6 ; sys_platform == 'win32'\n    # via pytest\ncryptography==50.0.2\nfastapi==0.162.0\n    # via mobiraeon\ngreenlet==3.5.6 ; platform_machine == 'AMD64' or platform_machine == 'WIN32' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'ppc64le' or platform_machine == 'win32' or platform_machine == 'x86_64'\n    # via sqlalchemy\nh11==0.16.0\n    # via\n    #   httpcore2\n    #   uvicorn\nhttpcore2==2.16.0 ; sys_platform != 'emscripten'\n    # via httpx2\nhttpx2==2.16.0\n    # via mobiraeon\nhttpx2-jsfetch==1.0 ; sys_platform == 'emscripten'\n    # via httpx2\nidna==3.20\n    # via\n    #   anyio\n    #   httpx2\niniconfig==2.3.1\n    # via pytest\nmako==1.4.3\n    # via alembic\nmarkupsafe==3.0.4\n    # via mako\nopentelemetry-api==1.45.2\n    # via fastapi\npackaging==26.3\n    # via pytest\npluggy==1.7.0\n    # via pytest\npycparser==3.12 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'\n    # via cffi\npydantic==2.14.2\n    # via fastapi\npydantic-core==2.50.2\n    # via pydantic\npygments==2.21.0\n    # via pytest\npytest==9.2.0\nruff==0.15.22\nsqlalchemy==2.0.55\n    # via\n    #   alembic\n    #   mobiraeon\nstarlette==1.10.0\n    # via fastapi\ntruststore==0.10.5 ; sys_platform != 'emscripten'\n    # via\n    #   httpcore2\n    #   httpx2\ntyping-extensions==4.16.0\n    # via\n    #   alembic\n    #   anyio\n    #   fastapi\n    #   opentelemetry-api\n    #   pydantic\n    #   pydantic-core\n    #   sqlalchemy\n    #   typing-inspection\ntyping-inspection==0.4.4\n    # via\n    #   fastapi\n    #   pydantic\nuvicorn==0.54.0\n    # via mobiraeon\n",
+      "stderr": "Resolved 34 packages in 1ms\n",
+      "finished_utc": "2026-11-04T18:24:18.151908+00:00"
+    },
+    {
+      "label": "install_test_dependencies",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed/bin/python",
+        "--constraint",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/test-constraints.txt",
+        "pytest",
+        "httpx2",
+        "cryptography"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01",
+      "started_utc": "2026-11-04T18:24:18.152670+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Using Python 3.14.10 environment at: installed\nResolved 15 packages in 9ms\nInstalled 8 packages in 20ms\n + cffi==2.1.1\n + cryptography==50.0.2\n + iniconfig==2.3.1\n + packaging==26.3\n + pluggy==1.7.0\n + pycparser==3.12\n + pygments==2.21.0\n + pytest==9.2.0\n",
+      "finished_utc": "2026-11-04T18:24:18.200128+00:00"
+    },
+    {
+      "label": "installed_affected_tests",
+      "command": [
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed-tests",
+        "--basetemp",
+        "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed-pytest-temporary",
+        "-o",
+        "cache_dir=/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed-pytest-cache"
+      ],
+      "cwd": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01",
+      "started_utc": "2026-11-04T18:24:18.201466+00:00",
+      "exit_code": 0,
+      "stdout": "........................................................................ [ 33%]\n........................................................................ [ 66%]\n........................................................................ [ 99%]\n..                                                                       [100%]\n218 passed in 103.08s (0:01:43)\n",
+      "stderr": "",
+      "finished_utc": "2026-11-04T18:25:57.769130+00:00"
+    }
+  ],
+  "scope": "Fresh native Linux repair source full suite and noneditable installed affected regression/runtime-only forge checks. Earlier Worker/live Gitea qualification retained at original source attribution.",
+  "source_unchanged_before": true,
+  "native_paths": [
+    {
+      "path": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source",
+      "resolved": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/source",
+      "filesystem": "ext4"
+    },
+    {
+      "path": "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+      "resolved": "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/bin/uv",
+      "filesystem": "ext4"
+    },
+    {
+      "path": "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/python/cpython-3.14.10-linux-x86_64-gnu/bin/python3.14",
+      "resolved": "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/python/cpython-3.14.10-linux-x86_64-gnu/bin/python3.14",
+      "filesystem": "ext4"
+    },
+    {
+      "path": "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-source/.venv/bin/python",
+      "resolved": "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/python/cpython-3.14.10-linux-x86_64-gnu/bin/python3.14",
+      "filesystem": "ext4"
+    },
+    {
+      "path": "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/python/cpython-3.14.10-linux-x86_64-gnu",
+      "resolved": "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/python/cpython-3.14.10-linux-x86_64-gnu",
+      "filesystem": "ext4"
+    },
+    {
+      "path": "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/python/cpython-3.14.10-linux-x86_64-gnu/lib/python3.14",
+      "resolved": "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/python/cpython-3.14.10-linux-x86_64-gnu/lib/python3.14",
+      "filesystem": "ext4"
+    },
+    {
+      "path": "/home/andrey/work/mobiraeon-increment-5-20261104-01/uv-cache",
+      "resolved": "/home/andrey/work/mobiraeon-increment-5-20261104-01/uv-cache",
+      "filesystem": "ext4"
+    },
+    {
+      "path": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/green-temporary",
+      "resolved": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/green-temporary",
+      "filesystem": "ext4"
+    },
+    {
+      "path": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01",
+      "resolved": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01",
+      "filesystem": "ext4"
+    }
+  ],
+  "updated_utc": "2026-11-04T18:25:57.773952+00:00",
+  "wheel": {
+    "path": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/dist/mobiraeon-0.1.0-py3-none-any.whl",
+    "bytes": 192817,
+    "sha256": "7bbe8bd93e27ba61c23f51018877e5ffe999d985506744ba4acaa4a8a7551ab7",
+    "packaged_source_files": 55
+  },
+  "installed_identity": {
+    "module": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed/lib/python3.14/site-packages/mobiraeon/__init__.py",
+    "prefix": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed",
+    "base": "/home/andrey/work/mobiraeon-increment-5-20261104-01/toolchain/python/cpython-3.14.10-linux-x86_64-gnu",
+    "dependencies": {
+      "mobiraeon": "0.1.0",
+      "SQLAlchemy": "2.0.55",
+      "alembic": "1.20.1",
+      "httpx2": "2.16.0"
+    }
+  },
+  "result": "passed",
+  "actual_controller_exit": 0,
+  "source_unchanged_after": true,
+  "finished_utc": "2026-11-04T18:25:57.773937+00:00"
+}

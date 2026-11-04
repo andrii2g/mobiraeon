@@ -1,0 +1,13 @@
+{
+  "recorded_utc": "2026-11-04T18:19:29.945620+00:00",
+  "actual_exit_code": 1,
+  "tests_started": false,
+  "stage": "new root harden",
+  "reason": "private_state_unprotected",
+  "root": "C:\\mobiraeon-i5-replay-repair-20261104-01",
+  "root_was_new": true,
+  "old_acl_changes": false,
+  "new_empty_root_removed": true,
+  "launcher_sha256": "0ec0e16f079d566cf602ec22d3c925e2942fb9196c4d135dde55c14fc93701bc",
+  "correction": "Use fresh child of existing qualified owner-protected parent; do not change parent ACL."
+}

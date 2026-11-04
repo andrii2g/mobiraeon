@@ -1,0 +1,92 @@
+{
+  "assessed_utc": "2026-11-04T18:22:48.216854+00:00",
+  "assessor": "independent qualification_plan agent; did not author production repair or regression tests",
+  "assessment_kind": "read-only source and retained-red-evidence assessment; not final qualification gate decision",
+  "baseline_archive": {
+    "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\baseline-source.zip",
+    "sha256": "f1b2c6f3271e97c507f401db78c49f996af6e4ec34206db0b8ec9ceb59fa6b1f"
+  },
+  "repaired_archive": {
+    "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\repair-source.zip",
+    "sha256": "4a6f85d5cbd4c59ef39f5e0523342081a3f01497fd062685a341fb9eb09c9ed0"
+  },
+  "reviewed_files": {
+    "src/mobiraeon/operations.py": {
+      "bytes": 7383,
+      "sha256": "264a8444932d2750b557ce043177f0498e61b0d0aa916810273ba4c703738035",
+      "baseline_sha256": "e51441452143a6a418ca902472e0dcbd9c694ff02d8eb415343a25fc23eb1960",
+      "repair_archive_member_matches": true
+    },
+    "src/mobiraeon/persistence/__init__.py": {
+      "bytes": 12282,
+      "sha256": "47372ed70cea3eb88be241a92e98b4615ef961a9ca07d0afa0395241048a6ea0",
+      "baseline_sha256": "6a2845eb9e34608997bff9cfc82859050521ce716a0868dce652f38fc3eb02a3",
+      "repair_archive_member_matches": true
+    },
+    "tests/test_operations.py": {
+      "bytes": 13440,
+      "sha256": "4429498d4131d31975cb1f3819517234730948b6b7713ea00ddcec4545a6599d",
+      "baseline_sha256": "4a490e559f76238c6aa5275e8c2f02e0eb1bf3b9b0b4decd1cafe1e7b85a1496",
+      "repair_archive_member_matches": true
+    },
+    "tests/test_forge.py": {
+      "bytes": 57968,
+      "sha256": "63d6f0587c88aa5b1b76c9f1034583849b91d19fce670c698671b9791707cef6",
+      "baseline_sha256": "8c697ac40975a3cefeb3c9f230e2c0c915d7c33715da6300bd3757131275f8e4",
+      "repair_archive_member_matches": true
+    }
+  },
+  "production_scope": {
+    "packaged_source_files": 55,
+    "unchanged": 53,
+    "changed": [
+      "src/mobiraeon/operations.py",
+      "src/mobiraeon/persistence/__init__.py"
+    ],
+    "transport_provider_worker_implementations_unchanged": true
+  },
+  "source_assessment": [
+    "Store.transaction preserves SafeError metadata only on the existing verified-body-rollback path; transaction acquisition and commit/rollback uncertainty paths retain their previous treatment.",
+    "TransactionFailure suppresses controlled body metadata when rolled_back is false.",
+    "OperationBoundary honors typed RecordedForgeFailure metadata only for Forge-owned bindings after verified rollback. Other owners retain reason-based behavior.",
+    "Ordinary and wrapped replay share existing enum validation; invalid labels and recorded success remain uncertain, and failure data remains absent.",
+    "No public input schema, persistence schema, authority check, HTTP request path, provider publication or Worker deadline is changed."
+  ],
+  "regression_causal_validity": {
+    "red_evidence_path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\red-outer.json",
+    "red_evidence_sha256": "2cf5bfa1cfa7ef231a537a8a728adb0b82f89b8174ff4164682e299a6a7a71af",
+    "outer_observer_exit": 0,
+    "baseline_pytest_exit": 1,
+    "baseline_result": "1 failed, 1 passed; exact-replay fails at known_failure versus unavailable; current-authority control passes",
+    "red_runtime_identical_to_pre_repair_baseline": true,
+    "causal_test_AST_identical_to_current": true,
+    "mechanism": "Two genuine matching configure invocations are interleaved after the first outer replay read closes. A real BEGIN IMMEDIATE/SQLITE_BUSY fails the matching writer, whose ordinary failed-attempt audit is persisted before the delayed production _configure resumes.",
+    "test_doubles_scope": "Wrapper inserts scheduling only; SQLAlchemy error listener releases the real SQLite blocker after observing SQLITE_BUSY. Replay values, transaction conversion, public outcomes and database history are not replaced.",
+    "assertions": "Ordinary/later/writer-gap outcomes and reasons; unchanged connection/revision/request/receipt records; zero HTTP routes/writes; current revocation; changed-input conflict; persisted delayed audit outcome/reason.",
+    "boundary_controls": "Verified rollback removes DDL effects; all five non-success outcomes; six invalid/success-label controls; two other-owner controls; actual commit-then-error and rollback-then-error remain uncertain."
+  },
+  "findings": [],
+  "source_decision": "No additional material finding; I5-FR-R1 repair is appropriate and causally covered.",
+  "qualification_gates_at_assessment": {
+    "new_18_native_regressions": "parent reported passed; this agent did not execute them",
+    "lint_format": "parent reported exit 0; this agent did not execute them",
+    "linux_full_suite": "pending",
+    "windows_full_suite": "pending",
+    "new_wheel_installed_affected_tests_and_runtime_forge": "pending",
+    "final_source_archive_binding_and_preservation_receipts": "pending"
+  },
+  "carry_forward_assessment": {
+    "repair_specific_technical_closure_reasonable_if_pending_gates_pass": true,
+    "basis": "docs/implementation-plan.md:387 requires affected checks and reassessment after later changes. Both full portable platform suites, newly installed affected/runtime checks, and independent review address this narrow shared failure-metadata path; finalizer-uncertainty controls explicitly cover the shared boundary risk.",
+    "unchanged_historical_qualification_scope": "Prior exact-source Worker/Gitea/live matrices remain evidence for their original final-11 archive and unchanged mechanisms. They are not executions against the repaired archive.",
+    "no_new_live_worker_or_gitea_rerun_required_for_this_narrow_repair": "Reasonable because 53/55 packaged inputs, including Worker, transport/provider, publication and their controls, remain unchanged, and this repair does not alter external execution paths. Do not promote this to a broader new-source live qualification claim.",
+    "acceptance_limit": "Technical repair closure does not record human acceptance, deployment, ordinary Runner qualification or Agent enablement. Existing low-priority O1/O2 observations remain outside this repair and nonblocking within the declared producer/platform scope."
+  },
+  "preservation": {
+    "prior_full_review_indexed_files_verified_unchanged": 22,
+    "no_edits_to_prior_reviews_reports_source_or_tests_by_assessor": true,
+    "only_new_file_written": "C:\\github\\a2g.name\\mobiraeon\\docs\\reviews\\2026-11-04-increment-5-replay-repair\\evidence\\independent-source-assessment.json",
+    "no_tests_or_services_run_by_assessor": true,
+    "no_commit_or_push": true
+  }
+}

@@ -161,30 +161,85 @@ def main():
         startup = subprocess.STARTUPINFO()
         startup.dwFlags |= subprocess.STARTF_USESHOWWINDOW
         startup.wShowWindow = 0
-        process = subprocess.run(
-            [
-                sys.executable,
-                str(Path(__file__).resolve()),
-                "--controller",
-                "--target-python",
-                options.target_python,
-                *(("--api",) if options.api else ()),
-            ],
-            creationflags=subprocess.CREATE_NEW_CONSOLE,
-            startupinfo=startup,
-            capture_output=True,
-            text=True,
-            timeout=90,
-        )
+        controller = {
+            "exit_code": None,
+            "stdout": "",
+            "stderr": "",
+            "timed_out": False,
+            "parse_status": "not_attempted",
+            "timeout_seconds": 90,
+            "stdout_truncated": False,
+            "stderr_truncated": False,
+        }
+        controller["command"] = [
+            sys.executable,
+            str(Path(__file__).resolve()),
+            "--controller",
+            "--target-python",
+            options.target_python,
+            *(("--api",) if options.api else ()),
+        ]
+
+        def bounded(value, maximum=262144):
+            if isinstance(value, bytes):
+                value = value.decode(errors="replace")
+            return (value or "")[:maximum]
+
         try:
-            report = json.loads(process.stdout)
-        except ValueError:
-            report = {
-                "result": "unavailable",
-                "exit_code": process.returncode,
-                "stdout": process.stdout,
-                "stderr": process.stderr,
-            }
+            process = subprocess.run(
+                controller["command"],
+                creationflags=subprocess.CREATE_NEW_CONSOLE,
+                startupinfo=startup,
+                capture_output=True,
+                text=True,
+                timeout=90,
+            )
+            controller.update(
+                exit_code=process.returncode,
+                stdout=bounded(process.stdout),
+                stderr=bounded(process.stderr),
+                stdout_truncated=len(process.stdout) > 262144,
+                stderr_truncated=len(process.stderr) > 262144,
+            )
+            try:
+                if controller["stdout_truncated"]:
+                    raise ValueError
+                parsed = json.loads(process.stdout)
+            except ValueError:
+                controller["parse_status"] = "invalid_or_oversized_json"
+                report = {"result": "failed"}
+            else:
+                controller["parse_status"] = "parsed"
+                controller["child_report"] = parsed
+                valid = (
+                    isinstance(parsed, dict)
+                    and parsed.get("result") == "passed"
+                    and isinstance(parsed.get("checks"), list)
+                    and bool(parsed["checks"])
+                    and all(isinstance(check, dict) for check in parsed["checks"])
+                )
+                controller["validation_status"] = (
+                    "passing_report" if valid else "not_a_passing_report"
+                )
+                report = (
+                    dict(parsed) if valid and process.returncode == 0 else {"result": "failed"}
+                )
+        except subprocess.TimeoutExpired as error:
+            controller.update(
+                timed_out=True,
+                parse_status="timeout",
+                stdout=bounded(error.stdout),
+                stderr=bounded(error.stderr),
+                stdout_truncated=len(bounded(error.stdout, 262145)) > 262144,
+                stderr_truncated=len(bounded(error.stderr, 262145)) > 262144,
+            )
+            report = {"result": "failed"}
+        except OSError as error:
+            controller.update(
+                parse_status="process_unavailable", failure_type=type(error).__name__
+            )
+            report = {"result": "failed"}
+        report["controller"] = controller
     else:
         try:
             report = exercise(options.api, options.target_python)

@@ -11,7 +11,7 @@ CAPABILITIES = {
     "registry_business_operations": "authenticated_administration",
     "coordination_workflows": "local_simulated_task_acceptance",
     "agent_execution": "unavailable",
-    "forge_integration": "unavailable",
+    "forge_integration": "gitea_manual_task_comment",
 }
 
 

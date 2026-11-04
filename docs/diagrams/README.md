@@ -1,6 +1,6 @@
 # Architecture and workflow diagrams
 
-These Mermaid sources summarize the design baseline; they are not implementation or qualification evidence. The [implementation plan](../implementation-plan.md#current-position) records accepted increments. The [Coordination contracts](../coordination-contracts.md) define the delivered local simulated slice, and the [execution contracts](../execution-contracts.md) define the accepted supervised fixture Worker. Broader service, ordinary Agent execution and forge views remain design direction.
+These Mermaid sources summarize the design baseline; they are not implementation or qualification evidence. The [implementation plan](../implementation-plan.md#current-position) records accepted increments and completed technical verification. The [Coordination contracts](../coordination-contracts.md) define the delivered local simulated slice, the [execution contracts](../execution-contracts.md) define the accepted supervised fixture Worker, and the [manual Forge contracts](../forge-contracts.md) define the completed Increment 5 Task/issue bridge. Broader background polling/intake, ordinary Agent execution and per-Agent forge-account views remain design direction.
 
 | View | Purpose |
 | --- | --- |

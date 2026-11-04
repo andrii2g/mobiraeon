@@ -1,0 +1,108 @@
+{
+  "baseline_archive_sha256": "f1b2c6f3271e97c507f401db78c49f996af6e4ec34206db0b8ec9ceb59fa6b1f",
+  "repaired_archive_sha256": "4a6f85d5cbd4c59ef39f5e0523342081a3f01497fd062685a341fb9eb09c9ed0",
+  "source_manifest_files": 204,
+  "changed_paths": {
+    "src/mobiraeon/operations.py": {
+      "before": {
+        "bytes": 7066,
+        "sha256": "e51441452143a6a418ca902472e0dcbd9c694ff02d8eb415343a25fc23eb1960"
+      },
+      "after": {
+        "bytes": 7383,
+        "sha256": "264a8444932d2750b557ce043177f0498e61b0d0aa916810273ba4c703738035"
+      }
+    },
+    "src/mobiraeon/persistence/__init__.py": {
+      "before": {
+        "bytes": 12048,
+        "sha256": "6a2845eb9e34608997bff9cfc82859050521ce716a0868dce652f38fc3eb02a3"
+      },
+      "after": {
+        "bytes": 12282,
+        "sha256": "47372ed70cea3eb88be241a92e98b4615ef961a9ca07d0afa0395241048a6ea0"
+      }
+    },
+    "tests/test_forge.py": {
+      "before": {
+        "bytes": 53776,
+        "sha256": "8c697ac40975a3cefeb3c9f230e2c0c915d7c33715da6300bd3757131275f8e4"
+      },
+      "after": {
+        "bytes": 57968,
+        "sha256": "63d6f0587c88aa5b1b76c9f1034583849b91d19fce670c698671b9791707cef6"
+      }
+    },
+    "tests/test_operations.py": {
+      "before": {
+        "bytes": 8574,
+        "sha256": "4a490e559f76238c6aa5275e8c2f02e0eb1bf3b9b0b4decd1cafe1e7b85a1496"
+      },
+      "after": {
+        "bytes": 13440,
+        "sha256": "4429498d4131d31975cb1f3819517234730948b6b7713ea00ddcec4545a6599d"
+      }
+    }
+  },
+  "unchanged_packaged_source_files": 53,
+  "unchanged_packaged_source_paths": [
+    "src/mobiraeon/__init__.py",
+    "src/mobiraeon/__main__.py",
+    "src/mobiraeon/access.py",
+    "src/mobiraeon/administration.py",
+    "src/mobiraeon/api.py",
+    "src/mobiraeon/application.py",
+    "src/mobiraeon/bootstrap.py",
+    "src/mobiraeon/catalog.py",
+    "src/mobiraeon/cli.py",
+    "src/mobiraeon/configuration.py",
+    "src/mobiraeon/contracts.py",
+    "src/mobiraeon/coordination.py",
+    "src/mobiraeon/coordination_schema.py",
+    "src/mobiraeon/diagnostics.py",
+    "src/mobiraeon/docker_worker.py",
+    "src/mobiraeon/errors.py",
+    "src/mobiraeon/execution.py",
+    "src/mobiraeon/execution_diagnostics.py",
+    "src/mobiraeon/execution_fixture.py",
+    "src/mobiraeon/execution_repair_verification.py",
+    "src/mobiraeon/execution_schema.py",
+    "src/mobiraeon/execution_settings.py",
+    "src/mobiraeon/execution_signal_verification.py",
+    "src/mobiraeon/execution_trace.py",
+    "src/mobiraeon/execution_verification.py",
+    "src/mobiraeon/fixture_assets/Dockerfile",
+    "src/mobiraeon/fixture_assets/guard.py",
+    "src/mobiraeon/fixture_assets/program.py",
+    "src/mobiraeon/forge.py",
+    "src/mobiraeon/forge_adapter.py",
+    "src/mobiraeon/forge_credentials.py",
+    "src/mobiraeon/forge_gitea_verification.py",
+    "src/mobiraeon/forge_lock.py",
+    "src/mobiraeon/forge_schema.py",
+    "src/mobiraeon/forge_verification.py",
+    "src/mobiraeon/persistence/migrations/env.py",
+    "src/mobiraeon/persistence/migrations/versions/0001_identity.py",
+    "src/mobiraeon/persistence/migrations/versions/0002_registry.py",
+    "src/mobiraeon/persistence/migrations/versions/0003_coordination.py",
+    "src/mobiraeon/persistence/migrations/versions/0004_execution.py",
+    "src/mobiraeon/persistence/migrations/versions/0005_forge.py",
+    "src/mobiraeon/private_state.py",
+    "src/mobiraeon/registry.py",
+    "src/mobiraeon/registry_schema.py",
+    "src/mobiraeon/scenario.py",
+    "src/mobiraeon/signal_verification.py",
+    "src/mobiraeon/verification_completion_controls.py",
+    "src/mobiraeon/verification_final07_controls.py",
+    "src/mobiraeon/verification_final08_controls.py",
+    "src/mobiraeon/verification_final09_deadlines.py",
+    "src/mobiraeon/verification_final09_lifecycle_controls.py",
+    "src/mobiraeon/verification_final10_controls.py",
+    "src/mobiraeon/verification_repair_controls.py"
+  ],
+  "preserved_full_review_index_sha256": "1de2746a3c38fb2d5a015c60f64a1cc2d3df7f1ac393b3d814cf62ac5cd1fdf3",
+  "preserved_full_review_entries_verified": 22,
+  "old_review_unchanged": true,
+  "previous_qualification": "Final-11 Worker/live-Gitea qualification remains at its original archive identity. No new live execution claimed. New repair verification covers both source platforms and a noneditable installed wheel.",
+  "unchanged_behavior": "Transport, Worker supervision, signal bounds, deadlines, capture and provider fixture controls are unchanged. Generic transaction reason mapping remains unchanged; retained-outcome handling is restricted to Forge owner after verified rollback."
+}

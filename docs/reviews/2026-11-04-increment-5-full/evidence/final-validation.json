@@ -1,0 +1,316 @@
+{
+  "verified_utc": "2026-11-04T15:46:34.759590+00:00",
+  "observer_exit_code": 0,
+  "original_archived_source_files": 191,
+  "original_archive_mismatches": [],
+  "unchanged_retained_original_files": 175,
+  "unexpected_current_input_changes": [],
+  "packaged_source_files_unchanged": 55,
+  "local_markdown_links_checked": 639,
+  "historical_links_resolving_in_unchanged_archive_mirror": [
+    {
+      "file": "docs/reviews/2026-11-02/REVIEW.md",
+      "target": "../../../artifacts/full-review-20261102-01/execution-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/REVIEW.md",
+      "target": "../../../artifacts/full-review-20261102-01/execution-audit/lost-attach-result.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/REVIEW.md",
+      "target": "../../../artifacts/full-review-20261102-01/execution-audit/real-attach-loss.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/REVIEW.md",
+      "target": "../../../artifacts/full-review-20261102-01/registry-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/REVIEW.md",
+      "target": "../../../artifacts/full-review-20261102-01/registry-audit/late-bootstrap-error.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/REVIEW.md",
+      "target": "../../../artifacts/full-review-20261102-01/docs-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/REVIEW.md",
+      "target": "../../../artifacts/full-review-20261102-01/docs-audit/cli-signals-windows.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/REVIEW.md",
+      "target": "../../../artifacts/full-review-20261102-01/docs-audit/cli-signals-linux.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/REVIEW.md",
+      "target": "../../../artifacts/full-review-20261102-01/foundation-audit/probe_config.py"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/REVIEW.md",
+      "target": "../../../artifacts/full-review-20261102-01/foundation-audit/config-results.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/REVIEW.md",
+      "target": "../../../artifacts/full-review-20261102-01/docs-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/REVIEW.md",
+      "target": "../../../artifacts/full-review-20261102-01/docs-audit/capture-deletion.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/VALIDATION.md",
+      "target": "../../../submissions/full-review-20261102-01/windows-verification.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/VALIDATION.md",
+      "target": "../../../submissions/full-review-20261102-01/linux-verification.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/VALIDATION.md",
+      "target": "../../../submissions/full-review-20261102-01/linux-fixture-checks.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/VALIDATION.md",
+      "target": "../../../submissions/full-review-20261102-01/source-manifest.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/VALIDATION.md",
+      "target": "../../../submissions/full-review-20261102-01/execution-installed.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/VALIDATION.md",
+      "target": "../../../submissions/full-review-20261102-01/execution-source.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/VALIDATION.md",
+      "target": "../../../artifacts/full-review-20261102-01/validation-summary.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02/VALIDATION.md",
+      "target": "../../../artifacts/full-review-20261102-01/artifact-index.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/REVIEW.md",
+      "target": "../../../submissions/repair-fr02-r1-fr06/final-01/source.zip"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/REVIEW.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/bootstrap-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/REVIEW.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/bootstrap-audit/additional-controls-03.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/REVIEW.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/tooling-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/REVIEW.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/tooling-audit/aggregation-controls.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/starting-state.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/run-windows.py"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/run-linux.sh"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/windows-verification.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/linux-verification.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/baseline-windows.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/baseline-linux.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/verification-summary.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/regression-comparison.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/execution-source.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/execution-installed.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/validation-summary.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/artifact-index.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/bootstrap-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/tooling-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/evidence-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/preservation-verification.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/windows-launch.stderr"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/bootstrap-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-fr02-r1-fr06-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-reassessment-fr02-r1-fr06-20261102-01/linux-final-state.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/REVIEW.md",
+      "target": "../../../submissions/repair-fr-01-fr-05/final-02/source.zip"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/REVIEW.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/bootstrap-config-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/REVIEW.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/bootstrap-config-audit/real-failure-audit-status.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/REVIEW.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/tools-evidence-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/REVIEW.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/tools-evidence-audit/result-aggregation-v2.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/REVIEW.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/execution-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/REVIEW.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/bootstrap-config-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/REVIEW.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/tools-evidence-audit/assessment.md"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/starting-state.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/prior-evidence-inventory.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/preservation-verification.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/windows-verification.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/linux-verification.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/baseline-windows.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/baseline-linux.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/run-linux.sh"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/verification-summary.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/regression-comparison.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/execution-source.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/execution-installed.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/linux-final-state.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/validation-summary.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-reassessment/VALIDATION.md",
+      "target": "../../../submissions/independent-full-review-fr01-fr05-20261102-01/artifact-index.json"
+    },
+    {
+      "file": "docs/reviews/2026-11-02-repairs-acceptance.md",
+      "target": "../../submissions/repair-fr02-r1-fr06/final-01/source.zip"
+    }
+  ],
+  "broken_local_markdown_links": [],
+  "external_cleanup_manifests_verified": 7,
+  "external_cleanup_manifest_mismatches": [],
+  "removed_roots_still_present": [],
+  "git_diff_check_exit": 0,
+  "git_diff_check_output": "",
+  "git_diff_check_warnings": [
+    "warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'docs/README.md', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'docs/implementation-plan.md', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'src/mobiraeon/application.py', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'src/mobiraeon/cli.py', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'src/mobiraeon/contracts.py', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'src/mobiraeon/errors.py', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'src/mobiraeon/execution_signal_verification.py', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'src/mobiraeon/operations.py', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'src/mobiraeon/persistence/__init__.py', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'src/mobiraeon/registry_schema.py', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'tools/verify_execution.py', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'tools/verify_wheel.py', LF will be replaced by CRLF the next time Git touches it",
+    "warning: in the working copy of 'uv.lock', LF will be replaced by CRLF the next time Git touches it"
+  ],
+  "head": "7fff312282c66ac8dfe616fde0b4230b31e133b2",
+  "staged_paths": [],
+  "post_cleanup_build": "cleanup-build.json",
+  "no_product_code_changes": true,
+  "no_commit_or_push": true,
+  "reviewer_validator_correction": "cleanup-validator-correction.json"
+}

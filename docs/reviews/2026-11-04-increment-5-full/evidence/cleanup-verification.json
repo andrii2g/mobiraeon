@@ -1,0 +1,189 @@
+{
+  "verified_utc": "2026-11-04T15:39:26.816517+00:00",
+  "archive": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01",
+  "review_complete_before_cleanup": true,
+  "moved_roots": [
+    {
+      "relative": "submissions",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\submissions",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\submissions"
+    },
+    {
+      "relative": "artifacts",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\artifacts",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\artifacts"
+    },
+    {
+      "relative": "dist",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\dist",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\dist"
+    },
+    {
+      "relative": ".pytest_cache",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\.pytest_cache",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.pytest_cache"
+    },
+    {
+      "relative": ".ruff_cache",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\.ruff_cache",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.ruff_cache"
+    },
+    {
+      "relative": ".tools/linux",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\.tools\\linux",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.tools\\linux"
+    },
+    {
+      "relative": ".tools/i4-mixed-venv",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\.tools\\i4-mixed-venv",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.tools\\i4-mixed-venv"
+    },
+    {
+      "relative": ".tools/regression-reviewed",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\.tools\\regression-reviewed",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.tools\\regression-reviewed"
+    },
+    {
+      "relative": ".tools/final06-repair-baseline.py",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\.tools\\final06-repair-baseline.py",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.tools\\final06-repair-baseline.py"
+    },
+    {
+      "relative": ".tools/final07-repair-baseline.py",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\.tools\\final07-repair-baseline.py",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.tools\\final07-repair-baseline.py"
+    },
+    {
+      "relative": ".tools/final08-repair-baseline.py",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\.tools\\final08-repair-baseline.py",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.tools\\final08-repair-baseline.py"
+    },
+    {
+      "relative": ".tools/run_linux_verification.py",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\.tools\\run_linux_verification.py",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.tools\\run_linux_verification.py"
+    },
+    {
+      "relative": ".tools/run_repair_probes.py",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\.tools\\run_repair_probes.py",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.tools\\run_repair_probes.py"
+    },
+    {
+      "relative": ".tools/refresh_initial_catalog.py",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\.tools\\refresh_initial_catalog.py",
+      "destination": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.tools\\refresh_initial_catalog.py"
+    }
+  ],
+  "retired_docs": [
+    {
+      "relative": "docs/implementation-instructions.md",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\docs\\implementation-instructions.md",
+      "preserved_copy": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\docs\\implementation-instructions.md"
+    },
+    {
+      "relative": "docs/increment-5-completion-instructions.md",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\docs\\increment-5-completion-instructions.md",
+      "preserved_copy": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\docs\\increment-5-completion-instructions.md"
+    },
+    {
+      "relative": "docs/increment-5-final-06-repair-instructions.md",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\docs\\increment-5-final-06-repair-instructions.md",
+      "preserved_copy": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\docs\\increment-5-final-06-repair-instructions.md"
+    },
+    {
+      "relative": "docs/increment-5-final-06-repair-notes.md",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\docs\\increment-5-final-06-repair-notes.md",
+      "preserved_copy": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\docs\\increment-5-final-06-repair-notes.md"
+    },
+    {
+      "relative": "docs/increment-5-final-07-repair-instructions.md",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\docs\\increment-5-final-07-repair-instructions.md",
+      "preserved_copy": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\docs\\increment-5-final-07-repair-instructions.md"
+    },
+    {
+      "relative": "docs/increment-5-final-07-repair-notes.md",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\docs\\increment-5-final-07-repair-notes.md",
+      "preserved_copy": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\docs\\increment-5-final-07-repair-notes.md"
+    },
+    {
+      "relative": "docs/increment-5-final-08-repair-instructions.md",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\docs\\increment-5-final-08-repair-instructions.md",
+      "preserved_copy": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\docs\\increment-5-final-08-repair-instructions.md"
+    },
+    {
+      "relative": "docs/increment-5-final-08-repair-notes.md",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\docs\\increment-5-final-08-repair-notes.md",
+      "preserved_copy": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\docs\\increment-5-final-08-repair-notes.md"
+    },
+    {
+      "relative": "docs/increment-5-final-09-repair-notes.md",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\docs\\increment-5-final-09-repair-notes.md",
+      "preserved_copy": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\docs\\increment-5-final-09-repair-notes.md"
+    },
+    {
+      "relative": "docs/increment-5-final-10-repair-notes.md",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\docs\\increment-5-final-10-repair-notes.md",
+      "preserved_copy": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\docs\\increment-5-final-10-repair-notes.md"
+    },
+    {
+      "relative": "docs/increment-5-status-and-recovery.md",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\docs\\increment-5-status-and-recovery.md",
+      "preserved_copy": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\docs\\increment-5-status-and-recovery.md"
+    },
+    {
+      "relative": "docs/repair-instructions-increment-5.md",
+      "source": "C:\\github\\a2g.name\\mobiraeon\\docs\\repair-instructions-increment-5.md",
+      "preserved_copy": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\docs\\repair-instructions-increment-5.md"
+    }
+  ],
+  "readable_files_verified_unchanged": 87363,
+  "readable_bytes_verified_unchanged": 4230367527,
+  "file_hash_mismatches": [],
+  "root_identities_unchanged": 14,
+  "preexisting_common_access_error_paths": 1198,
+  "limitation": "Previously inaccessible path contents were not byte-verified. Whole roots were relocated on the same volume with unchanged identities; no ACL changes.",
+  "all191_original_source_copies_verified": true,
+  "original_source_entries_unchanged_in_checkout": 175,
+  "packaged_source_files_unchanged": 55,
+  "intentional_documentation_edits": [
+    "README.md",
+    "docs/README.md",
+    "docs/forge-contracts.md",
+    "docs/implementation-plan.md"
+  ],
+  "historical_review_acceptance_bytes_unchanged": true,
+  "head": "7fff312282c66ac8dfe616fde0b4230b31e133b2",
+  "staged_paths": [],
+  "no_product_code_changes": true,
+  "no_commit_or_push": true,
+  "full_manifests": {
+    "plan.json": {
+      "bytes": 8303,
+      "sha256": "1eea2ff254b48761b144203b89de7879007d0e4bdeee0b3bbe78d41ac719030f"
+    },
+    "inventory-default.json": {
+      "bytes": 23517364,
+      "sha256": "8833c3b73b76dc285e204019d38af55a1166395e7bd4cd3df75c815e1e2b2d01"
+    },
+    "inventory-owner.json": {
+      "bytes": 23459107,
+      "sha256": "d61557ec139e4faf7f807219a18f114813033daa91b83bcf7ec2fbeb7fbc15e4"
+    },
+    "before-summary.json": {
+      "bytes": 2492,
+      "sha256": "dd0018827dec26d1ca181639154af08d0d172ac7cad26f59011ebce0d493d950"
+    },
+    "after-default.json": {
+      "bytes": 10267390,
+      "sha256": "285cb22e163330786897bc08397b102eaf78224077fde7326b2e759e61d6d509"
+    },
+    "after-owner.json": {
+      "bytes": 10282716,
+      "sha256": "6ad9578a1eeaf330bbcf30e142faf55089af3c389a931c5f8d22b5f1e330a37a"
+    },
+    "move-result.json": {
+      "bytes": 10491,
+      "sha256": "3446dd320de8a55b8a59a775d43be0704064c99f291cf6a7490744a29d7f1834"
+    }
+  }
+}

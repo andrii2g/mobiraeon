@@ -1,0 +1,11 @@
+{
+  "operation": "forge.status",
+  "target": {
+    "kind": "entity",
+    "entity_kind": "project",
+    "identity": "project-1"
+  },
+  "inputs": {
+    "task_id": "task-1"
+  }
+}

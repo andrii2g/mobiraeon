@@ -1,0 +1,68 @@
+{
+  "reviewed_utc": "2026-11-04T15:27:58.462565+00:00",
+  "source_archive_sha256": "e208e66b44e1e97678d0a4ca5ade6a2c50b90fc53b6dd9b589eb9757db4f4a1b",
+  "source_files": 191,
+  "review_complete_before_cleanup": true,
+  "decision": "Changes requested: one confirmed P2 exact-replay classification defect. Existing qualification passed but did not cover this interleaving.",
+  "material_findings": [
+    {
+      "id": "I5-FR-R1",
+      "priority": 2,
+      "file": "src/mobiraeon/forge.py",
+      "line": 378,
+      "title": "Preserve retained outcome when replay is discovered inside the writer transaction"
+    }
+  ],
+  "nonblocking_observations": [
+    "O1 injected alternate-output encoding acceptance",
+    "O2 split CRLF framing for a non-current producer"
+  ],
+  "product_source_changed": false,
+  "no_commit_or_push": true,
+  "evidence": {
+    "reviewed-source-manifest.json": {
+      "bytes": 14519122,
+      "sha256": "8e2228f59746928b046c6838968952279d92b60dd137cb7fc379c6313fa207e0"
+    },
+    "starting-state.json": {
+      "bytes": 37284,
+      "sha256": "d8870cdff16a4a9495f2cbee52809a154611cf4641784b1e02fe76a4402bd748"
+    },
+    "native-review-checks.json": {
+      "bytes": 4075,
+      "sha256": "dc8f4857bb5379d6f7af10ea71c23691a37a8aa16f30c955ac1b1604e4a42bfd"
+    },
+    "native-review-outer.json": {
+      "bytes": 1395,
+      "sha256": "835dbb765c06d67d3e7c3eb87e41cbccc51d5eaeac0e3bd1a59184a1b1de01a5"
+    },
+    "replay-probe.json": {
+      "bytes": 15453,
+      "sha256": "feca22f291fbc5d371ac422360ac41c96d58e4b3ebdc05eecf3da8b1163f9ef5"
+    },
+    "replay-probe-outer.json": {
+      "bytes": 1113,
+      "sha256": "e44e7f8c81a94785996e444d77f5a9de58b9ec3a77ac2fb15664a90899b8f9a1"
+    },
+    "execution-probes.json": {
+      "bytes": 18258,
+      "sha256": "526409946c9b90b6d2aee9f8e04455acab00bf16919ec7913d97b78faffc5234"
+    },
+    "execution-probes-outer.json": {
+      "bytes": 1955,
+      "sha256": "842702603c75ddb448c5ee16f41b6200bc908a12651fc63b88ad51e5a2f88c7c"
+    },
+    "prior-qualification-summary.json": {
+      "bytes": 20400,
+      "sha256": "4486fc43f8cd0b35b865d31b61e5082ff19b43966ea2aea52f27b492af47981a"
+    },
+    "prior-qualification-audit.json": {
+      "bytes": 119404,
+      "sha256": "71711006ce653b0ca827bdb5ea189645441fd9ce4f1f7e932190e7448266c33e"
+    },
+    "prior-repair-closure.json": {
+      "bytes": 45185,
+      "sha256": "904229e611442482294284dd74845b5cc67f5a32cf95923106e7c8e979692586"
+    }
+  }
+}

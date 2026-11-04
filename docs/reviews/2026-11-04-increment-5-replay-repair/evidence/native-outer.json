@@ -1,0 +1,19 @@
+{
+  "started_utc": "2026-11-04T18:19:27.999563+00:00",
+  "command": [
+    "wsl.exe",
+    "--cd",
+    "/home/andrey/work/mobiraeon-increment-5-20261104-01",
+    "--exec",
+    "/home/andrey/work/mobiraeon-increment-5-20261104-01/final-source/.venv/bin/python",
+    "-B",
+    "-c",
+    "\nimport sys,hashlib,json,zipfile,runpy\nfrom pathlib import Path\nA=Path(sys.argv[1]);N=Path(sys.argv[2]);assert N.is_dir() and not(N/'source').exists()\nfor name in ['repair-source.zip','repair-source-manifest.json','native-controller.py']:\n (N/name).write_bytes((A/name).read_bytes());assert hashlib.sha256((N/name).read_bytes()).digest()==hashlib.sha256((A/name).read_bytes()).digest()\nM=json.loads((N/'repair-source-manifest.json').read_text());assert hashlib.sha256((N/'repair-source.zip').read_bytes()).hexdigest()==M['archive_sha256']\nwith zipfile.ZipFile(N/'repair-source.zip') as z:z.extractall(N/'source')\ntry:runpy.run_path(str(N/'native-controller.py'),run_name='__main__')\nfinally:\n for name in ['green-results.json','source-forge.json','installed-forge.json','red-results.json']:\n  if(N/name).exists():\n   assert not(A/name).exists();(A/name).write_bytes((N/name).read_bytes());assert (A/name).read_bytes()==(N/name).read_bytes()\n",
+    "/mnt/c/Users/andrey/Documents/Mobiraeon-Recovery/increment-5-replay-repair-20261104-01",
+    "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01"
+  ],
+  "actual_exit_code": 0,
+  "stdout": "{\"label\": \"new_regressions\", \"exit_code\": 0}\n{\"label\": \"lint\", \"exit_code\": 0}\n{\"label\": \"format\", \"exit_code\": 0}\n{\"label\": \"full_pytest\", \"exit_code\": 0}\n{\"label\": \"build\", \"exit_code\": 0}\n{\"label\": \"export_runtime\", \"exit_code\": 0}\n{\"label\": \"create_installed_environment\", \"exit_code\": 0}\n{\"label\": \"install_runtime_wheel\", \"exit_code\": 0}\n{\"label\": \"installed_runtime_identity\", \"exit_code\": 0}\n{\"label\": \"source_forge_runtime\", \"exit_code\": 0}\n{\"label\": \"installed_forge_runtime\", \"exit_code\": 0}\n{\"label\": \"export_test_constraints\", \"exit_code\": 0}\n{\"label\": \"install_test_dependencies\", \"exit_code\": 0}\n{\"label\": \"installed_affected_tests\", \"exit_code\": 0}\n",
+  "stderr": "",
+  "finished_utc": "2026-11-04T18:26:00.115013+00:00"
+}

@@ -1,0 +1,66 @@
+{
+  "started_utc": "2026-11-04T18:25:18.171329+00:00",
+  "source_archive_sha256": "4a6f85d5cbd4c59ef39f5e0523342081a3f01497fd062685a341fb9eb09c9ed0",
+  "source_unchanged_before": true,
+  "checks": [
+    {
+      "name": "lint",
+      "command": [
+        "C:\\github\\a2g.name\\mobiraeon\\.tools\\bin\\uv.exe",
+        "run",
+        "--locked",
+        "ruff",
+        "check",
+        "."
+      ],
+      "cwd": "C:\\github\\a2g.name\\mobiraeon",
+      "started_utc": "2026-11-04T18:25:18.171360+00:00",
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": "",
+      "elapsed_seconds": 0.08206089993473142
+    },
+    {
+      "name": "format",
+      "command": [
+        "C:\\github\\a2g.name\\mobiraeon\\.tools\\bin\\uv.exe",
+        "run",
+        "--locked",
+        "ruff",
+        "format",
+        "--check",
+        "."
+      ],
+      "cwd": "C:\\github\\a2g.name\\mobiraeon",
+      "started_utc": "2026-11-04T18:25:18.253497+00:00",
+      "exit_code": 0,
+      "stdout": "99 files already formatted\n",
+      "stderr": "",
+      "elapsed_seconds": 0.0754116999451071
+    },
+    {
+      "name": "build",
+      "command": [
+        "C:\\github\\a2g.name\\mobiraeon\\.tools\\bin\\uv.exe",
+        "build",
+        "--out-dir",
+        "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\windows-dist"
+      ],
+      "cwd": "C:\\github\\a2g.name\\mobiraeon",
+      "started_utc": "2026-11-04T18:25:18.328979+00:00",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Building source distribution...\nBuilding wheel from source distribution...\nSuccessfully built C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\windows-dist\\mobiraeon-0.1.0.tar.gz\nSuccessfully built C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\increment-5-replay-repair-20261104-01\\windows-dist\\mobiraeon-0.1.0-py3-none-any.whl\n",
+      "elapsed_seconds": 0.28978240001015365
+    }
+  ],
+  "wheel": {
+    "bytes": 192817,
+    "sha256": "7bbe8bd93e27ba61c23f51018877e5ffe999d985506744ba4acaa4a8a7551ab7"
+  },
+  "packaged_source_files": 55,
+  "all_packaged_paths_and_bytes_match": true,
+  "result": "passed",
+  "source_unchanged_after": true,
+  "finished_utc": "2026-11-04T18:25:18.645571+00:00"
+}

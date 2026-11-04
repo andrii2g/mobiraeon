@@ -1,0 +1,15 @@
+{
+  "operation": "forge.link",
+  "target": {
+    "kind": "entity",
+    "entity_kind": "project",
+    "identity": "project-1"
+  },
+  "inputs": {
+    "operation_id": "link-task-1",
+    "expected_version": 0,
+    "task_id": "task-1",
+    "connection_revision": "fcr_example_1",
+    "issue_number": 1
+  }
+}

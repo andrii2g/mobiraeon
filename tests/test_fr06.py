@@ -69,6 +69,8 @@ def observations(pytest_code, signal_result):
 
     def completed(command, **kwargs):
         seen.append(list(map(str, command)))
+        if "mobiraeon.forge_verification" in command:
+            return subprocess.CompletedProcess(command, 0, '{"result":"passed"}', "")
         if "-c" in command:
             return subprocess.CompletedProcess(
                 command,
@@ -193,6 +195,7 @@ def candidate(tmp_path):
                     (2, "registry"),
                     (3, "coordination"),
                     (4, "execution"),
+                    (5, "forge"),
                 ]
             ],
         ]:

@@ -1,0 +1,29 @@
+{
+  "command": [
+    "C:\\github\\a2g.name\\mobiraeon\\.venv\\Scripts\\python.exe",
+    "-B",
+    "C:\\github\\a2g.name\\mobiraeon\\artifacts\\full-review-increment5-20261104-01\\execution-probes\\probe.py"
+  ],
+  "cwd": "C:\\github\\a2g.name\\mobiraeon",
+  "started_utc": "2026-11-04T15:16:30.563718+00:00",
+  "script_sha256": "caf559c765004c28346931d3cd987688438ae26f6ce0c8ec22116640a32c1974",
+  "plan": {
+    "encoding": [
+      "utf-8",
+      "utf-16-le",
+      "utf-32-le"
+    ],
+    "framing": [
+      "lf_single_chunk",
+      "lf_json_split",
+      "crlf_single_chunk",
+      "crlf_pair_split"
+    ],
+    "no_retry": true,
+    "scope": "Synthetic Worker/streams only, temporary protected stores outside Git; no Docker/services/WSL"
+  },
+  "exit_code": 0,
+  "stdout": "{\"encoding\": [{\"encoding\": \"utf-8\", \"json_parsing_after_utf8_decoding_succeeds\": true, \"actual_run_outcome\": \"success\", \"actual_submission_outcome\": \"success\"}, {\"encoding\": \"utf-16-le\", \"json_parsing_after_utf8_decoding_succeeds\": false, \"actual_run_outcome\": \"success\", \"actual_submission_outcome\": \"invalid_input\"}, {\"encoding\": \"utf-32-le\", \"json_parsing_after_utf8_decoding_succeeds\": false, \"actual_run_outcome\": \"success\", \"actual_submission_outcome\": \"invalid_input\"}], \"framing\": [{\"name\": \"lf_single_chunk\", \"parse_failure_type\": null, \"collection_complete\": true, \"raw_fully_retained\": true}, {\"name\": \"lf_json_split\", \"parse_failure_type\": null, \"collection_complete\": true, \"raw_fully_retained\": true}, {\"name\": \"crlf_single_chunk\", \"parse_failure_type\": null, \"collection_complete\": true, \"raw_fully_retained\": true}, {\"name\": \"crlf_pair_split\", \"parse_failure_type\": \"JSONDecodeError\", \"collection_complete\": true, \"raw_fully_retained\": true}], \"source_unchanged\": true}\n",
+  "stderr": "",
+  "finished_utc": "2026-11-04T15:16:32.407090+00:00"
+}

@@ -1,0 +1,29 @@
+{
+  "started_utc": "2026-11-04T18:19:30.067262+00:00",
+  "command": [
+    "C:\\github\\a2g.name\\mobiraeon\\.tools\\bin\\uv.exe",
+    "run",
+    "--locked",
+    "pytest",
+    "-q",
+    "--basetemp",
+    "C:\\mobiraeon-i5-independent-reassessment-final06-20261103-01\\replay-repair-20261104-01\\pytest-temporary",
+    "-o",
+    "cache_dir=C:\\mobiraeon-i5-independent-reassessment-final06-20261103-01\\replay-repair-20261104-01\\pytest-cache"
+  ],
+  "cwd": "C:\\github\\a2g.name\\mobiraeon",
+  "source_archive_sha256": "4a6f85d5cbd4c59ef39f5e0523342081a3f01497fd062685a341fb9eb09c9ed0",
+  "source_files": 204,
+  "source_unchanged_before": true,
+  "actual_import": "C:\\github\\a2g.name\\mobiraeon\\src\\mobiraeon\\__init__.py",
+  "python": "3.14.10 (main, Oct 26 2026, 14:10:46) [MSC v.1944 64 bit (AMD64)]",
+  "temporary_root": "C:\\mobiraeon-i5-independent-reassessment-final06-20261103-01\\replay-repair-20261104-01",
+  "new_owned_temp_hardened": true,
+  "scope": "Fresh full Windows pytest, no live Docker/provider/Worker qualification; protected test state outside Git.",
+  "exit_code": 0,
+  "stdout": "........................................................................ [  9%]\n........................................................................ [ 19%]\n........................................................................ [ 28%]\n...................................ssss................................. [ 38%]\n........................................................................ [ 48%]\n........................................................................ [ 57%]\n........................................................................ [ 67%]\n........................................................................ [ 76%]\n........................................................................ [ 86%]\n........................................................................ [ 96%]\n.............................                                            [100%]\n745 passed, 4 skipped in 335.72s (0:05:35)\n",
+  "stderr": "",
+  "elapsed_seconds": 337.1516614999855,
+  "finished_utc": "2026-11-04T18:25:07.219002+00:00",
+  "source_unchanged_after": true
+}

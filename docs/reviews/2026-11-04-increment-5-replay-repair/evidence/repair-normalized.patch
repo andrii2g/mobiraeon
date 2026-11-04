@@ -1,0 +1,370 @@
+--- baseline/src/mobiraeon/operations.py
++++ repaired/src/mobiraeon/operations.py
+@@ -60,6 +60,15 @@
+                 data=data if outcome == Outcome.SUCCESS else None,
+             )
+ 
++        def recorded_failure(error):
++            try:
++                retained = Outcome(error.outcome)
++            except ValueError, TypeError:
++                return result(Outcome.UNCERTAIN, Reason.UNCERTAIN)
++            if retained == Outcome.SUCCESS:
++                return result(Outcome.UNCERTAIN, Reason.UNCERTAIN)
++            return result(retained, error.reason)
++
+         try:
+             operation = Operation(code)
+         except ValueError, TypeError:
+@@ -119,6 +128,13 @@
+         except TransactionAcquisitionFailure:
+             return result(Outcome.UNAVAILABLE, Reason.STORAGE_FAILURE)
+         except TransactionFailure as error:
++            if (
++                error.rolled_back
++                and binding is not None
++                and binding.owner == Owner.FORGE
++                and isinstance(error.safe_error, RecordedForgeFailure)
++            ):
++                return recorded_failure(error.safe_error)
+             if error.rolled_back and error.reason is not None:
+                 outcome = {
+                     Reason.REFUSED: Outcome.REFUSED,
+@@ -134,13 +150,7 @@
+         except SafeError as error:
+             if binding is not None and binding.owner == Owner.FORGE:
+                 if isinstance(error, RecordedForgeFailure):
+-                    try:
+-                        retained = Outcome(error.outcome)
+-                    except ValueError, TypeError:
+-                        return result(Outcome.UNCERTAIN, Reason.UNCERTAIN)
+-                    if retained == Outcome.SUCCESS:
+-                        return result(Outcome.UNCERTAIN, Reason.UNCERTAIN)
+-                    return result(retained, error.reason)
++                    return recorded_failure(error)
+                 return result(
+                     {
+                         Reason.INVALID_INPUT: Outcome.INVALID,
+--- baseline/src/mobiraeon/persistence/__init__.py
++++ repaired/src/mobiraeon/persistence/__init__.py
+@@ -21,9 +21,11 @@
+ 
+ 
+ class TransactionFailure(Exception):
+-    def __init__(self, *, rolled_back, reason=None):
++    def __init__(self, *, rolled_back, reason=None, safe_error=None):
+         self.rolled_back = rolled_back
+         self.reason = reason
++        # Controlled body metadata is usable only after verified rollback.
++        self.safe_error = safe_error if rolled_back else None
+         super().__init__("transaction failed")
+ 
+ 
+@@ -147,6 +149,7 @@
+                 raise TransactionFailure(
+                     rolled_back=True,
+                     reason=error.reason if isinstance(error, SafeError) else None,
++                    safe_error=error if isinstance(error, SafeError) else None,
+                 ) from None
+             else:
+                 if not driver.in_transaction:
+--- baseline/tests/test_forge.py
++++ repaired/tests/test_forge.py
+@@ -3,8 +3,10 @@
+ import copy
+ import json
+ import secrets
++import sqlite3
+ import threading
+ import time
++from contextlib import closing
+ from dataclasses import asdict
+ 
+ import pytest
+@@ -12,11 +14,12 @@
+ 
+ from mobiraeon.access import execute
+ from mobiraeon.contracts import BusinessTarget, Operation, Outcome
+-from mobiraeon.errors import SafeError
++from mobiraeon.errors import Reason, SafeError
+ from mobiraeon.forge import ForgeService
+ from mobiraeon.forge_credentials import import_token, read_token, validate_token
+ from mobiraeon.forge_schema import connection, decode, validate
+ from mobiraeon.forge_verification import TARGET, definition, exercise, fixture
++from mobiraeon.persistence import Store
+ from mobiraeon.private_state import durable_new, harden
+ 
+ NAME_FIELDS = [("repository", "owner"), ("repository", "name"), ("account", "name")]
+@@ -44,7 +47,7 @@
+ def test_i5_r1_permitted_unicode_is_preserved(section, field):
+     # Include decomposed text, spaces and a non-Cc format character: the repair
+     # must neither normalize names nor broaden rejection to all Unicode C*.
+-    for name in ("Café", "Пример", "示例", "e\u0301", " surrounded ", "a\u200db", "x" * 100):
++    for name in ("CafÃ©", "ÐŸÑ€Ð¸Ð¼ÐµÑ€", "ç¤ºä¾‹", "e\u0301", " surrounded ", "a\u200db", "x" * 100):
+         config = definition("http://localhost")
+         config[section][field] = name
+         assert connection(config)[section][field] == name
+@@ -62,7 +65,7 @@
+ @pytest.mark.parametrize("section,field", NAME_FIELDS)
+ def test_i5_r1_valid_names_configure_read_offline(section, field):
+     with fixture() as (app, server):
+-        for version, name in enumerate(("Café", "Пример", "示例", "e\u0301", "x" * 100), 1):
++        for version, name in enumerate(("CafÃ©", "ÐŸÑ€Ð¸Ð¼ÐµÑ€", "ç¤ºä¾‹", "e\u0301", "x" * 100), 1):
+             config = definition(server.origin)
+             config[section][field] = name
+             configured = app.call(
+@@ -122,7 +125,7 @@
+         assert not server.routes
+ 
+         # A new operation ID with the SAME expected version must still work.
+-        config[section][field] = "Café-Пример-示例-e\u0301"
++        config[section][field] = "CafÃ©-ÐŸÑ€Ð¸Ð¼ÐµÑ€-ç¤ºä¾‹-e\u0301"
+         configured = invoke(
+             "forge.connection.configure",
+             operation_id="valid-after-refusal",
+@@ -1358,6 +1361,92 @@
+         assert original_result.reason == repeated.reason
+         assert not server.writes and app.status().data.version == 1
+         assert app.sync("new-after-writer").outcome == Outcome.SUCCESS
++
++
++@pytest.mark.parametrize("revoke", [False, True], ids=["exact-replay", "current-authority"])
++def test_configure_failed_replay_between_outer_read_and_writer(monkeypatch, revoke):
++    with fixture() as (app, server):
++        inputs = dict(
++            operation_id="configure-writer-gap",
++            expected_version=1,
++            connection=definition(server.origin),
++        )
++
++        def business_records():
++            with app.store.engine.connect() as tx:
++                return {
++                    table: tuple(tuple(r) for r in tx.exec_driver_sql(f"SELECT * FROM {table}"))
++                    for table in (
++                        "forge_connections",
++                        "forge_revisions",
++                        "forge_requests",
++                        "forge_receipts",
++                    )
++                }
++
++        before = business_records()
++        other_store = Store(app.private.database, timeout=0.025)
++        other = ForgeService(other_store, app.private)
++        observed = {}
++        original = app.service._configure
++
++        def invoke_other(**values):
++            return other.invoke("forge.connection.configure", TARGET, values, proof=app.proof)
++
++        def writer_gap(*args):
++            # _handle has closed its outer read and found no replay. A matching
++            # request now fails real BEGIN IMMEDIATE, then records its attempt.
++            with closing(sqlite3.connect(app.private.database)) as blocker:
++                blocker.execute("BEGIN IMMEDIATE")
++                busy = []
++
++                def release_blocker(context):
++                    busy.append(
++                        (context.statement, context.original_exception.sqlite_errorcode)
++                    )
++                    blocker.rollback()  # Let the ordinary failed-attempt audit persist.
++
++                event.listen(other_store.engine, "handle_error", release_blocker)
++                try:
++                    observed["original"] = invoke_other(**inputs)
++                finally:
++                    event.remove(other_store.engine, "handle_error", release_blocker)
++                assert busy == [("BEGIN IMMEDIATE", sqlite3.SQLITE_BUSY)]
++            observed["ordinary"] = invoke_other(**inputs)
++            assert observed["original"].outcome == Outcome.UNAVAILABLE
++            assert observed["original"].reason == Reason.STORAGE_FAILURE
++            assert observed["ordinary"].outcome == observed["original"].outcome
++            if revoke:
++                monkeypatch.setattr(app.service.access, "permits", lambda *args: False)
++            return original(*args)
++
++        try:
++            with monkeypatch.context() as scoped:
++                scoped.setattr(app.service, "_configure", writer_gap)
++                delayed = app.call("forge.connection.configure", **inputs)
++            later = invoke_other(**inputs)
++            changed = invoke_other(**(inputs | {"expected_version": 2}))
++            after = business_records()
++            with app.store.engine.connect() as tx:
++                attempts = tx.exec_driver_sql(
++                    "SELECT outcome,record FROM forge_history WHERE kind='attempt' "
++                    "AND reference='configure-writer-gap' ORDER BY sequence"
++                ).all()
++        finally:
++            other_store.close()
++
++        assert before == after
++        assert not server.routes and not server.writes
++        assert later.outcome == observed["ordinary"].outcome == Outcome.UNAVAILABLE
++        assert later.reason == observed["ordinary"].reason == Reason.STORAGE_FAILURE
++        assert changed.outcome == Outcome.FAILURE and changed.reason == Reason.CONFLICT
++        assert len(attempts) == 5
++        expected = Outcome.REFUSED if revoke else Outcome.UNAVAILABLE
++        reason = Reason.REFUSED if revoke else Reason.STORAGE_FAILURE
++        assert delayed.outcome == expected
++        assert delayed.reason == reason
++        assert attempts[2][0] == expected.value
++        assert json.loads(attempts[2][1])["reason"] == reason.value
+ 
+ 
+ def test_local_expected_version_is_not_a_native_forge_id():
+--- baseline/tests/test_operations.py
++++ repaired/tests/test_operations.py
+@@ -1,8 +1,10 @@
++import pytest
+ from sqlalchemy import text
+ 
+ from mobiraeon.application import Application
+ from mobiraeon.configuration import Configuration
+ from mobiraeon.contracts import (
++    BusinessTarget,
+     CallerContext,
+     EntityId,
+     Operation,
+@@ -10,8 +12,9 @@
+     Owner,
+     RevisionRef,
+ )
+-from mobiraeon.errors import Reason, SafeError
++from mobiraeon.errors import Reason, RecordedForgeFailure, SafeError
+ from mobiraeon.operations import Binding, OperationBoundary
++from mobiraeon.persistence import TransactionFailure
+ 
+ CALLER = CallerContext(EntityId("human", "verified-fixture"), "test-adapter")
+ TARGET = RevisionRef(EntityId("agent", "fixture-agent"), "immutable-r1")
+@@ -238,3 +241,128 @@
+     assert result.outcome == Outcome.UNCERTAIN
+     output = capsys.readouterr()
+     assert "SENSITIVE" not in output.out + output.err + repr(result)
++
++
++def replay_boundary(store, handler, *, owner=Owner.FORGE, transactional=True):
++    # Isolate trusted binding outcome handling; public forge input validation and
++    # its disk-backed request/replay path are exercised in test_forge.
++    return OperationBoundary(
++        {
++            Operation.FORGE_CONFIGURE: Binding(
++                owner,
++                handler,
++                transactional,
++                True,
++                lambda target, inputs: None,
++                True,
++            )
++        },
++        Policy(),
++        CALLER,
++        store,
++    )
++
++
++def replay_result(path):
++    return path.invoke(
++        Operation.FORGE_CONFIGURE,
++        target=BusinessTarget("entity", "project", "project-replay"),
++        inputs={},
++    )
++
++
++def test_verified_rollback_retains_controlled_error_without_retaining_effects(store):
++    failure = RecordedForgeFailure(Reason.STORAGE_FAILURE, Outcome.UNAVAILABLE)
++    with pytest.raises(TransactionFailure) as raised, store.transaction() as tx:
++        tx.execute(text("CREATE TABLE replay_rollback_fixture (value TEXT)"))
++        raise failure
++    assert raised.value.rolled_back is True
++    assert raised.value.reason == Reason.STORAGE_FAILURE
++    assert raised.value.safe_error is failure
++    with store.engine.connect() as tx:
++        assert (
++            tx.exec_driver_sql(
++                "SELECT count(*) FROM sqlite_master WHERE name='replay_rollback_fixture'"
++            ).scalar()
++            == 0
++        )
++
++
++@pytest.mark.parametrize(
++    "outcome,reason",
++    [
++        (Outcome.UNAVAILABLE, Reason.STORAGE_FAILURE),
++        (Outcome.FAILURE, Reason.CONFLICT),
++        (Outcome.UNCERTAIN, Reason.UNCERTAIN),
++        (Outcome.INVALID, Reason.INVALID_INPUT),
++        (Outcome.REFUSED, Reason.REFUSED),
++    ],
++)
++def test_verified_forge_replay_retains_each_non_success_outcome(store, outcome, reason):
++    def handler(tx, target, inputs, invocation):
++        tx.execute(text("CREATE TABLE replay_rollback_fixture (value TEXT)"))
++        raise RecordedForgeFailure(reason, outcome)
++
++    result = replay_result(replay_boundary(store, handler))
++    assert result.outcome == outcome
++    assert result.reason == reason
++    assert result.data is None
++    with store.engine.connect() as tx:
++        assert (
++            tx.exec_driver_sql(
++                "SELECT count(*) FROM sqlite_master WHERE name='replay_rollback_fixture'"
++            ).scalar()
++            == 0
++        )
++
++
++@pytest.mark.parametrize("outcome", [Outcome.SUCCESS, "unrecognized-outcome", None])
++@pytest.mark.parametrize("transactional", [False, True])
++def test_invalid_recorded_forge_outcome_remains_uncertain(store, outcome, transactional):
++    def handler(tx, target, inputs, invocation):
++        raise RecordedForgeFailure(Reason.STORAGE_FAILURE, outcome)
++
++    result = replay_result(replay_boundary(store, handler, transactional=transactional))
++    assert result.outcome == Outcome.UNCERTAIN
++    assert result.reason == Reason.UNCERTAIN
++    assert result.data is None
++
++
++@pytest.mark.parametrize("owner", [Owner.REGISTRY, Owner.FOUNDATION])
++def test_other_owners_do_not_honor_forge_retained_outcome(store, owner):
++    def handler(tx, target, inputs, invocation):
++        raise RecordedForgeFailure(Reason.STORAGE_FAILURE, Outcome.UNAVAILABLE)
++
++    result = replay_result(replay_boundary(store, handler, owner=owner))
++    assert result.outcome == Outcome.FAILURE
++    assert result.reason == Reason.STORAGE_FAILURE
++    assert result.data is None
++
++
++@pytest.mark.parametrize("finalizer", ["commit", "rollback"])
++def test_typed_replay_error_never_overrides_uncertain_transaction_finalization(
++    store, monkeypatch, finalizer
++):
++    from sqlalchemy.engine import Transaction
++
++    original = getattr(Transaction, finalizer)
++
++    def finalize_then_fail(transaction):
++        original(transaction)
++        raise RecordedForgeFailure(Reason.STORAGE_FAILURE, Outcome.UNAVAILABLE)
++
++    monkeypatch.setattr(Transaction, finalizer, finalize_then_fail)
++
++    def handler(tx, target, inputs, invocation):
++        tx.execute(text("CREATE TABLE replay_uncertainty_fixture (value TEXT)"))
++        if finalizer == "rollback":
++            raise RecordedForgeFailure(Reason.STORAGE_FAILURE, Outcome.UNAVAILABLE)
++
++    result = replay_result(replay_boundary(store, handler))
++    assert result.outcome == Outcome.UNCERTAIN
++    assert result.reason == Reason.UNCERTAIN
++    assert result.data is None
++    with store.engine.connect() as tx:
++        assert tx.exec_driver_sql(
++            "SELECT count(*) FROM sqlite_master WHERE name='replay_uncertainty_fixture'"
++        ).scalar() == (1 if finalizer == "commit" else 0)

@@ -1,6 +1,12 @@
 # Möbiræon documentation
 
-The product requirements and D-01 through D-12 form the design baseline. The high-level architecture and workflow cover delivery, recovery, human controls, scope changes, context continuity, and Agent onboarding. The Registry is a forge-independent Python module within Möbiræon, with its own authenticated, versioned API and SQLite persistence. [Forge identities](agent-registry.md#forge-identities) and [first-Agent preparation](agent-registry.md#first-agent-preparation) define account mappings, the five-Agent catalog, and administrator-led bootstrap. The [implementation plan](implementation-plan.md) tracks the accepted foundation, Registry, minimum Coordination and [supervised fixture execution](implementation-plan.md#increment-4-supervised-execution) increments, and remaining specifications and verification gates, including the bounded end-to-end validation scenario under D-12. The maintained [execution contracts](execution-contracts.md) govern the accepted fixture boundary. Increment 5 Gitea integration is the next topic for high-level planning; its scope has not been confirmed.
+The [requirements](requirements.md) and [decisions](decisions.md) define the approved design. The [architecture](architecture.md), [workflow](workflow.md), [Agent Registry](agent-registry.md) and [Role catalog](roles/README.md) explain the logical parts, delivery flow and administrator-led preparation of the five initial Agents. Design agreement, implementation, qualification and human acceptance remain separate.
+
+The [implementation plan](implementation-plan.md#current-position) records accepted Increments 1–4 and the technically complete Increment 5 manual Gitea bridge. The bridge links an existing local Task to an existing issue and manually publishes one Coordinator-owned status/evidence comment under the [forge contracts](forge-contracts.md). The [final repair reassessment](reviews/2026-11-04-increment-5-replay-repair/REVIEW.md) closes the last material finding; designated human acceptance remains separate.
+
+The maintained contracts and [verification guide](verification.md) describe available operations and tested limits. Ordinary Agent execution, the polling/scheduling service and end-to-end delivery qualification remain later work. All five actual Agents remain disabled and unqualified. Historical reviews and raw evidence are located through the [archive catalog](evidence-archive.md).
+
+Increment 5 also uses the agreed [cooperative editing rule](implementation-plan.md#field-ownership-and-publication): check the managed comment before updates, hold detected conflicts, and require humans to avoid editing it during synchronization. The remaining read/update race is explicitly accepted; atomic protection is not claimed.
 
 ## Reading order
 
@@ -14,6 +20,12 @@ The product requirements and D-01 through D-12 form the design baseline. The hig
 | [Mermaid diagrams](diagrams/README.md) | High-level system and focused workflow views, with agreement markers |
 | [Decision register](decisions.md) | Confirmed decisions, remaining details, and their consequences |
 | [Implementation plan](implementation-plan.md) | Accepted increments, current planning, remaining specifications, and verification gates |
+| [Documentation finalization](reviews/2026-11-04-documentation-finalization.md) | Current implementation boundaries, operating examples, portable navigation and preserved evidence |
+| [Final Increment 5 repair reassessment](reviews/2026-11-04-increment-5-replay-repair/REVIEW.md) | Last P2 closed; source/installed regressions and both platform suites pass; no remaining material finding |
+| [Full repository review](reviews/2026-11-04-increment-5-full/REVIEW.md) | Original P2 finding, preserved nonblocking observations and validation |
+| [Verification guide](verification.md) | Maintained platform, source-binding, signal and Docker qualification rules |
+| [Evidence archive](evidence-archive.md) | Retired developer briefs, submissions and raw artifacts; verified restoration paths |
+| [Forge bridge contracts](forge-contracts.md) | Implemented manual Gitea bridge, Project authority, tokens, budgets, recovery and cooperative-edit limits; designated human acceptance separate |
 | [Full repository review](reviews/2026-11-02/REVIEW.md) | Historical findings against the accepted Increment 4 commit, focused reproductions and verification limits |
 | [First repair reassessment](reviews/2026-11-02-reassessment/REVIEW.md) | Independent final-02 review, original finding dispositions, residual/new findings and verification evidence |
 | [Final repair reassessment](reviews/2026-11-02-fr02-r1-fr06-reassessment/REVIEW.md) | Independent resolution of FR-02-R1 and FR-06 against the final frozen snapshot, with source/installed verification |
@@ -50,4 +62,4 @@ Increment 1's Python application foundation is implemented, independently review
 
 The [repository repair pass](reviews/2026-11-02-repairs-acceptance.md) is also accepted by the human owner. FR-01–FR-05, residual FR-02-R1 and FR-06 are resolved through the preserved review and reassessment chain. The completed repair briefs are retired from active documentation; their exact text remains in the captured source archives. This acceptance retains the existing fixture, authority and qualification limits.
 
-Broader [Coordination capabilities](implementation-plan.md#deferred-coordination-capabilities), ordinary Agent execution, runtime/provider qualification and forge integration remain later work. Increment 5 begins with high-level Gitea integration planning. Recorded Gitea setup checks and remaining operational verification are covered by the [infrastructure guide](infrastructure.md#verification-before-relying-on-the-instance).
+Broader [Coordination capabilities](implementation-plan.md#deferred-coordination-capabilities), ordinary Agent execution, runtime/provider qualification and broader forge integration remain later work. Increment 5 has completed implementation, full review and [verified closure of its last material finding](reviews/2026-11-04-increment-5-replay-repair/REVIEW.md); designated human acceptance remains separate. Retired implementation/repair briefs and raw evidence are preserved in the [archive](evidence-archive.md). Gitea is the first provider; later providers use the same adapter boundary. Recorded Gitea setup checks and remaining operational verification are covered by the [infrastructure guide](infrastructure.md#verification-before-relying-on-the-instance).

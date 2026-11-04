@@ -7,7 +7,6 @@ import os
 import queue
 import subprocess
 import sys
-import tempfile
 import threading
 import time
 from dataclasses import asdict
@@ -20,6 +19,13 @@ from mobiraeon.coordination import Coordinator
 from mobiraeon.docker_worker import DockerWorker
 from mobiraeon.errors import Reason, SafeError
 from mobiraeon.execution import ExecutionService
+from mobiraeon.execution_diagnostics import (
+    CheckLog,
+    VerificationFailure,
+    check_failure_terminal,
+    json_observation,
+    verification_workspace,
+)
 from mobiraeon.persistence import Store
 from mobiraeon.private_state import PrivateState
 from mobiraeon.scenario import TARGET, proof_for
@@ -35,6 +41,115 @@ class AssessorAccess(Access):
         return ordinary
 
 
+def verify_trusted_variant(checks, directory, variant, store, private, execution):
+    """The real verifier's fixed-variant assertions, shared with trusted reporting controls."""
+
+    inputs = json.loads((directory / "run.json").read_text())["inputs"]
+    mode = inputs["mode"]
+
+    def stage(name, expected, terminal=None):
+        checks.activate(
+            "trusted_variant",
+            name,
+            mode=mode,
+            variant=variant,
+            directory=directory,
+            expected=expected,
+            terminal=terminal,
+        )
+
+    stage("invoke", "the fixed trusted variant produces verified failure")
+    result = execution.invoke(
+        "execution.run", TARGET, inputs, proof=proof_for(private, "author")
+    )
+    record = execution.load("task-1")[1]
+    stage(
+        "terminal_assertion", "failed operation, verified cleanup and invalid artifact", record
+    )
+    assert (
+        result.outcome == Outcome.FAILURE
+        and record["cleanup"] == "verified"
+        and not record["artifact_valid"]
+    ), record
+    stage("coordination_observation", "failed observation matches the execution seal", record)
+    with store.engine.connect() as tx:
+        observed = json.loads(
+            tx.exec_driver_sql(
+                "SELECT record FROM coordination_facts WHERE stage='observe'"
+            ).scalar()
+        )
+    assert observed["inputs"]["observation"] == "failed"
+    assert observed["inputs"]["detail"] == record["seal"]
+    stage(
+        "capture_assertions",
+        "the fixed variant has its required diagnostic observations",
+        record,
+    )
+    capture = json.loads(Path(record["capture_path"]).read_text())
+    if variant == "controls":
+        controls = json.loads(capture["stdout"])
+        assert not any(
+            "TOKEN" in key or "SECRET" in key or "DOCKER" in key
+            for key in controls["environment"]
+        )
+        assert (
+            controls["uid"] == 65532
+            and controls["network_blocked"]
+            and controls["socket_absent"]
+        )
+        assert controls["write_refused"] == {"/forbidden": True, "/etc/hosts": True}
+        assert controls["cgroup"]["memory.swap.max"] == "0"
+        assert int(controls["cgroup"]["memory.max"]) == 64 * 1024 * 1024
+        assert controls["cgroup"]["pids.max"] == "16"
+        assert controls["cgroup"]["cpu.max"].split()[0] == "25000"
+    if variant == "memory":
+        assert record["runtime_state"]["OOMKilled"] or "MemoryError" in capture["stderr"]
+    if variant == "pids":
+        assert "Resource temporarily unavailable" in capture["stderr"]
+    if variant == "startup_failure":
+        assert record["outcome"] == "startup_failed"
+    if variant in {"scratch", "scratch_shm"}:
+        assert "No space left on device" in capture["stderr"], (record, capture)
+    checks.append(
+        {
+            "case": "trusted_" + variant,
+            "result": "passed",
+            "record": record,
+            "capture": capture,
+        }
+    )
+
+
+def verify_nested_repairs(checks, input_file, catalog_input, image_id):
+    """The actual parent integration, also used by trusted no-Docker controls."""
+    from mobiraeon.execution_repair_verification import exercise as repair_exercise
+
+    checks.activate(
+        "I4-R1-R3_regressions", "nested_verification", expected="nested repair suite passes"
+    )
+    try:
+        repairs = repair_exercise(input_file, catalog_input, image_id)
+    except VerificationFailure as error:
+        checks.append(
+            {"case": "I4-R1-R3_regressions", "result": "failed", "regressions": error.report}
+        )
+        report = error.report | {
+            "checks": json_observation(list(checks)),
+            "nested_diagnostic": {
+                "module": error.report["module"],
+                "protected_state": error.report["protected_state"],
+                "diagnostic_storage": error.report["diagnostic_storage"],
+            },
+            "parent_context": {"module": __file__, "active": checks.active.copy()},
+        }
+        raise VerificationFailure(report) from None
+    checks.append(
+        {"case": "I4-R1-R3_regressions", "result": repairs["result"], "regressions": repairs}
+    )
+    assert repairs["result"] == "passed", repairs
+    return repairs
+
+
 def exercise(input_file, catalog_input, image_id, *, long_wait=True):
     if sys.platform != "linux":
         return {
@@ -42,46 +157,15 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
             "reason": "Worker requires local Linux Docker; portable tests remain applicable",
         }
 
-    class CheckLog(list):
-        def append(self, record):
-            super().append(record)
-            print(
-                json.dumps(
-                    {
-                        "case": record.get("case", "cli"),
-                        "exit_code": record.get("exit_code"),
-                        "result": record.get("result"),
-                    }
-                ),
-                file=sys.stderr,
-                flush=True,
-            )
-
-    checks = CheckLog()
+    checks = CheckLog(image_id)
     environment = {k: v for k, v in os.environ.items() if not k.startswith("MOBIRAEON_")}
     environment.pop("PYTHONPATH", None)
-    with tempfile.TemporaryDirectory(prefix="mobiraeon-execution-check-") as temporary:
-        outside = Path(temporary)
+    with verification_workspace(checks) as outside:
 
         def command(args, expect=0, timeout=240):
-            result = subprocess.run(
-                [sys.executable, *map(str, args)],
-                cwd=outside,
-                env=environment,
-                capture_output=True,
-                text=True,
-                timeout=timeout,
+            return checks.command(
+                args, cwd=outside, env=environment, expect=expect, timeout=timeout
             )
-            checks.append(
-                {
-                    "command": [sys.executable, *map(str, args)],
-                    "exit_code": result.returncode,
-                    "stdout": result.stdout,
-                    "stderr": result.stderr,
-                }
-            )
-            assert result.returncode == expect, result.stdout + result.stderr
-            return [json.loads(line) for line in result.stdout.splitlines()][-1]
 
         counter = 0
 
@@ -89,6 +173,13 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
             nonlocal counter
             counter += 1
             directory = outside / ("private-" + str(counter))
+            checks.activate(
+                "fixture_preparation",
+                "preparation",
+                mode=mode,
+                directory=directory,
+                expected="preparation exits zero with valid JSON and protected settings",
+            )
             command(
                 [
                     "-m",
@@ -103,6 +194,13 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                     "--image-id",
                     image_id,
                 ]
+            )
+            checks.activate(
+                "fixture_preparation",
+                "fixture_configuration",
+                mode=mode,
+                directory=directory,
+                expected="apply the fixed public fixture settings",
             )
             config = directory / "settings.toml"
             text = config.read_text()
@@ -128,6 +226,17 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
             return directory
 
         def cli(directory, action, expect=0):
+            checks.activate(
+                checks.active.get("case")
+                if checks.active.get("case") != "fixture_preparation"
+                else "public_cli",
+                "cli." + action,
+                mode=checks.active.get("mode"),
+                variant=checks.active.get("variant"),
+                phase=checks.active.get("phase"),
+                expected=f"CLI {action} exits {expect} with valid JSON",
+                directory=directory,
+            )
             return command(
                 [
                     "-m",
@@ -156,8 +265,35 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                 ),
             )
 
+        def context(
+            case,
+            stage,
+            expected,
+            *,
+            mode="success",
+            variant=None,
+            phase=None,
+            terminal=None,
+            fixture=None,
+        ):
+            checks.activate(
+                case,
+                stage,
+                expected=expected,
+                mode=mode,
+                variant=variant,
+                phase=phase,
+                directory=fixture if fixture is not None else directory,
+                terminal=terminal,
+            )
+
         # Public helper/CLI success; exact output through independent assessment and acceptance.
         directory = installation()
+        context(
+            "registry_admin_without_execution_grants",
+            "admission",
+            "refused.outcome == Outcome.REFUSED",
+        )
         admin_store, admin_private, admission = service(directory)
         try:
             refused = admission.invoke(
@@ -176,19 +312,52 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
             )
         finally:
             admin_store.close()
+        context("public_success", "run", "successful public execution with a valid artifact")
         result = cli(directory, "run")
         record = result["data"]["records"][0]
+        context(
+            "public_success",
+            "terminal_assertion",
+            "successful execution releases its hold",
+            terminal=record,
+        )
         assert (
             record["outcome"] == "succeeded" and record["artifact_valid"] and not record["held"]
         )
-        assert cli(directory, "status")["data"]["records"][0]["artifact"] == record["artifact"]
-        assert cli(directory, "run")["data"]["records"][0]["replayed"]
+        inspected = cli(directory, "status")["data"]["records"][0]
+        context(
+            "public_success",
+            "status_artifact",
+            "status retains the exact artifact",
+            terminal=inspected,
+        )
+        assert inspected["artifact"] == record["artifact"]
+        replayed = cli(directory, "run")["data"]["records"][0]
+        context(
+            "public_success",
+            "replay",
+            "duplicate public launch is inspection only",
+            terminal=replayed,
+        )
+        assert replayed["replayed"]
+        context(
+            "accepted_exact_supervised_artifact",
+            "coordinator_setup",
+            "only exact captured evidence can progress to independent acceptance",
+            terminal=record,
+        )
         store, private, execution = service(directory)
         try:
             coordinator = Coordinator(store, private, access=AssessorAccess(store, private))
             with store.engine.connect() as tx:
                 version = tx.exec_driver_sql("SELECT version FROM coordination_tasks").scalar()
             author = proof_for(private, "author")
+            context(
+                "accepted_exact_supervised_artifact",
+                "submit",
+                "submission.outcome == Outcome.SUCCESS",
+                terminal=record,
+            )
             submission = coordinator.invoke(
                 "coordination.submit",
                 TARGET,
@@ -212,11 +381,23 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                 "decision": "approve",
                 "rationale": "Trusted independent fixture assessment of captured content",
             }
+            context(
+                "accepted_exact_supervised_artifact",
+                "self_assessment_refused",
+                "author cannot independently assess",
+                terminal=record,
+            )
             assert (
                 coordinator.invoke(
                     "coordination.assess", TARGET, assessment, proof=author
                 ).outcome
                 != Outcome.SUCCESS
+            )
+            context(
+                "accepted_exact_supervised_artifact",
+                "independent_assessment",
+                "the independent fixture assessor can assess exact evidence",
+                terminal=record,
             )
             assessor = proof_for(private, "assessor")
             assert (
@@ -224,6 +405,12 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                     "coordination.assess", TARGET, assessment, proof=assessor
                 ).outcome
                 == Outcome.SUCCESS
+            )
+            context(
+                "accepted_exact_supervised_artifact",
+                "accept",
+                "accepted.outcome == Outcome.SUCCESS",
+                terminal=record,
             )
             accepted = coordinator.invoke(
                 "coordination.accept",
@@ -238,6 +425,12 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                 proof=assessor,
             )
             assert accepted.outcome == Outcome.SUCCESS
+            context(
+                "accepted_exact_supervised_artifact",
+                "status",
+                "Task accepted; Request open; Initiative unaccepted",
+                terminal=record,
+            )
             status = coordinator.invoke(
                 "coordination.status", TARGET, {}, proof=author
             ).data.records[0]
@@ -247,9 +440,24 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                 and status["initiative_acceptance"] == "unaccepted"
             )
             assert store.engine.connect().close() is None
+            context(
+                "accepted_exact_supervised_artifact",
+                "terminal_stop_readonly",
+                "stop does not change the sealed terminal",
+                terminal=record,
+            )
             terminal = execution.load("task-1")[1]
+            checks.cleanup_observation("before_terminal_stop", terminal)
             cli(directory, "stop")
-            assert execution.load("task-1")[1] == terminal
+            after_stop = execution.load("task-1")[1]
+            checks.cleanup_observation("after_terminal_stop", after_stop)
+            context(
+                "accepted_exact_supervised_artifact",
+                "terminal_stop_readonly",
+                "stop does not change the sealed terminal",
+                terminal=after_stop,
+            )
+            assert after_stop == terminal
             checks.append(
                 {
                     "case": "accepted_exact_supervised_artifact",
@@ -267,12 +475,21 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
             ("stubborn_child", "timeout"),
         ):
             directory = installation(mode)
+            context(
+                "public_failure_mode",
+                "run",
+                "public mode fails without a valid artifact",
+                mode=mode,
+            )
             result = cli(directory, "run", expect=1)
             record = result["data"]["records"][0]
-            assert (
-                record["outcome"] == expected
-                and record["cleanup"] == "verified"
-                and not record["artifact_valid"]
+            check_failure_terminal(checks, record, expected)
+            context(
+                "public_failure_mode",
+                "coordination_observation",
+                "failed observation matches seal",
+                mode=mode,
+                terminal=record,
             )
             store, _, execution = service(directory)
             try:
@@ -300,6 +517,12 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
             "startup_failure",
         ):
             directory = installation()
+            context(
+                "trusted_variant",
+                "service_setup",
+                "fixed trusted variant can be inspected",
+                variant=variant,
+            )
 
             class ProbeWorker(DockerWorker):
                 def call(self, *args, test_variant=variant, **kwargs):
@@ -320,6 +543,14 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
 
             def cpu_probe(phase, variant=variant, directory=directory):
                 if phase == "after_start" and variant == "cpu":
+                    context(
+                        "trusted_variant",
+                        "cpu_probe",
+                        "nr_throttled is positive",
+                        variant=variant,
+                        phase=phase,
+                        fixture=directory,
+                    )
                     time.sleep(0.6)
                     probe_store, _, probe = service(directory)
                     try:
@@ -354,60 +585,7 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
 
             store, private, execution = service(directory, ProbeWorker, cpu_probe)
             try:
-                inputs = json.loads((directory / "run.json").read_text())["inputs"]
-                result = execution.invoke(
-                    "execution.run", TARGET, inputs, proof=proof_for(private, "author")
-                )
-                record = execution.load("task-1")[1]
-                assert (
-                    result.outcome == Outcome.FAILURE
-                    and record["cleanup"] == "verified"
-                    and not record["artifact_valid"]
-                ), record
-                with store.engine.connect() as tx:
-                    observed = json.loads(
-                        tx.exec_driver_sql(
-                            "SELECT record FROM coordination_facts WHERE stage='observe'"
-                        ).scalar()
-                    )
-                assert observed["inputs"]["observation"] == "failed"
-                assert observed["inputs"]["detail"] == record["seal"]
-                capture = json.loads(Path(record["capture_path"]).read_text())
-                if variant == "controls":
-                    controls = json.loads(capture["stdout"])
-                    assert not any(
-                        "TOKEN" in key or "SECRET" in key or "DOCKER" in key
-                        for key in controls["environment"]
-                    )
-                    assert (
-                        controls["uid"] == 65532
-                        and controls["network_blocked"]
-                        and controls["socket_absent"]
-                    )
-                    assert controls["write_refused"] == {"/forbidden": True, "/etc/hosts": True}
-                    assert controls["cgroup"]["memory.swap.max"] == "0"
-                    assert int(controls["cgroup"]["memory.max"]) == 64 * 1024 * 1024
-                    assert controls["cgroup"]["pids.max"] == "16"
-                    assert controls["cgroup"]["cpu.max"].split()[0] == "25000"
-                if variant == "memory":
-                    assert (
-                        record["runtime_state"]["OOMKilled"]
-                        or "MemoryError" in capture["stderr"]
-                    )
-                if variant == "pids":
-                    assert "Resource temporarily unavailable" in capture["stderr"]
-                if variant == "startup_failure":
-                    assert record["outcome"] == "startup_failed"
-                if variant in {"scratch", "scratch_shm"}:
-                    assert "No space left on device" in capture["stderr"], (record, capture)
-                checks.append(
-                    {
-                        "case": "trusted_" + variant,
-                        "result": "passed",
-                        "record": record,
-                        "capture": capture,
-                    }
-                )
+                verify_trusted_variant(checks, directory, variant, store, private, execution)
             finally:
                 store.close()
         # Real Docker effects with injected acknowledgement loss and ordered stop windows.
@@ -420,6 +598,9 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
             "before_start_delivery",
         ):
             directory = installation()
+            context(
+                "injected_effect", "invoke", "injected effect remains uncertain", phase=phase
+            )
             trace = {"starts": 0, "creates": 0}
 
             class TracedWorker(DockerWorker):
@@ -434,6 +615,13 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
             def fault(at, phase=phase, directory=directory):
                 if at != phase:
                     return
+                context(
+                    "injected_effect",
+                    "injected_phase",
+                    "ordered stop or retained delivery uncertainty",
+                    phase=phase,
+                    fixture=directory,
+                )
                 if phase in {"before_start_authorization", "before_start_delivery"}:
                     stop_store, stop_private, stopper = service(directory)
                     try:
@@ -462,9 +650,22 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                 result = execution.invoke(
                     "execution.run", TARGET, inputs, proof=proof_for(private, "author")
                 )
+                context(
+                    "injected_effect",
+                    "result_assertion",
+                    "result.outcome == Outcome.UNCERTAIN",
+                    phase=phase,
+                )
                 assert result.outcome == Outcome.UNCERTAIN
                 record = execution.load("task-1")[1]
                 assert not record["artifact_valid"]
+                context(
+                    "injected_effect",
+                    "replay_and_fence",
+                    "replay does not repeat create/start",
+                    phase=phase,
+                    terminal=record,
+                )
                 previous = dict(trace)
                 repeated = execution.invoke(
                     "execution.run", TARGET, inputs, proof=proof_for(private, "author")
@@ -481,6 +682,14 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                         and record["start_authorized"]
                         and record["stop_intent"]
                     )
+                checks.cleanup_observation("before_cleanup", record)
+                context(
+                    "injected_effect",
+                    "authorized_cleanup",
+                    "cleanup cannot manufacture success",
+                    phase=phase,
+                    terminal=record,
+                )
                 if not record.get("terminal"):
                     execution.hook = lambda at: None
                     execution.invoke(
@@ -494,6 +703,14 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                         proof=proof_for(private, "author"),
                     )
                 final = execution.load("task-1")[1]
+                checks.cleanup_observation("after_cleanup", final)
+                context(
+                    "injected_effect",
+                    "cleanup_assertion",
+                    "unknown create holds or verified unknown retirement",
+                    phase=phase,
+                    terminal=final,
+                )
                 assert not final["artifact_valid"]
                 if phase in {"before_create", "after_create"}:
                     assert final["held"]  # unknown create quiescence cannot be force-cleared
@@ -511,9 +728,20 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                 store.close()
         # Revocation permits confined evidence/cleanup but cannot advance Coordination.
         directory = installation()
+        context(
+            "revoked_caller_safety_cleanup_without_progression",
+            "invoke",
+            "revocation allows safety cleanup only",
+        )
 
         def revoke_before_seal(phase):
             if phase == "before_seal":
+                context(
+                    "revoked_caller_safety_cleanup_without_progression",
+                    "revoke",
+                    "revoked.outcome == Outcome.SUCCESS",
+                    phase=phase,
+                )
                 from mobiraeon.catalog import RegistryService
 
                 rev_store, rev_private, _ = service(directory)
@@ -541,7 +769,14 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                 json.loads((directory / "run.json").read_text())["inputs"],
                 proof=proof_for(private, "author"),
             )
-            assert execution.load("task-1")[1]["cleanup"] == "verified"
+            record = execution.load("task-1")[1]
+            context(
+                "revoked_caller_safety_cleanup_without_progression",
+                "cleanup_and_authority_assertions",
+                "verified cleanup without Coordination progression or revoked status access",
+                terminal=record,
+            )
+            assert record["cleanup"] == "verified"
             with store.engine.connect() as tx:
                 assert (
                     tx.exec_driver_sql(
@@ -570,6 +805,13 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
         # Actual inaccessible endpoint and injected Engine-ID change retain holds.
         for failure in ("unreachable_connection", "changed_engine_id"):
             directory = installation("wait")
+            context(
+                "broken_worker_binding",
+                "invoke",
+                "binding loss retains uncertain hold",
+                mode="wait",
+                variant=failure,
+            )
 
             class BrokenBinding(DockerWorker):
                 broken = False
@@ -586,8 +828,16 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                         return other.engine(timeout)
                     return super().engine(timeout)
 
-            def break_binding(phase):
+            def break_binding(phase, failure=failure):
                 if phase == "after_start":
+                    context(
+                        "broken_worker_binding",
+                        "injected_phase",
+                        "lost or changed Engine identity stays uncertain",
+                        mode="wait",
+                        variant=failure,
+                        phase=phase,
+                    )
                     BrokenBinding.broken = True
 
             store, private, execution = service(directory, BrokenBinding, break_binding)
@@ -598,13 +848,40 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                     json.loads((directory / "run.json").read_text())["inputs"],
                     proof=proof_for(private, "author"),
                 )
-                assert (
-                    result.outcome == Outcome.UNCERTAIN and execution.load("task-1")[1]["held"]
+                record = (
+                    execution.load("task-1")[1] if result.outcome == Outcome.UNCERTAIN else None
                 )
+                context(
+                    "broken_worker_binding",
+                    "hold_assertion",
+                    "uncertain execution remains held",
+                    mode="wait",
+                    variant=failure,
+                    terminal=record,
+                )
+                assert result.outcome == Outcome.UNCERTAIN and record["held"]
                 before = store.path.read_bytes()
-                cli(directory, "status")
+                status_record = cli(directory, "status")["data"]["records"][0]
+                context(
+                    "broken_worker_binding",
+                    "status_readonly",
+                    "status cannot mutate retained bytes",
+                    mode="wait",
+                    variant=failure,
+                    terminal=status_record,
+                )
                 assert store.path.read_bytes() == before
+                checks.cleanup_observation("before_cleanup", record)
                 stopped = cli(directory, "stop")["data"]["records"][0]
+                checks.cleanup_observation("after_cleanup", stopped)
+                context(
+                    "broken_worker_binding",
+                    "cleanup_assertion",
+                    "verified cleanup retains unknown outcome",
+                    mode="wait",
+                    variant=failure,
+                    terminal=stopped,
+                )
                 assert stopped["cleanup"] == "verified" and stopped["outcome"] == "unknown"
                 checks.append(
                     {
@@ -617,6 +894,12 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
             finally:
                 store.close()
         # Escaping-heavy 64-KiB input through public preparation, actual capture and acceptance.
+        checks.activate(
+            "utf8_64k_escaped_end_to_end_acceptance",
+            "prepare_input",
+            mode="success",
+            expected="escaping-heavy 64-KiB UTF-8 input is retained exactly",
+        )
         boundary = json.loads(input_file.read_bytes())
         content = "\x01" * 65536
         boundary["work"]["inputs"][0] |= {
@@ -627,6 +910,11 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
         boundary_file.write_text(json.dumps(boundary), encoding="utf-8")
         counter += 1
         directory = outside / ("private-" + str(counter))
+        context(
+            "utf8_64k_escaped_end_to_end_acceptance",
+            "preparation",
+            "boundary fixture preparation exits zero",
+        )
         command(
             [
                 "-m",
@@ -644,6 +932,12 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
         )
         result = cli(directory, "run")
         record = result["data"]["records"][0]
+        context(
+            "utf8_64k_escaped_end_to_end_acceptance",
+            "artifact_assertion",
+            "valid captured artifact retains 65536 UTF-8 bytes",
+            terminal=record,
+        )
         assert (
             record["artifact_valid"]
             and json.loads(record["artifact"]["content"])["utf8_bytes"] == 65536
@@ -652,6 +946,12 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
         try:
             coordinator = Coordinator(store, private, access=AssessorAccess(store, private))
             author = proof_for(private, "author")
+            context(
+                "utf8_64k_escaped_end_to_end_acceptance",
+                "submit",
+                "exact boundary artifact submission succeeds",
+                terminal=record,
+            )
             submitted = coordinator.invoke(
                 "coordination.submit",
                 TARGET,
@@ -667,6 +967,12 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
             assert submitted.outcome == Outcome.SUCCESS
             digest = submitted.data.records[0]["fact"]["submission_digest"]
             assessor = proof_for(private, "assessor")
+            context(
+                "utf8_64k_escaped_end_to_end_acceptance",
+                "assess",
+                "independent assessment of boundary evidence succeeds",
+                terminal=record,
+            )
             assessed = coordinator.invoke(
                 "coordination.assess",
                 TARGET,
@@ -682,6 +988,12 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                 proof=assessor,
             )
             assert assessed.outcome == Outcome.SUCCESS
+            context(
+                "utf8_64k_escaped_end_to_end_acceptance",
+                "accept",
+                "exact assessed boundary artifact can be accepted",
+                terminal=record,
+            )
             assert (
                 coordinator.invoke(
                     "coordination.accept",
@@ -709,6 +1021,8 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
         # Public concurrency, >30-second lifetime, and the guard after SIGKILL.
         for abrupt in (False, True):
             directory = installation("wait", duration=40 if not abrupt and long_wait else 2)
+            case = "abrupt_guard_cleanup" if abrupt else "long_wait_public_stop"
+            context(case, "start", "public supervisor emits running readiness", mode="wait")
             args = [
                 sys.executable,
                 "-m",
@@ -745,14 +1059,34 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                     break
             else:
                 raise AssertionError("fixture did not start")
+            context(
+                case,
+                "running_observation",
+                "running supervisor is retained until explicit stop or guard",
+                mode="wait",
+            )
             if abrupt:
                 process.kill()
                 process.wait(timeout=5)
                 record = cli(directory, "status")["data"]["records"][0]
+                context(
+                    case,
+                    "lost_supervisor_assertion",
+                    "lost supervisor retains a nonterminal hold",
+                    mode="wait",
+                    terminal=record,
+                )
                 assert record["held"] and not record["terminal"]
                 store, private, execution = service(directory)
                 try:
                     handoff, current = execution.load("task-1")
+                    context(
+                        case,
+                        "lifetime_guard",
+                        "fixed lifetime guard stops owned activity",
+                        mode="wait",
+                        terminal=record,
+                    )
                     deadline = time.monotonic() + 22
                     worker = DockerWorker(handoff["settings"])
                     while time.monotonic() < deadline:
@@ -763,33 +1097,87 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                     else:
                         raise AssertionError("fixture lifetime guard did not stop activity")
                     before = store.path.read_bytes()
-                    cli(directory, "status")
+                    status_record = cli(directory, "status")["data"]["records"][0]
+                    context(
+                        case,
+                        "status_readonly",
+                        "lost-supervisor status is read-only",
+                        mode="wait",
+                        terminal=status_record,
+                    )
                     assert store.path.read_bytes() == before
+                    checks.cleanup_observation("before_cleanup", record)
                     stopped = cli(directory, "stop")["data"]["records"][0]
+                    checks.cleanup_observation("after_cleanup", stopped)
+                    context(
+                        case,
+                        "cleanup_assertion",
+                        "verified retirement retains unknown execution",
+                        mode="wait",
+                        terminal=stopped,
+                    )
                     assert stopped["cleanup"] == "verified" and stopped["outcome"] == "unknown"
                 finally:
                     store.close()
             else:
+                context(
+                    case, "long_wait", "supervisor stays alive beyond 30 seconds", mode="wait"
+                )
                 if long_wait:
                     # A bounded wait exceeding the former 30-second assumption.
                     end = time.monotonic() + 31
                     while time.monotonic() < end:
                         assert process.poll() is None
                         time.sleep(0.25)
-                assert cli(directory, "status")["data"]["records"][0]["phase"] == "running"
+                running = cli(directory, "status")["data"]["records"][0]
+                context(
+                    case,
+                    "running_assertion",
+                    "public status still observes running",
+                    mode="wait",
+                    terminal=running,
+                )
+                assert running["phase"] == "running"
                 from concurrent.futures import ThreadPoolExecutor
 
+                context(
+                    case,
+                    "concurrent_stop",
+                    "both authorized stop requests are acknowledged",
+                    mode="wait",
+                )
                 with ThreadPoolExecutor(max_workers=2) as pool:
                     stops = list(
                         pool.map(
                             lambda _, directory=directory: cli(directory, "stop"), range(2)
                         )
                     )
+                context(
+                    case,
+                    "stop_acknowledgements",
+                    "both concurrent stops acknowledge intent",
+                    mode="wait",
+                    terminal=stops[-1]["data"]["records"][0],
+                )
                 assert all(s["data"]["records"][0]["stop_acknowledged"] for s in stops)
                 process.wait(timeout=20)
                 cli(directory, "stop")
                 stopped = cli(directory, "status")["data"]["records"][0]
+                context(
+                    case,
+                    "cleanup_assertion",
+                    "cleanup is verified and artifact invalid",
+                    mode="wait",
+                    terminal=stopped,
+                )
                 assert stopped["cleanup"] == "verified" and not stopped["artifact_valid"]
+            context(
+                case,
+                "capture_export",
+                "finished supervisor streams can be exported",
+                mode="wait",
+                terminal=stopped,
+            )
             reader.join(timeout=2)
             errors = process.stderr.read()
             process.stdout.close()
@@ -804,17 +1192,7 @@ def exercise(input_file, catalog_input, image_id, *, long_wait=True):
                     "result": "passed",
                 }
             )
-        from mobiraeon.execution_repair_verification import exercise as repair_exercise
-
-        repairs = repair_exercise(input_file, catalog_input, image_id)
-        checks.append(
-            {
-                "case": "I4-R1-R3_regressions",
-                "result": repairs["result"],
-                "regressions": repairs,
-            }
-        )
-        assert repairs["result"] == "passed", repairs
+        verify_nested_repairs(checks, input_file, catalog_input, image_id)
         return {
             "result": "passed",
             "checks": checks,
@@ -831,13 +1209,18 @@ def main():
     parser.add_argument("--image-id", required=True)
     parser.add_argument("--short", action="store_true")
     args = parser.parse_args()
-    print(
-        json.dumps(
-            exercise(args.input, args.catalog_input, args.image_id, long_wait=not args.short),
-            default=str,
+    try:
+        report = exercise(
+            args.input, args.catalog_input, args.image_id, long_wait=not args.short
         )
-    )
+    except VerificationFailure as error:
+        report = error.report
+    except Exception as error:
+        report = CheckLog(args.image_id).failure(error)
+        report["diagnostic_storage"] = {"available": False, "reason": "outside_workspace"}
+    print(json.dumps(json_observation(report)))
+    return int(report["result"] == "failed")
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

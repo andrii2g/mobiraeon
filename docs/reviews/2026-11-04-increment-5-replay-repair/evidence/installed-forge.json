@@ -1,0 +1,33 @@
+{
+  "started_utc": "2026-11-04T18:24:13.116206+00:00",
+  "source_archive_sha256": "4a6f85d5cbd4c59ef39f5e0523342081a3f01497fd062685a341fb9eb09c9ed0",
+  "qualification": "loopback",
+  "command": [
+    "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed/bin/python",
+    "-c",
+    "import json; from mobiraeon.forge_verification import exercise; print(json.dumps(exercise()))"
+  ],
+  "exit_code": 0,
+  "report": {
+    "result": "passed",
+    "checks": [
+      "link_publishes_nothing",
+      "create_then_semantic_unchanged",
+      "fixture_progress_updates_same_comment",
+      "restarted_cli_no_duplicate",
+      "observed_edit_remote_free_approval_refresh",
+      "applied_create_lost_ack_read_only_reconciliation",
+      "post_reconciliation_unchanged",
+      "no_service_token_in_database",
+      "delayed_patch_old_body_never_resends",
+      "armed_intent_zero_matches_retains_hold"
+    ],
+    "count": 10,
+    "module": "/home/andrey/work/mobiraeon-increment-5-20261104-01/replay-repair-20261104-01/installed/lib/python3.14/site-packages/mobiraeon/forge_verification.py",
+    "transport": "production httpx2 over loopback TCP",
+    "provider_qualified": false
+  },
+  "result": "passed",
+  "source_unchanged_before_and_after": true,
+  "finished_utc": "2026-11-04T18:24:18.128997+00:00"
+}

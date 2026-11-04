@@ -1,0 +1,22 @@
+{
+  "actual_exit_code": 0,
+  "verified_utc": "2026-11-04T15:46:34.758166+00:00",
+  "command": ".tools/bin/uv.exe build --out-dir C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.preservation\\post-cleanup-build-02",
+  "wheel": {
+    "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.preservation\\post-cleanup-build-02\\mobiraeon-0.1.0-py3-none-any.whl",
+    "bytes": 192703,
+    "sha256": "37c4bc3ebb57225a863d155b17daedf1e0fadacf09b550626ff416352a346d36",
+    "packaged_source_files": 55,
+    "manifest_mismatches": []
+  },
+  "sdist": {
+    "path": "C:\\Users\\andrey\\Documents\\Mobiraeon-Recovery\\full-review-cleanup-20261104-01\\.preservation\\post-cleanup-build-02\\mobiraeon-0.1.0.tar.gz",
+    "bytes": 547368,
+    "sha256": "8634a45c4d64648c7be74937f8de2c410474926ce30f0e0f7e3291a159d84b99",
+    "retired_or_generated_members": [],
+    "retained_input_files_checked": 111,
+    "missing_retained_inputs": [],
+    "compact_source_manifest_bytes": 33833
+  },
+  "scope": "Final cleanup packaging after manifest compaction; build receipt, final-validation receipt and evidence index necessarily follow their own build. Product and maintained documentation inputs verified."
+}
